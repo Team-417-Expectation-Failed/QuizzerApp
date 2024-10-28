@@ -12,6 +12,6 @@ To develop this project clone it to your machine. Backend requires knowledge abo
 
 Heli Kulomaa
 
-Jehu Enberg
+[Jehu Enberg](https://github.com/Comicalist)
 
 Juuso Karjanlahti
