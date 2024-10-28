@@ -1,3 +1,5 @@
+# Quizzer
+
 This project is about creating a quizer application.
 
 To use the app clone the project and run it with Spring Boot.
