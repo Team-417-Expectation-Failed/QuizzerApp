@@ -10,7 +10,7 @@ To develop this project clone it to your machine. Backend requires knowledge abo
 
 [Kaito Stenroos](https://github.com/kaitostenroos)
 
-Heli Kulomaa
+[Heli Kulomaa] (https://github.com/helikulomaa)
 
 [Jehu Enberg](https://github.com/Comicalist)
 
