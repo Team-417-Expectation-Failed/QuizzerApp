@@ -26,7 +26,7 @@ Contact one of the team members below to learn how you can take part in this pro
 - [Kaito Stenroos](https://github.com/kaitostenroos)
 - [Heli Kulomaa](https://github.com/helikulomaa)
 - [Jehu Enberg](https://github.com/Comicalist)
-- [Juuso Karjanlahti](https://github.com/kuxacodes)
+- [Juuso Karjanlahti](https://github.com/juusokarjanlahti)
 - [Jukka Virolainen]
 
 ## Backlog
