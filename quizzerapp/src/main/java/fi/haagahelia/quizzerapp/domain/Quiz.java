@@ -3,7 +3,6 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
@@ -15,8 +14,6 @@ public class Quiz {
     private String name;
     private String description;
     private LocalDate createdDate;
-
-    
 
     public Quiz(Long id, String name, String description, LocalDate createdDate) {
         this.id = id;
