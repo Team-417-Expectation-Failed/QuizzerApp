@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Quizzes</title>
 </head>
 <body>
-    <h2>Add quizes</h2>
-    <div>
-        <form th:object="${quiz}" th:actions="@{../save}" action="#" method="post">
-            <input type="text" id="name" th:field="*{name}"/>
-            <input type="text" id="description" th:field="*{description}"/>
-            <input type="submit" value="Add quiz"/>
-        </form>
-    </div>
+    <h1>Quizzes</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        
+        <tr th:each = "quiz : ${quiz}">
+    		<td th:text="${quiz.name}"></td>
+            <td th:text="${quiz.description}"></td>
+        </tr>
+    </table>
 </body>
-</html>

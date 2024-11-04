@@ -10,17 +10,30 @@ import jakarta.persistence.Id;
 public class Quiz {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue
+    private Long id;
     private String name;
     private String description;
     private LocalDate createdDate;
 
-    public Integer getId() {
+    
+
+    public Quiz(Long id, String name, String description, LocalDate createdDate) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.createdDate = createdDate;
+    }
+
+    public Quiz() {
+
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

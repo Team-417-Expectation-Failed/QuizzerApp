@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add quiz</title>
+</head>
+<body>
+    <h2>Add quizes</h2>
+    <div>
+        <form th:object="${quiz}" th:action="@{/save}" action="#" method="post">
+            <input type="text" id="name" th:field="*{name}"/>
+            <input type="text" id="description" th:field="*{description}"/>
+            <input type="submit" value="Add quiz"/>
+        </form>
+    </div>
+</body>
+</html>
