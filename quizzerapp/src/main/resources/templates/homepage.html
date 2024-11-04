@@ -11,11 +11,13 @@
         <tr>
             <th>Name</th>
             <th>Description</th>
+            <th>Created Date</th>
         </tr>
         
         <tr th:each = "quiz : ${quiz}">
     		<td th:text="${quiz.name}"></td>
             <td th:text="${quiz.description}"></td>
+            <td th:text="${quiz.createdDate}"></td>
         </tr>
     </table>
 </body>

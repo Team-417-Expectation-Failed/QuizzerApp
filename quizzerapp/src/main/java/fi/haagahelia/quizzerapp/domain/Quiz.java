@@ -1,5 +1,6 @@
 package fi.haagahelia.quizzerapp.domain;
 import java.time.LocalDate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,13 +14,16 @@ public class Quiz {
     private Long id;
     private String name;
     private String description;
+    @CreationTimestamp
     private LocalDate createdDate;
+    
 
     public Quiz(Long id, String name, String description, LocalDate createdDate) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.createdDate = createdDate;
+
     }
 
     public Quiz() {
