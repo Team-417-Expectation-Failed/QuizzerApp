@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quizzes</title>
 </head>
+
 <body>
     <h1>Quizzes</h1>
     <table>
@@ -13,11 +15,13 @@
             <th>Description</th>
             <th>Created Date</th>
         </tr>
-        
-        <tr th:each = "quiz : ${quiz}">
-    		<td th:text="${quiz.name}"></td>
+
+        <tr th:each="quiz : ${quiz}">
+            <td th:text="${quiz.name}"></td>
             <td th:text="${quiz.description}"></td>
             <td th:text="${quiz.createdDate}"></td>
+            <td><a th:href="@{/edit/{id}(id=${quiz.id})}">Edit</a></td>
         </tr>
     </table>
+    <p><a href="/addquiz">Add a new quiz</a></p>
 </body>
