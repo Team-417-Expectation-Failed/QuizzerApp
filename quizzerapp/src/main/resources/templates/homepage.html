@@ -12,12 +12,18 @@
             <th>Name</th>
             <th>Description</th>
             <th>Created Date</th>
+            <th>Delete Quiz</th>
         </tr>
         
         <tr th:each = "quiz : ${quiz}">
     		<td th:text="${quiz.name}"></td>
             <td th:text="${quiz.description}"></td>
             <td th:text="${quiz.createdDate}"></td>
+            <td>
+                <form th:action="@{/quiz/delete/{id}(id=${quiz.id})}" method="post">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
         </tr>
     </table>
 </body>
