@@ -1,5 +1,9 @@
 package fi.haagahelia.quizzerapp.web;
 
-public class QuizzerAppController {
+import org.springframework.boot.SpringApplication;
 
+public class QuizzerAppController {
+        public static void main(String[] args) {
+            SpringApplication.run(QuizzerAppController.class, args);
+        }
 }

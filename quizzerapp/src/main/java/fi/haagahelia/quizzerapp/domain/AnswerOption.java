@@ -1,5 +1,5 @@
 package fi.haagahelia.quizzerapp.domain;
 
-public interface AnswerRepository {
+public class AnswerOption {
 
 }
