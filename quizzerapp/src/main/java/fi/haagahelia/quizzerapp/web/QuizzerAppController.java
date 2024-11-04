@@ -37,6 +37,12 @@ public class QuizzerAppController {
         return "redirect:/";
     }
 
+    @PostMapping("/quiz/delete/{id}")
+    public String deleteQuiz(@PathVariable Long id) {
+        quizRepository.deleteById(id);
+        return "redirect:/";
+    }
+
     @GetMapping("/quizzes")
     @ResponseBody
     public Iterable<Quiz> getQuizzes() {
