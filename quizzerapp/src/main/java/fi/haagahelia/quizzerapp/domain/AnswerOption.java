@@ -2,6 +2,7 @@ package fi.haagahelia.quizzerapp.domain;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 public class AnswerOption {
