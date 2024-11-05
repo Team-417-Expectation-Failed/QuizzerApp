@@ -82,7 +82,7 @@ public class QuizzerAppController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid quiz Id:" + id));
 
         updatedQuiz.setName(quiz.getName());
-
+        updatedQuiz.setDescription(quiz.getDescription());
         updatedQuiz.getQuestions().clear();
 
         for (Question question : quiz.getQuestions()) {

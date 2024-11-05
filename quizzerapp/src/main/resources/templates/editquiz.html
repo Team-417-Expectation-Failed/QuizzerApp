@@ -12,15 +12,13 @@
         <form th:object="${quiz}" th:action="@{|/update/${quiz.id}|}" method="post">
             <!-- The hidden feeld keeps the creation date the same-->
             <input type="hidden" id="createdDate" th:field="*{createdDate}" />
-            <!--This form must submit only non-nullable values 
-            The "required" attribute forces user to fill the input field-->
             <label for="name">Name of the quiz</label>
-            <input type="text" id="name" th:field="*{name}" />
+            <input type="text" id="name" th:field="*{name}" required/>
             <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
             <label for="description">Description</label>
             <input type="text" id="description" th:field="*{description}" />
             <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-            <label for="questionBody">Question:</label>
+            <label for="questionBody">Questions</label>
             <!--TODO: input elements for all questions in the quiz-->
             <input type="text" id="questionBody" th:field="*{questions[0].questionBody}" />
             <input type="submit" value="Update quiz"></input>
