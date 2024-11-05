@@ -11,8 +11,12 @@
     <h2>Add quizzes</h2>
     <div>
         <form th:object="${quiz}" th:action="@{/save}" action="#" method="post">
-            <input type="text" id="name" th:field="*{name}" />
-            <input type="text" id="description" th:field="*{description}" />
+            <!--This form must submit only non-nullable values
+            The "required" attribute forces user to fill the input field-->
+            <input type="text" id="name" th:field="*{name}" required/>
+            <input type="text" id="description" th:field="*{description}" required/>
+            <!--TODO: input elements for all questions in the quiz-->
+            <input type="text" id="questionBody" th:field="*{questions[0].questionBody}" required/>
             <input type="submit" value="Add quiz" />
         </form>
         <p><a href="/">Back to homepage</a></p>

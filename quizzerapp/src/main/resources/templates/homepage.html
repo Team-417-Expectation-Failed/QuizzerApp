@@ -9,18 +9,25 @@
 
 <body>
     <h1>Quizzes</h1>
+    <div>
     <table>
-        <tr>
+        <thead>
+            <tr>
             <th>Name</th>
             <th>Description</th>
             <th>Created Date</th>
-            <th>Delete Quiz</th>
+            <th>Question</th>
+            <th>Delete</th>
+            <th>Edit</th>
         </tr>
-
+        </thead>
+        <tbody>
         <tr th:each="quiz : ${quiz}">
             <td th:text="${quiz.name}"></td>
             <td th:text="${quiz.description}"></td>
             <td th:text="${quiz.createdDate}"></td>
+            <!--Sole reason for line below is to see easily if the question actually got added-->
+            <td th:text="${quiz.questions[0].questionBody}"></td>
             <td>
                 <form th:action="@{/quiz/delete/{id}(id=${quiz.id})}" method="post">
                     <button type="submit">Delete</button>
@@ -28,6 +35,8 @@
             </td>
             <td><a th:href="@{/edit/{id}(id=${quiz.id})}">Edit</a></td>
         </tr>
+        </tbody>
     </table>
+    </div>
     <p><a href="/addquiz">Add a new quiz</a></p>
 </body>

@@ -1,5 +1,7 @@
 package fi.haagahelia.quizzerapp.web;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import fi.haagahelia.quizzerapp.domain.Question;
+import fi.haagahelia.quizzerapp.domain.QuestionRepository;
 import fi.haagahelia.quizzerapp.domain.Quiz;
 import fi.haagahelia.quizzerapp.domain.QuizRepository;
 
@@ -21,7 +25,10 @@ public class QuizzerAppController {
 
     @RequestMapping(value = "/addquiz")
     public String addquiz(Model model) {
-        model.addAttribute("quiz", new Quiz());
+        Quiz quiz = new Quiz();
+        quiz.setQuestions(new ArrayList<>());
+        quiz.getQuestions().add(new Question());
+        model.addAttribute("quiz", quiz);
         return "addquiz";
     }
 
@@ -33,6 +40,10 @@ public class QuizzerAppController {
 
     @PostMapping("/save")
     public String save(Quiz quiz) {
+        //Add a quiz where each question belongs to
+        for (Question question : quiz.getQuestions()) {
+            question.setQuiz(quiz);
+        }
         quizRepository.save(quiz);
         return "redirect:/";
     }
@@ -67,7 +78,19 @@ public class QuizzerAppController {
             return "editquiz";
         }
 
-        quizRepository.save(quiz);
+        Quiz updatedQuiz = quizRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid quiz Id:" + id));
+
+        updatedQuiz.setName(quiz.getName());
+
+        updatedQuiz.getQuestions().clear();
+
+        for (Question question : quiz.getQuestions()) {
+            question.setQuiz(updatedQuiz);
+            updatedQuiz.getQuestions().add(question);
+        }
+
+        quizRepository.save(updatedQuiz);
         return "redirect:/";
     }
 
