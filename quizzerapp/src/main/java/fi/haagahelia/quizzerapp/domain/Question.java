@@ -58,4 +58,8 @@ public class Question {
         this.quiz = quiz;
     }
 
+    public List<AnswerOption> getAnswerOptions() {
+        return answerOptions;
+    }
+    
 }
