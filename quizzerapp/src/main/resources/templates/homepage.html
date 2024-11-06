@@ -19,6 +19,7 @@
             <th>Question</th>
             <th>Delete</th>
             <th>Edit</th>
+            <th>View Questions</th>
         </tr>
         </thead>
         <tbody>
@@ -34,9 +35,11 @@
                 </form>
             </td>
             <td><a th:href="@{/edit/{id}(id=${quiz.id})}">Edit</a></td>
+            <td><a th:href="@{/quiz/{id}/questions(id=${quiz.id})}">View Questions</a></td>
         </tr>
         </tbody>
     </table>
     </div>
     <p><a href="/addquiz">Add a new quiz</a></p>
 </body>
+</html>
