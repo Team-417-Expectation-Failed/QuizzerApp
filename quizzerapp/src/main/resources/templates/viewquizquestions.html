@@ -13,6 +13,9 @@
         <ul>
             <li th:each="question : ${quiz.questions}">
                 <span th:text="${question.questionBody}"></span>
+                <form th:action="@{/question/delete/{id}(id=${question.id}, quizId=${quiz.id})}" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
             </li>
         </ul>
     </div>
