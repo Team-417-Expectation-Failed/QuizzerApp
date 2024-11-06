@@ -15,13 +15,31 @@
             <input type="text" id="name" th:field="*{name}" />
             <label for="description">Description</label>
             <input type="text" id="description" th:field="*{description}" />
-            <label for="questionBody">Questions</label>
-            <!--TODO: input elements for all questions in the quiz-->
-            <input type="text" id="questionBody" th:field="*{questions[0].questionBody}" />
+            <div id="questionList">
+                <label for="questionBody0">Question 1</label>
+                <input type="text" id="questionBody0" th:field="*{questions[0].questionBody}" />
+            </div>
+            <button type="button" onclick="addQuestion()">Add another question</button>
             <input type="submit" value="Add quiz" />
         </form>
         <p><a href="/">Back to homepage</a></p>
     </div>
+
+    <script>
+        // logic to add more questions, number of questions starts at 1
+        let questionCounter = 1; 
+
+        function addQuestion() {
+            const questionList = document.getElementById('questionList');
+            const newQuestion = document.createElement('div');
+            newQuestion.innerHTML = `
+                <label for="questionBody${questionCounter}">Question ${questionCounter + 1}</label>
+                <input type="text" id="questionBody${questionCounter}" name="questions[${questionCounter}].questionBody" />
+            `;
+            questionList.appendChild(newQuestion);
+            questionCounter++;
+        }
+    </script>
 </body>
 
 </html>
