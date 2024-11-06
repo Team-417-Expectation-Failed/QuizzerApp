@@ -16,6 +16,7 @@
                 <form th:action="@{/answerOption/delete/{id}(id=${answerOption.id}, questionId=${question.id})}" method="post" style="display:inline;">
                     <button type="submit">Delete</button>
                 </form>
+                <a th:href="@{/answerOption/edit/{id}(id=${answerOption.id})}">Edit</a>
             </li>
         </ul>
     </div>
