@@ -7,12 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import fi.haagahelia.quizzerapp.domain.AnswerOption;
+import fi.haagahelia.quizzerapp.domain.AnswerOptionRepository;
 import fi.haagahelia.quizzerapp.domain.Question;
 import fi.haagahelia.quizzerapp.domain.QuestionRepository;
 import fi.haagahelia.quizzerapp.domain.Quiz;
@@ -26,6 +29,9 @@ public class QuizzerAppController {
 
     @Autowired
     private QuestionRepository questionRepository;
+
+    @Autowired
+    private AnswerOptionRepository answerOptionRepository;
 
     @RequestMapping(value = "/addquiz")
     public String addquiz(Model model) {
@@ -114,4 +120,28 @@ public class QuizzerAppController {
         return "redirect:/";
     }
 
+    @GetMapping("/question/{id}/addAnswerOption")
+    public String showAddAnswerOptionForm(@PathVariable("id") long id, Model model) {
+    Question question = questionRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
+        model.addAttribute("question", question);
+        model.addAttribute("answerOption", new AnswerOption());
+        return "addansweroption";
+    }
+
+    @PostMapping("/question/{id}/addAnswerOption")
+    public String addAnswerOption(@PathVariable("id") long id, @ModelAttribute AnswerOption answerOption, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            Question question = questionRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
+            model.addAttribute("question", question);
+            return "addansweroption";
+        }
+
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
+        answerOption.setBelongsToQuestion(question);
+        answerOptionRepository.save(answerOption);
+        return "redirect:/quiz/" + question.getQuiz().getId() + "/questions";
+    }
 }
