@@ -120,6 +120,28 @@ public class QuizzerAppController {
         return "redirect:/";
     }
 
+    @GetMapping("/answerOption/edit/{id}")
+    public String showEditAnswerOptionForm(@PathVariable("id") long id, Model model) {
+    AnswerOption answerOption = answerOptionRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid answer option Id:" + id));
+        model.addAttribute("answerOption", answerOption);
+        return "editansweroption";
+    }
+
+    @PostMapping("/answerOption/edit/{id}")
+    public String editAnswerOption(@PathVariable("id") long id, @ModelAttribute AnswerOption answerOption, BindingResult result, Model model) {
+    if (result.hasErrors()) {
+        return "editansweroption";
+    }
+
+    AnswerOption existingAnswerOption = answerOptionRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid answer option Id:" + id));
+        existingAnswerOption.setAnswerOption(answerOption.getAnswerOption());
+        existingAnswerOption.setCorrect(answerOption.isCorrect());
+        answerOptionRepository.save(existingAnswerOption);
+    return "redirect:/question/" + existingAnswerOption.getBelongsToQuestion().getId() + "/viewAnswerOptions";
+}
+
     @PostMapping("/answerOption/delete/{id}")
     public String deleteAnswerOption(@PathVariable Long id, @RequestParam Long questionId, Model model) {
     AnswerOption answerOption = answerOptionRepository.findById(id)
