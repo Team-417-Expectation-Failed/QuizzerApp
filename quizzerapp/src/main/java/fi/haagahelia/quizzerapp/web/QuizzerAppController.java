@@ -120,6 +120,15 @@ public class QuizzerAppController {
         return "redirect:/";
     }
 
+    @GetMapping("/question/{id}/viewAnswerOptions")
+    public String viewAnswerOptions(@PathVariable("id") long id, Model model) {
+    Question question = questionRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
+        model.addAttribute("question", question);
+        model.addAttribute("answerOptions", question.getAnswerOptions());
+        return "viewansweroptions";
+}
+
     @GetMapping("/question/{id}/addAnswerOption")
     public String showAddAnswerOptionForm(@PathVariable("id") long id, Model model) {
     Question question = questionRepository.findById(id)
