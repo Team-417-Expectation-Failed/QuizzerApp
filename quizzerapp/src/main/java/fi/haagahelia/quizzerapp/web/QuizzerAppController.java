@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import fi.haagahelia.quizzerapp.domain.Question;
@@ -22,6 +23,9 @@ public class QuizzerAppController {
 
     @Autowired
     private QuizRepository quizRepository;
+
+    @Autowired
+    private QuestionRepository questionRepository;
 
     @RequestMapping(value = "/addquiz")
     public String addquiz(Model model) {
@@ -54,13 +58,21 @@ public class QuizzerAppController {
         return "redirect:/";
     }
 
+    @PostMapping("/question/delete/{id}")
+    public String deleteQuestion(@PathVariable Long id, @RequestParam Long quizId, Model model) {
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
+        questionRepository.delete(question);
+        return "redirect:/quiz/" + quizId + "/questions";
+    }
+
     @GetMapping("/quiz/{id}/questions")
     public String viewQuizQuestions(@PathVariable("id") long id, Model model) {
-    Quiz quiz = quizRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid quiz Id:" + id));
-    model.addAttribute("quiz", quiz);
-    return "viewquizquestions";
-}
+        Quiz quiz = quizRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid quiz Id:" + id));
+        model.addAttribute("quiz", quiz);
+        return "viewquizquestions";
+    }
 
     @GetMapping("/quizzes")
     @ResponseBody
