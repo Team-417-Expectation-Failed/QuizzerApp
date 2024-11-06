@@ -54,6 +54,14 @@ public class QuizzerAppController {
         return "redirect:/";
     }
 
+    @GetMapping("/quiz/{id}/questions")
+    public String viewQuizQuestions(@PathVariable("id") long id, Model model) {
+    Quiz quiz = quizRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid quiz Id:" + id));
+    model.addAttribute("quiz", quiz);
+    return "viewquizquestions";
+}
+
     @GetMapping("/quizzes")
     @ResponseBody
     public Iterable<Quiz> getQuizzes() {
