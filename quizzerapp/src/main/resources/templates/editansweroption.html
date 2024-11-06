@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Answer Option</title>
+</head>
+
+<body>
+    <h2>Edit Answer Option</h2>
+    <div>
+        <form th:action="@{/answerOption/edit/{id}(id=${answerOption.id})}" th:object="${answerOption}" method="post">
+            <label for="answerOption">Answer Option</label>
+            <input type="text" id="answerOption" th:field="*{answerOption}" />
+            <label for="correct">Correct</label>
+            <input type="checkbox" id="correct" th:field="*{correct}" />
+            <input type="submit" value="Save" />
+        </form>
+        <p><a th:href="@{/question/{id}/viewAnswerOptions(id=${answerOption.belongsToQuestion.id})}">Back to Answer Options</a></p>
+    </div>
+</body>
+
+</html>
