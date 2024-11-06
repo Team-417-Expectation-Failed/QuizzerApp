@@ -1,10 +1,15 @@
 package fi.haagahelia.quizzerapp.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Question {
@@ -15,8 +20,11 @@ public class Question {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "quiz_id")
-    //Quiz where this question belongs to
     private Quiz quiz;
+
+    @OneToMany(mappedBy = "belongsToQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AnswerOption> answerOptions = new ArrayList<>();
+
 
     public  Question() {
 
