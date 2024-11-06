@@ -13,6 +13,9 @@
         <ul>
             <li th:each="answerOption : ${answerOptions}">
                 <span th:text="${answerOption.answerOption}"></span> - <span th:text="${answerOption.correct ? 'Correct' : 'Incorrect'}"></span>
+                <form th:action="@{/answerOption/delete/{id}(id=${answerOption.id}, questionId=${question.id})}" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
             </li>
         </ul>
     </div>

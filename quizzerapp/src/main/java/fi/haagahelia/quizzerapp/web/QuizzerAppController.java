@@ -120,6 +120,14 @@ public class QuizzerAppController {
         return "redirect:/";
     }
 
+    @PostMapping("/answerOption/delete/{id}")
+    public String deleteAnswerOption(@PathVariable Long id, @RequestParam Long questionId, Model model) {
+    AnswerOption answerOption = answerOptionRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid answer option Id:" + id));
+        answerOptionRepository.delete(answerOption);
+        return "redirect:/question/" + questionId + "/viewAnswerOptions";
+}
+
     @GetMapping("/question/{id}/viewAnswerOptions")
     public String viewAnswerOptions(@PathVariable("id") long id, Model model) {
     Question question = questionRepository.findById(id)
