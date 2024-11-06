@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Answer Option</title>
+</head>
+
+<body>
+    <h2>Add Answer Option for Question: <span th:text="${question.questionBody}"></span></h2>
+    <div>
+        <form th:action="@{/question/{id}/addAnswerOption(id=${question.id})}" th:object="${answerOption}" method="post">
+            <label for="answerOption">Answer Option</label>
+            <input type="text" id="answerOption" th:field="*{answerOption}" />
+            <label for="correct">Correct</label>
+            <input type="checkbox" id="correct" th:field="*{correct}" />
+            <input type="submit" value="Add Answer Option" />
+        </form>
+        <p><a th:href="@{/quiz/{id}/questions(id=${question.quiz.id})}">Back to Questions</a></p>
+    </div>
+</body>
+</html>
