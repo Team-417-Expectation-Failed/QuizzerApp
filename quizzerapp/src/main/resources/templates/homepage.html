@@ -17,7 +17,8 @@
             <th>Name</th>
             <th>Description</th>
             <th>Created Date</th>
-            <th>Question</th>
+            <!--Empty th elements keep width of thead same as tbody
+            for styling reasons-->
             <th></th>
             <th></th>
             <th></th>
@@ -28,8 +29,6 @@
             <td th:text="${quiz.name}"></td>
             <td th:text="${quiz.description}"></td>
             <td th:text="${quiz.createdDate}"></td>
-            <!--Sole reason for line below is to see easily if the question actually got added-->
-            <td th:text="${quiz.questions[0].questionBody}"></td>
             <td>
                 <form th:action="@{/quiz/delete/{id}(id=${quiz.id})}" method="post">
                     <button type="submit" class="warning">Delete</button>
