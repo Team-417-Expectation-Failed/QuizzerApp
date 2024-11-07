@@ -14,9 +14,9 @@
         <form th:action="@{/quiz/{id}/addQuestion(id=${quiz.id})}" th:object="${question}" method="post">
             <label for="questionBody">Question Body</label>
             <input type="text" id="questionBody" th:field="*{questionBody}" />
-            <input type="submit" value="Add Question" />
+            <input type="submit" value="Add Question" class="submit"/>
         </form>
-        <p><a th:href="@{/quiz/{id}/questions(id=${quiz.id})}">Back to Questions</a></p>
+        <p><a th:href="@{/quiz/{id}/questions(id=${quiz.id})}"><button class="controlls">Back to Questions</button></a></p>
     </div>
 </body>
 
