@@ -15,15 +15,15 @@ public class AnswerOption {
     private boolean correct;
     @ManyToOne(optional = false)
     @JoinColumn(name = "question_id")
-    private Question belongsToQuestion;
+    private Question question;
 
     public AnswerOption() {
     }
 
-    public AnswerOption(String answerOption, boolean correct, Question belongsToQuestion) {
+    public AnswerOption(String answerOption, boolean correct, Question question) {
         this.answerOption = answerOption;
         this.correct = correct;
-        this.belongsToQuestion = belongsToQuestion;
+        this.question = question;
     }
 
     public Long getId() {
@@ -50,11 +50,11 @@ public class AnswerOption {
         this.correct = correct;
     }
 
-    public Question getBelongsToQuestion() {
-        return belongsToQuestion;
+    public Question getQuestion() {
+        return question;
     }
 
-    public void setBelongsToQuestion(Question belongsToQuestion) {
-        this.belongsToQuestion = belongsToQuestion;
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 }
