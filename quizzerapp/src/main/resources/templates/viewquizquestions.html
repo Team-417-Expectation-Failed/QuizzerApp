@@ -22,9 +22,10 @@
                 <a th:href="@{/question/{id}/viewAnswerOptions(id=${question.id})}"><button class="secondary">View Answer Options</button></a>
             </li>
         </ul>
-        <a th:href="@{/quiz/{id}/addQuestion(id=${quiz.id})}"><button>Add New Question</button></a>
+        <a th:href="@{/quiz/{id}/addQuestion(id=${quiz.id})}"><button>Add New Question</button></a><br>
+        <a href="/"><button class="controlls">Back to homepage</button></a>
     </div>
-    <p><a href="/"><button class="controlls">Back to homepage</button></a></p>
+    
 </body>
 
 </html>
