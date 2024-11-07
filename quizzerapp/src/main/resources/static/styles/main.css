@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+div {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid;
+}
+
+th {
+    background-color: #f2f2f9;
+}
+
+
+th, td {
+    border-left: 1px solid;
+    border-right: 1px solid;
+    padding: 10px;
+}
