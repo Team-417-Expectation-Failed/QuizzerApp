@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Questions</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet" />
 </head>
 
 <body>
@@ -14,16 +15,16 @@
             <li th:each="question : ${quiz.questions}">
                 <span th:text="${question.questionBody}"></span>
                 <form th:action="@{/question/delete/{id}(id=${question.id}, quizId=${quiz.id})}" method="post" style="display:inline;">
-                    <button type="submit">Delete</button>
+                    <button type="submit" class="warning">Delete</button>
                 </form>
-                <a th:href="@{/question/edit/{id}(id=${question.id})}">Edit</a>
-                <a th:href="@{/question/{id}/addAnswerOption(id=${question.id})}">Add Answer Option</a>
-                <a th:href="@{/question/{id}/viewAnswerOptions(id=${question.id})}">View Answer Options</a>
+                <a th:href="@{/question/edit/{id}(id=${question.id})}"><button>Edit</button></a>
+                <a th:href="@{/question/{id}/addAnswerOption(id=${question.id})}"><button class="secondary">Add Answer Option</button></a>
+                <a th:href="@{/question/{id}/viewAnswerOptions(id=${question.id})}"><button class="secondary">View Answer Options</button></a>
             </li>
         </ul>
-        <a th:href="@{/quiz/{id}/addQuestion(id=${quiz.id})}">Add New Question</a>
+        <a th:href="@{/quiz/{id}/addQuestion(id=${quiz.id})}"><button>Add New Question</button></a>
     </div>
-    <p><a href="/">Back to homepage</a></p>
+    <p><a href="/"><button class="controlls">Back to homepage</button></a></p>
 </body>
 
 </html>

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Answer Option</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet" />
 </head>
 
 <body>
@@ -14,10 +15,10 @@
             <label for="answerOptionBody">Answer Option</label>
             <input type="text" name="answerOptionBody" th:field="*{answerOptionBody}" />
             <label for="correct">Correct</label>
-            <input type="checkbox" id="correct" th:field="*{correct}" />
-            <input type="submit" value="Save" />
+            <input type="checkbox" id="correct" th:field="*{correct}" /></br>
+            <input type="submit" value="Save" class="submit"/>
         </form>
-        <p><a th:href="@{/question/{id}/viewAnswerOptions(id=${answerOption.question.id})}">Back to Answer Options</a></p>
+        <p><a th:href="@{/question/{id}/viewAnswerOptions(id=${answerOption.question.id})}"><button class="controlls">Back to Answer Options</button></a></p>
     </div>
 </body>
 

@@ -4,6 +4,7 @@
 <head>
     <title>Quiz list</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/styles/main.css}" rel="stylesheet" />
 </head>
 
 <body>
@@ -18,7 +19,7 @@
             <label for="description">Description</label>
             <input type="text" id="description" th:field="*{description}" />
             <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-            <input type="submit" value="Update quiz"></input>
+            <input type="submit" value="Update quiz" class="submit"></input>
         </form>
     </div>
 </body>

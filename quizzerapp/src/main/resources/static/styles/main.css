@@ -1,9 +1,5 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
-    animation-name: sliding-appear;
-    animation-duration: 0.5s;
-    animation-iteration-count: 1;
-    animation-timing-function: ease-in-out;
 }
 
 div {
@@ -11,7 +7,52 @@ div {
     justify-content: left;
     flex-wrap: wrap;
     width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+
 }
+
+div#questionList {
+    padding: 0;
+    box-sizing: content-box;
+}
+
+input {
+    font-size: 1rem;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+input.submit {
+    font-size: 1rem;
+    width: initial;
+    background-color: #1976D2;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+input.submit:hover {
+    background-color: #0d47a1;
+}
+
+input.submit:active {
+    background-color: #0d47a1;
+    transform: scale(0.8);
+}
+
+input#correct {
+    width: initial;
+}
+
 
 button {
     font-size: 1rem;
@@ -20,7 +61,7 @@ button {
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
-    border-radius: 8px;
+    border-radius: 16px;
     cursor: pointer;
 }
 
@@ -34,7 +75,28 @@ button:active {
 }
 
 button.secondary {
-    background-color: #616161;
+    background-color: #fff;
+    color: #1976D2;
+    border: 1px solid #1976D2;
+}
+
+button.secondary:hover {
+    background-color: #f2f2f2;
+}
+
+button.secondary:active {
+    background-color: #f2f2f2;
+    transform: scale(0.8);
+}
+
+/* Buttons class gray button has a typo and is illogically named 
+but I'm too lazy to fix it after giving this class to many buttons*/
+button.controlls {
+    background-color: #717171;
+}
+
+button.controlls:hover {
+    background-color: #5f5f5f;
 }
 
 button.warning {
@@ -48,6 +110,14 @@ button.warning:hover {
 .warning:active {
     background-color: #d80000;
     transform: scale(0.8);
+}
+
+ul {
+    width: 100%;
+}
+
+li {
+    width: 100%;
 }
 
 table {
@@ -70,8 +140,13 @@ th {
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2; 
-  }
+    background-color: #50505020; 
+}
+
+form {
+    width: 100%;
+}
+
 
 @keyframes sliding-appear {
     from {

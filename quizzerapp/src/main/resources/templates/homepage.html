@@ -18,9 +18,9 @@
             <th>Description</th>
             <th>Created Date</th>
             <th>Question</th>
-            <th>Delete</th>
-            <th>Edit</th>
-            <th>View Questions</th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -32,15 +32,15 @@
             <td th:text="${quiz.questions[0].questionBody}"></td>
             <td>
                 <form th:action="@{/quiz/delete/{id}(id=${quiz.id})}" method="post">
-                    <button type="submit">Delete</button>
+                    <button type="submit" class="warning">Delete</button>
                 </form>
             </td>
-            <td><a th:href="@{/edit/{id}(id=${quiz.id})}">Edit</a></td>
-            <td><a th:href="@{/quiz/{id}/questions(id=${quiz.id})}">View Questions</a></td>
+            <td><a th:href="@{/edit/{id}(id=${quiz.id})}"><button>Edit</button></a></td>
+            <td><a th:href="@{/quiz/{id}/questions(id=${quiz.id})}"><button>View Questions</button></a></td>
         </tr>
         </tbody>
     </table>
-    <p><a href="/addquiz">Add a new quiz</a></p>
+    <p><a href="/addquiz"><button>Add a quiz</button></a></p>
     </div>
 </body>
 </html>
