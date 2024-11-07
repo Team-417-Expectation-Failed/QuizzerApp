@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Question</title>
+</head>
+
+<body>
+    <h2>Add Question to Quiz: <span th:text="${quiz.name}"></span></h2>
+    <div>
+        <form th:action="@{/quiz/{id}/addQuestion(id=${quiz.id})}" th:object="${question}" method="post">
+            <label for="questionBody">Question Body</label>
+            <input type="text" id="questionBody" th:field="*{questionBody}" />
+            <input type="submit" value="Add Question" />
+        </form>
+        <p><a th:href="@{/quiz/{id}/questions(id=${quiz.id})}">Back to Questions</a></p>
+    </div>
+</body>
+
+</html>
