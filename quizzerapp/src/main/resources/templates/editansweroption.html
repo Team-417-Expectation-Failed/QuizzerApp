@@ -12,12 +12,12 @@
     <div>
         <form th:action="@{/answerOption/edit/{id}(id=${answerOption.id})}" th:object="${answerOption}" method="post">
             <label for="answerOption">Answer Option</label>
-            <input type="text" id="answerOption" th:field="*{answerOption}" />
+            <input type="text" name="answerOption" th:field="*{answerOption}" />
             <label for="correct">Correct</label>
             <input type="checkbox" id="correct" th:field="*{correct}" />
             <input type="submit" value="Save" />
         </form>
-        <p><a th:href="@{/question/{id}/viewAnswerOptions(id=${answerOption.belongsToQuestion.id})}">Back to Answer Options</a></p>
+        <p><a th:href="@{/question/{id}/viewAnswerOptions(id=${answerOption.quiz.id})}">Back to Answer Options</a></p>
     </div>
 </body>
 

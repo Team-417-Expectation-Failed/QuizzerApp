@@ -11,8 +11,8 @@
     <h2>Add Answer Option for Question: <span th:text="${question.questionBody}"></span></h2>
     <div>
         <form th:action="@{/question/{id}/addAnswerOption(id=${question.id})}" th:object="${answerOption}" method="post">
-            <label for="answerOption">Answer Option</label>
-            <input type="text" id="answerOption" th:field="*{answerOption}" />
+            <label for="answerOptionBody">Answer Option</label>
+            <input type="text" name="answerOptionBody" th:field="*{answerOptionBody}" />
             <label for="correct">Correct</label>
             <input type="checkbox" id="correct" th:field="*{correct}" />
             <input type="submit" value="Add Answer Option" />
