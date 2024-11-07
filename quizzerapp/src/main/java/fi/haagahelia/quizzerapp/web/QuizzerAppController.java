@@ -33,6 +33,13 @@ public class QuizzerAppController {
     @Autowired
     private AnswerOptionRepository answerOptionRepository;
 
+    // Home and Quiz Management
+    @RequestMapping(value = "/")
+    public String homepage(Model model) {
+        model.addAttribute("quiz", quizRepository.findAll());
+        return "homepage";
+    }
+
     @RequestMapping(value = "/addquiz")
     public String addquiz(Model model) {
         Quiz quiz = new Quiz();
@@ -42,15 +49,9 @@ public class QuizzerAppController {
         return "addquiz";
     }
 
-    @RequestMapping(value = "/")
-    public String homepage(Model model) {
-        model.addAttribute("quiz", quizRepository.findAll());
-        return "homepage";
-    }
-
     @PostMapping("/save")
     public String save(Quiz quiz) {
-        //Add a quiz where each question belongs to
+        // Add a quiz where each question belongs to
         for (Question question : quiz.getQuestions()) {
             question.setQuiz(quiz);
         }
@@ -64,37 +65,6 @@ public class QuizzerAppController {
         return "redirect:/";
     }
 
-    @PostMapping("/question/delete/{id}")
-    public String deleteQuestion(@PathVariable Long id, @RequestParam Long quizId, Model model) {
-        Question question = questionRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
-        questionRepository.delete(question);
-        return "redirect:/quiz/" + quizId + "/questions";
-    }
-
-
-    // Edit question
-    @GetMapping("/question/edit/{id}")
-    public String showEditQuestionForm(@PathVariable("id") long id, Model model) {
-    Question question = questionRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
-    model.addAttribute("question", question);
-    return "editquestion";
-    }
-
-    @PostMapping("/question/edit/{id}")
-    public String editQuestion(@PathVariable("id") long id, @ModelAttribute Question question, BindingResult result, Model model) {
-    if (result.hasErrors()) {
-        return "editquestion";
-    }
-
-    Question existingQuestion = questionRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
-    existingQuestion.setQuestionBody(question.getQuestionBody());
-    questionRepository.save(existingQuestion);
-    return "redirect:/quiz/" + existingQuestion.getQuiz().getId() + "/questions";
-}
-
     @GetMapping("/quiz/{id}/questions")
     public String viewQuizQuestions(@PathVariable("id") long id, Model model) {
         Quiz quiz = quizRepository.findById(id)
@@ -102,14 +72,6 @@ public class QuizzerAppController {
         model.addAttribute("quiz", quiz);
         return "viewquizquestions";
     }
-
-    @GetMapping("/quizzes")
-    @ResponseBody
-    public Iterable<Quiz> getQuizzes() {
-        return quizRepository.findAll();
-    }
-
-    // Edit quiz
 
     @GetMapping("/edit/{id}")
     public String showUpdateQuizForm(@PathVariable("id") long id, Model model) {
@@ -120,65 +82,71 @@ public class QuizzerAppController {
     }
 
     @PostMapping("/update/{id}")
-public String updateQuiz(@PathVariable("id") long id, Quiz quiz, BindingResult result, Model model) {
-    if (result.hasErrors()) {
-        quiz.setId(id);
-        return "editquiz";
+    public String updateQuiz(@PathVariable("id") long id, Quiz quiz, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            quiz.setId(id);
+            return "editquiz";
+        }
+
+        Quiz updatedQuiz = quizRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid quiz Id:" + id));
+
+        updatedQuiz.setName(quiz.getName());
+        updatedQuiz.setDescription(quiz.getDescription());
+
+        quizRepository.save(updatedQuiz);
+        return "redirect:/";
     }
 
-    Quiz updatedQuiz = quizRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid quiz Id:" + id));
-
-    updatedQuiz.setName(quiz.getName());
-    updatedQuiz.setDescription(quiz.getDescription());
-
-    quizRepository.save(updatedQuiz);
-    return "redirect:/";
-}
-
-    @GetMapping("/answerOption/edit/{id}")
-    public String showEditAnswerOptionForm(@PathVariable("id") long id, Model model) {
-    AnswerOption answerOption = answerOptionRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid answer option Id:" + id));
-        model.addAttribute("answerOption", answerOption);
-        return "editansweroption";
+    @GetMapping("/quizzes")
+    @ResponseBody
+    public Iterable<Quiz> getQuizzes() {
+        return quizRepository.findAll();
     }
 
-    @PostMapping("/answerOption/edit/{id}")
-    public String editAnswerOption(@PathVariable("id") long id, @ModelAttribute AnswerOption answerOption, BindingResult result, Model model) {
-    if (result.hasErrors()) {
-        return "editansweroption";
+    // Question Management
+    @PostMapping("/question/delete/{id}")
+    public String deleteQuestion(@PathVariable Long id, @RequestParam Long quizId, Model model) {
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
+        questionRepository.delete(question);
+        return "redirect:/quiz/" + quizId + "/questions";
     }
 
-    AnswerOption existingAnswerOption = answerOptionRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid answer option Id:" + id));
-        existingAnswerOption.setAnswerOption(answerOption.getAnswerOption());
-        existingAnswerOption.setCorrect(answerOption.isCorrect());
-        answerOptionRepository.save(existingAnswerOption);
-    return "redirect:/question/" + existingAnswerOption.getBelongsToQuestion().getId() + "/viewAnswerOptions";
-}
+    @GetMapping("/question/edit/{id}")
+    public String showEditQuestionForm(@PathVariable("id") long id, Model model) {
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
+        model.addAttribute("question", question);
+        return "editquestion";
+    }
 
-    @PostMapping("/answerOption/delete/{id}")
-    public String deleteAnswerOption(@PathVariable Long id, @RequestParam Long questionId, Model model) {
-    AnswerOption answerOption = answerOptionRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid answer option Id:" + id));
-        answerOptionRepository.delete(answerOption);
-        return "redirect:/question/" + questionId + "/viewAnswerOptions";
-}
+    @PostMapping("/question/edit/{id}")
+    public String editQuestion(@PathVariable("id") long id, @ModelAttribute Question question, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "editquestion";
+        }
+
+        Question existingQuestion = questionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
+        existingQuestion.setQuestionBody(question.getQuestionBody());
+        questionRepository.save(existingQuestion);
+        return "redirect:/quiz/" + existingQuestion.getQuiz().getId() + "/questions";
+    }
 
     @GetMapping("/question/{id}/viewAnswerOptions")
     public String viewAnswerOptions(@PathVariable("id") long id, Model model) {
-    Question question = questionRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
         model.addAttribute("question", question);
         model.addAttribute("answerOptions", question.getAnswerOptions());
         return "viewansweroptions";
-}
+    }
 
     @GetMapping("/question/{id}/addAnswerOption")
     public String showAddAnswerOptionForm(@PathVariable("id") long id, Model model) {
-    Question question = questionRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
         model.addAttribute("question", question);
         model.addAttribute("answerOption", new AnswerOption());
         return "addansweroption";
@@ -198,5 +166,36 @@ public String updateQuiz(@PathVariable("id") long id, Quiz quiz, BindingResult r
         answerOption.setBelongsToQuestion(question);
         answerOptionRepository.save(answerOption);
         return "redirect:/quiz/" + question.getQuiz().getId() + "/questions";
+    }
+
+    // AnswerOption Management
+    @GetMapping("/answerOption/edit/{id}")
+    public String showEditAnswerOptionForm(@PathVariable("id") long id, Model model) {
+        AnswerOption answerOption = answerOptionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid answer option Id:" + id));
+        model.addAttribute("answerOption", answerOption);
+        return "editansweroption";
+    }
+
+    @PostMapping("/answerOption/edit/{id}")
+    public String editAnswerOption(@PathVariable("id") long id, @ModelAttribute AnswerOption answerOption, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "editansweroption";
+        }
+
+        AnswerOption existingAnswerOption = answerOptionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid answer option Id:" + id));
+        existingAnswerOption.setAnswerOption(answerOption.getAnswerOption());
+        existingAnswerOption.setCorrect(answerOption.isCorrect());
+        answerOptionRepository.save(existingAnswerOption);
+        return "redirect:/question/" + existingAnswerOption.getBelongsToQuestion().getId() + "/viewAnswerOptions";
+    }
+
+    @PostMapping("/answerOption/delete/{id}")
+    public String deleteAnswerOption(@PathVariable Long id, @RequestParam Long questionId, Model model) {
+        AnswerOption answerOption = answerOptionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid answer option Id:" + id));
+        answerOptionRepository.delete(answerOption);
+        return "redirect:/question/" + questionId + "/viewAnswerOptions";
     }
 }
