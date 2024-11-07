@@ -13,10 +13,10 @@
         <ul>
             <li th:each="answerOptionBody : ${answerOptions}">
                 <span th:text="${answerOptionBody.answerOptionBody}"></span> - <span th:text="${answerOptionBody.correct ? 'Correct' : 'Incorrect'}"></span>
-                <form th:action="@{/answerOptionBody/delete/{id}(id=${answerOptionBody.id}, questionId=${question.id})}" method="post" style="display:inline;">
+                <form th:action="@{/answerOption/delete/{id}(id=${answerOptionBody.id}, questionId=${question.id})}" method="post" style="display:inline;">
                     <button type="submit">Delete</button>
                 </form>
-                <a th:href="@{/answerOptionBody/edit/{id}(id=${answerOptionBody.id})}">Edit</a>
+                <a th:href="@{/answerOption/edit/{id}(id=${answerOptionBody.id})}">Edit</a>
             </li>
         </ul>
     </div>
