@@ -11,7 +11,7 @@ public class AnswerOption {
     @Id
     @GeneratedValue
     private Long id;
-    private String answerOption;
+    private String answerOptionBody;
     private boolean correct;
     @ManyToOne(optional = false)
     @JoinColumn(name = "question_id")
@@ -20,8 +20,8 @@ public class AnswerOption {
     public AnswerOption() {
     }
 
-    public AnswerOption(String answerOption, boolean correct, Question question) {
-        this.answerOption = answerOption;
+    public AnswerOption(String answerOptionBody, boolean correct, Question question) {
+        this.answerOptionBody = answerOptionBody;
         this.correct = correct;
         this.question = question;
     }
@@ -34,12 +34,12 @@ public class AnswerOption {
         this.id = id;
     }
 
-    public String getAnswerOption() {
-        return answerOption;
+    public String getAnswerOptionBody() {
+        return answerOptionBody;
     }
 
-    public void setAnswerOption(String answerOption) {
-        this.answerOption = answerOption;
+    public void setAnswerOptionBody(String answerOptionBody) {
+        this.answerOptionBody = answerOptionBody;
     }
 
     public boolean isCorrect() {
