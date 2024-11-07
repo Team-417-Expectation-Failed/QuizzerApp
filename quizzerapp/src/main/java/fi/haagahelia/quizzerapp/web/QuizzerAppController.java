@@ -97,28 +97,21 @@ public class QuizzerAppController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateQuiz(@PathVariable("id") long id, Quiz quiz,
-            BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            quiz.setId(id);
-            return "editquiz";
-        }
-
-        Quiz updatedQuiz = quizRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid quiz Id:" + id));
-
-        updatedQuiz.setName(quiz.getName());
-        updatedQuiz.setDescription(quiz.getDescription());
-        updatedQuiz.getQuestions().clear();
-
-        for (Question question : quiz.getQuestions()) {
-            question.setQuiz(updatedQuiz);
-            updatedQuiz.getQuestions().add(question);
-        }
-
-        quizRepository.save(updatedQuiz);
-        return "redirect:/";
+public String updateQuiz(@PathVariable("id") long id, Quiz quiz, BindingResult result, Model model) {
+    if (result.hasErrors()) {
+        quiz.setId(id);
+        return "editquiz";
     }
+
+    Quiz updatedQuiz = quizRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid quiz Id:" + id));
+
+    updatedQuiz.setName(quiz.getName());
+    updatedQuiz.setDescription(quiz.getDescription());
+
+    quizRepository.save(updatedQuiz);
+    return "redirect:/";
+}
 
     @GetMapping("/answerOption/edit/{id}")
     public String showEditAnswerOptionForm(@PathVariable("id") long id, Model model) {

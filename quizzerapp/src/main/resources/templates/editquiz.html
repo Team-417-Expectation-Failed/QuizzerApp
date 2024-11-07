@@ -18,9 +18,6 @@
             <label for="description">Description</label>
             <input type="text" id="description" th:field="*{description}" />
             <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-            <label for="questionBody">Questions</label>
-            <!--TODO: input elements for all questions in the quiz-->
-            <input type="text" id="questionBody" th:field="*{questions[0].questionBody}" />
             <input type="submit" value="Update quiz"></input>
         </form>
     </div>
