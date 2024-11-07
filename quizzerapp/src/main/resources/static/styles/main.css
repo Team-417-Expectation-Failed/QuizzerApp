@@ -1,26 +1,85 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
+    animation-name: sliding-appear;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
 }
 
 div {
     display: flex;
-    justify-content: center;
+    justify-content: left;
     flex-wrap: wrap;
+    width: 100%;
+}
+
+button {
+    font-size: 1rem;
+    background-color: #1976D2;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0d47a1;
+}
+
+button:active {
+    background-color: #0d47a1;
+    transform: scale(0.8);
+}
+
+button.secondary {
+    background-color: #616161;
+}
+
+button.warning {
+    background-color: #f70000;
+}
+
+button.warning:hover {
+    background-color: #d80000;
+}
+
+.warning:active {
+    background-color: #d80000;
+    transform: scale(0.8);
 }
 
 table {
-    width: 100%;
     border-collapse: collapse;
-    border: 2px solid;
+    width: 100%;
+}
+
+thead {
+    width: 100%;
+}
+
+th, td {
+    padding: 10px;
 }
 
 th {
-    background-color: #f2f2f9;
+    border-bottom: 1px solid;
+    border-color: #00000020;
+    text-align: left;
 }
 
+tr:nth-child(even) {
+    background-color: #f2f2f2; 
+  }
 
-th, td {
-    border-left: 1px solid;
-    border-right: 1px solid;
-    padding: 10px;
+@keyframes sliding-appear {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
