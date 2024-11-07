@@ -72,6 +72,29 @@ public class QuizzerAppController {
         return "redirect:/quiz/" + quizId + "/questions";
     }
 
+
+    // Edit question
+    @GetMapping("/question/edit/{id}")
+    public String showEditQuestionForm(@PathVariable("id") long id, Model model) {
+    Question question = questionRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
+    model.addAttribute("question", question);
+    return "editquestion";
+    }
+
+    @PostMapping("/question/edit/{id}")
+    public String editQuestion(@PathVariable("id") long id, @ModelAttribute Question question, BindingResult result, Model model) {
+    if (result.hasErrors()) {
+        return "editquestion";
+    }
+
+    Question existingQuestion = questionRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid question Id:" + id));
+    existingQuestion.setQuestionBody(question.getQuestionBody());
+    questionRepository.save(existingQuestion);
+    return "redirect:/quiz/" + existingQuestion.getQuiz().getId() + "/questions";
+}
+
     @GetMapping("/quiz/{id}/questions")
     public String viewQuizQuestions(@PathVariable("id") long id, Model model) {
         Quiz quiz = quizRepository.findById(id)
