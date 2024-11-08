@@ -16,7 +16,7 @@
             <input type="text" id="questionBody" th:field="*{questionBody}" />
             <input type="submit" value="Save" class="submit"/>
         </form>
-        <p><a th:href="@{/quiz/{id}/questions(id=${question.quiz.id})}"><button class="controlls">Back to Questions</button></a></p>
+        <p><a th:href="@{/question/{id}(id=${question.quiz.id})}"><button class="controlls">Back to Questions</button></a></p>
     </div>
 </body>
 

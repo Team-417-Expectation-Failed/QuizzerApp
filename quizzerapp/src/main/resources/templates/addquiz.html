@@ -11,7 +11,7 @@
 <body>
     <h2>Add quizzes</h2>
     <div>
-        <form th:object="${quiz}" th:action="@{/save}" action="#" method="post">
+        <form th:object="${quiz}" th:action="@{/quiz/save}" method="post">
             <label for="name">Name of the quiz</label>
             <input type="text" id="name" th:field="*{name}" />
             <label for="description">Description</label>
@@ -23,7 +23,7 @@
             <button type="button" onclick="addQuestion()" class="secondary">Add another question</button>
             <input type="submit" value="Add quiz" class="submit" />
         </form>
-        <p><a href="/"><Button class="controlls">Back to homepage</Button></a></p>
+        <p><a th:href="@{/}"><button class="secondary">Back to homepage</button></a></p>
     </div>
 
     <script>

@@ -12,7 +12,7 @@
     <h2>Questions for Quiz: <span th:text="${quiz.name}"></span></h2>
     <div>
         <ul>
-            <li th:each="question : ${quiz.questions}">
+            <li th:each="question : ${questions}">
                 <span th:text="${question.questionBody}"></span>
                 <form th:action="@{/question/delete/{id}(id=${question.id}, quizId=${quiz.id})}" method="post" style="display:inline;">
                     <button type="submit" class="warning">Delete</button>
@@ -22,10 +22,9 @@
                 <a th:href="@{/question/{id}/viewAnswerOptions(id=${question.id})}"><button class="secondary">View Answer Options</button></a>
             </li>
         </ul>
-        <a th:href="@{/quiz/{id}/addQuestion(id=${quiz.id})}"><button>Add New Question</button></a><br>
-        <a href="/"><button class="controlls">Back to homepage</button></a>
+        <a th:href="@{/question/add/{id}(id=${quiz.id})}"><button>Add New Question</button></a><br>
+        <a th:href="@{/}"><button class="controlls">Back to homepage</button></a>
     </div>
-    
 </body>
 
 </html>

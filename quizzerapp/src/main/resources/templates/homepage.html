@@ -35,7 +35,7 @@
                 </form>
             </td>
             <td><a th:href="@{/edit/{id}(id=${quiz.id})}"><button>Edit</button></a></td>
-            <td><a th:href="@{/quiz/{id}/questions(id=${quiz.id})}"><button class="secondary">View Questions</button></a></td>
+            <td><a th:href="@{/question/{id}(id=${quiz.id})}"><button class="secondary">View Questions</button></a></td>
         </tr>
         </tbody>
     </table>

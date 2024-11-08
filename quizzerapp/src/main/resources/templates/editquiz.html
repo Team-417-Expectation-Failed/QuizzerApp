@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Quiz list</title>
+    <title>Edit Quiz</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link th:href="@{/styles/main.css}" rel="stylesheet" />
 </head>
@@ -10,8 +10,8 @@
 <body>
     <h1>Edit quiz</h1>
     <div>
-        <form th:object="${quiz}" th:action="@{|/update/${quiz.id}|}" method="post">
-            <!-- The hidden feeld keeps the creation date the same-->
+        <form th:object="${quiz}" th:action="@{/update/{id}(id=${quiz.id})}" method="post">
+            <!-- The hidden field keeps the creation date the same -->
             <input type="hidden" id="createdDate" th:field="*{createdDate}" />
             <label for="name">Name of the quiz</label>
             <input type="text" id="name" th:field="*{name}" required/>
@@ -19,7 +19,7 @@
             <label for="description">Description</label>
             <input type="text" id="description" th:field="*{description}" />
             <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-            <input type="submit" value="Update quiz" class="submit"></input>
+            <input type="submit" value="Update quiz" class="submit"/>
         </form>
     </div>
 </body>
