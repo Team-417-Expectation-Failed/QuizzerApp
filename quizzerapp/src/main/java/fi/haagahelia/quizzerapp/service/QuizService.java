@@ -29,17 +29,30 @@ public class QuizService {
         return quizRepository.findAll();
     }
 
-    public Quiz findQuizById(Long id) {
-        return quizRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid quiz ID:" + id));
+    public Quiz findQuizById(Long quizId) {
+        return quizRepository.findById(quizId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid quiz ID:" + quizId));
     }
 
     public void saveQuiz(Quiz quiz) {
+          // Set the quiz property on each question
+          for (Question question : quiz.getQuestions()) {
+            question.setQuiz(quiz);
+        }
         quizRepository.save(quiz);
     }
 
-    public void deleteQuiz(Long id) {
-        quizRepository.deleteById(id);
+    public void updateQuiz(Long id, Quiz updatedQuiz) {
+        Quiz existingQuiz = findQuizById(id);
+        existingQuiz.setName(updatedQuiz.getName());
+        existingQuiz.setDescription(updatedQuiz.getDescription());
+        // Preserve existing questions and answer options
+        existingQuiz.setQuestions(existingQuiz.getQuestions());
+        quizRepository.save(existingQuiz);
+    }
+
+    public void deleteQuiz(Long quizId) {
+        quizRepository.deleteById(quizId);
     }
 
     public Quiz createEmptyQuiz() {
@@ -53,7 +66,7 @@ public class QuizService {
         Quiz quiz = findQuizById(quizId);
         question.setQuiz(quiz);
         quiz.getQuestions().add(question);
-        quizRepository.save(quiz);
+        questionRepository.save(question);
     }
 
     public void addAnswerOptionToQuestion(Long questionId, AnswerOption answerOption) {

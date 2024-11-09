@@ -28,9 +28,9 @@ public class QuestionService {
         return questionRepository.findAll();
     }
 
-    public Question findQuestionById(Long id) {
-        return questionRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid question ID:" + id));
+    public Question findQuestionById(Long questionId) {
+        return questionRepository.findById(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid question ID:" + questionId));
     }
 
     public List<Question> findQuestionsByQuizId(Long quizId) {
@@ -43,8 +43,8 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
-    public void deleteQuestion(Long id) {
-        questionRepository.deleteById(id);
+    public void deleteQuestion(Long questionId) {
+        questionRepository.deleteById(questionId);
     }
 
     public void addQuestionToQuiz(Long quizId, Question question) {
@@ -55,9 +55,9 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
-    public void updateQuestion(Long id, Question updatedQuestion) {
-        Question existingQuestion = questionRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid question ID:" + id));
+    public void updateQuestion(Long questionId, Question updatedQuestion) {
+        Question existingQuestion = questionRepository.findById(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid question ID:" + questionId));
         existingQuestion.setQuestionBody(updatedQuestion.getQuestionBody());
         questionRepository.save(existingQuestion);
     }

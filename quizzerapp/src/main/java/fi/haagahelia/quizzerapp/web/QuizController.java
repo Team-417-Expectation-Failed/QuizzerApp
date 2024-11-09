@@ -8,49 +8,63 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import fi.haagahelia.quizzerapp.domain.Quiz;
 import fi.haagahelia.quizzerapp.service.QuizService;
 
 @Controller
-
+@RequestMapping("/quiz")
 public class QuizController {
 
     @Autowired
     private QuizService quizService;
 
-    @GetMapping("/")
-    public String homepage(Model model) {
-        model.addAttribute("quiz", quizService.findAllQuizzes());
-        return "homepage";
+    // Get all quizzes
+    @GetMapping
+    public String getAllQuizzes(Model model) {
+        model.addAttribute("quizzes", quizService.findAllQuizzes());
+        return "quizlist"; // Render a view for all quizzes
     }
 
-    @GetMapping("/quiz/add")
-    public String addQuiz(Model model) {
-        model.addAttribute("quiz", quizService.createEmptyQuiz());
-        return "addquiz";
+    // Get quiz by id
+    @GetMapping("/{quizId}")
+    public String getQuizById(@PathVariable Long quizId, Model model) {
+        model.addAttribute("quiz", quizService.findQuizById(quizId));
+        return "quizview"; // Render a view for a specific quiz
     }
 
-    @PostMapping("/save")
-    public String saveQuiz(@ModelAttribute Quiz quiz) {
+    // Get quiz add view
+    @GetMapping("/add")
+    public String showAddQuizForm(Model model) {
+        model.addAttribute("quiz", new Quiz());
+        return "addquiz"; // Render a view for adding a quiz
+    }
+
+    // Create quiz
+    @PostMapping
+    public String createQuiz(@ModelAttribute Quiz quiz) {
         quizService.saveQuiz(quiz);
-        return "redirect:/quiz/";
+        return "redirect:/quiz";
     }
 
+    // Get quiz edit view
     @GetMapping("/edit/{id}")
-    public String editQuiz(@PathVariable Long id, Model model) {
+    public String showEditQuizForm(@PathVariable Long id, Model model) {
         model.addAttribute("quiz", quizService.findQuizById(id));
-        return "editquiz";
+        return "editquiz"; // Render a view for editing a quiz
     }
 
+    // Update quiz by id
     @PostMapping("/update/{id}")
     public String updateQuiz(@PathVariable Long id, @ModelAttribute Quiz quiz) {
-        quizService.saveQuiz(quiz);
-        return "redirect:/quiz/";
+        quizService.updateQuiz(id, quiz);
+        return "redirect:/quiz";
     }
 
+    // Delete quiz by id
     @PostMapping("/delete/{id}")
     public String deleteQuiz(@PathVariable Long id) {
         quizService.deleteQuiz(id);
-        return "redirect:/quiz/";
+        return "redirect:/quiz";
     }
 }
