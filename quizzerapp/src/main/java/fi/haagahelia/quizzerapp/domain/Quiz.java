@@ -23,22 +23,18 @@ public class Quiz {
     private String description;
     @CreationTimestamp
     private LocalDate createdDate;
-    @JsonIgnore
+
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
-    //Initiates a list for questions objects belonging to this quiz
+    @JsonIgnore
     private List<Question> questions = new ArrayList<>();
     
+    public Quiz() {
+    }
 
-    public Quiz(Long id, String name, String description, LocalDate createdDate) {
-        this.id = id;
+    public Quiz( String name, String description, LocalDate createdDate) {
         this.name = name;
         this.description = description;
         this.createdDate = createdDate;
-
-    }
-
-    public Quiz() {
-
     }
 
     public Long getId() {
@@ -81,5 +77,13 @@ public class Quiz {
         this.questions = questions;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Quiz{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdDate=" + createdDate +
+                '}';
+    }
 }

@@ -1,5 +1,7 @@
 package fi.haagahelia.quizzerapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -15,6 +17,7 @@ public class AnswerOption {
     private boolean correct;
     @ManyToOne(optional = false)
     @JoinColumn(name = "question_id")
+    @JsonIgnore
     private Question question;
 
     public AnswerOption() {
@@ -56,5 +59,14 @@ public class AnswerOption {
 
     public void setQuestion(Question question) {
         this.question = question;
+    }
+    
+    @Override
+    public String toString() {
+        return "AnswerOption{" +
+                "id=" + id +
+                ", answerOptionBody='" + answerOptionBody + '\'' +
+                ", correct=" + correct +
+                '}';
     }
 }

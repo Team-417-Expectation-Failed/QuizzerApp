@@ -3,6 +3,8 @@ package fi.haagahelia.quizzerapp.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,14 +22,13 @@ public class Question {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "quiz_id")
+    @JsonIgnore
     private Quiz quiz;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AnswerOption> answerOptions = new ArrayList<>();
 
-
     public  Question() {
-
     }
 
     public Question(String questionBody) {
@@ -61,5 +62,18 @@ public class Question {
     public List<AnswerOption> getAnswerOptions() {
         return answerOptions;
     }
-    
+
+    public void setAnswerOptions(List<AnswerOption> answerOptions) {
+        this.answerOptions = answerOptions;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", questionBody='" + questionBody + '\'' +
+                ", quiz=" + quiz +
+                ", answerOptions=" + answerOptions +
+                '}';
+    }
 }
