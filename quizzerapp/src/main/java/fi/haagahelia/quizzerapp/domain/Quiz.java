@@ -23,6 +23,7 @@ public class Quiz {
     private String description;
     @CreationTimestamp
     private LocalDate createdDate;
+    private boolean published;
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -31,10 +32,11 @@ public class Quiz {
     public Quiz() {
     }
 
-    public Quiz( String name, String description, LocalDate createdDate) {
+    public Quiz(String name, String description, LocalDate createdDate, boolean published) {
         this.name = name;
         this.description = description;
         this.createdDate = createdDate;
+        this.published = published;
     }
 
     public Long getId() {
@@ -67,6 +69,14 @@ public class Quiz {
 
     public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public boolean isPublished() {
+        return published;
+    }
+
+    public void setPublished(boolean published) {
+        this.published = published;
     }
 
     public List<Question> getQuestions() {

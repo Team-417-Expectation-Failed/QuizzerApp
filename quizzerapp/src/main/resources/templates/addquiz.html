@@ -23,6 +23,10 @@
                         <td><input type="text" id="description" th:field="*{description}" /></td>
                     </tr>
                     <tr>
+                        <td><label for="published">Published</label></td>
+                        <td><input type="checkbox" id="published" th:field="*{published}" /></td>
+                    </tr>
+                    <tr>
                         <td colspan="2">
                             <div id="questionList">
                                 <label for="questionBody0">Question 1</label>
@@ -49,7 +53,7 @@
             const newQuestion = document.createElement('div');
             newQuestion.innerHTML = `
                 <label for="questionBody${questionCounter}">Question ${questionCounter + 1}</label>
-                <input type="text" id="questionBody${questionCounter}" name="questions[${questionCounter}].questionBody" />
+                <input type="text" id="questionBody${questionCounter}" th:field="*{questions[${questionCounter}].questionBody}" />
             `;
             questionList.appendChild(newQuestion);
             questionCounter++;

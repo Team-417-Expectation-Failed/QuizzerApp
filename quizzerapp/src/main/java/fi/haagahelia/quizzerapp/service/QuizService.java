@@ -46,6 +46,7 @@ public class QuizService {
         Quiz existingQuiz = findQuizById(id);
         existingQuiz.setName(updatedQuiz.getName());
         existingQuiz.setDescription(updatedQuiz.getDescription());
+        existingQuiz.setPublished(updatedQuiz.isPublished());
         // Preserve existing questions and answer options
         existingQuiz.setQuestions(existingQuiz.getQuestions());
         quizRepository.save(existingQuiz);
