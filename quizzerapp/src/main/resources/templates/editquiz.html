@@ -1,26 +1,40 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Quiz</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link th:href="@{/styles/main.css}" rel="stylesheet" />
 </head>
 
 <body>
-    <h1>Edit quiz</h1>
+    <h2>Edit Quiz</h2>
     <div>
-        <form th:object="${quiz}" th:action="@{/update/{id}(id=${quiz.id})}" method="post">
-            <!-- The hidden field keeps the creation date the same -->
-            <input type="hidden" id="createdDate" th:field="*{createdDate}" />
-            <label for="name">Name of the quiz</label>
-            <input type="text" id="name" th:field="*{name}" required/>
-            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-            <label for="description">Description</label>
-            <input type="text" id="description" th:field="*{description}" />
-            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-            <input type="submit" value="Update quiz" class="submit"/>
+        <form th:object="${quiz}" th:action="@{/quiz/update/{id}(id=${quiz.id})}" method="post">
+            <table>
+                <tbody>
+                    <!-- The hidden field keeps the creation date the same -->
+                    <tr>
+                        <td colspan="2">
+                            <input type="hidden" id="createdDate" th:field="*{createdDate}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="name">Name of the quiz</label></td>
+                        <td><input type="text" id="name" th:field="*{name}" required /></td>
+                    </tr>
+                    <tr>
+                        <td><label for="description">Description</label></td>
+                        <td><input type="text" id="description" th:field="*{description}" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="Update Quiz" class="submit" /></td>
+                    </tr>
+                </tbody>
+            </table>
         </form>
+        <p><a th:href="@{/quiz}"><button class="secondary">Back to Quiz List</button></a></p>
     </div>
 </body>
 

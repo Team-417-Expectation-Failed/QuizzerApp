@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Details</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <h1>Quiz Details</h1>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td th:text="${quiz.name}"></td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td th:text="${quiz.description}"></td>
+                </tr>
+                <tr>
+                    <td>Created Date</td>
+                    <td th:text="${quiz.createdDate}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/quiz/edit/{id}(id=${quiz.id})}"><button>Edit</button></a>
+        <form th:action="@{/quiz/delete/{id}(id=${quiz.id})}" method="post" style="display:inline;">
+            <button type="submit" class="warning">Delete</button>
+        </form>
+        <a th:href="@{/quiz}"><button>Back to Quiz List</button></a>
+    </div>
+
+    <h2>Questions</h2>
+    <div>
+        <a th:href="@{/quiz/{quizId}/questions(quizId=${quiz.id})}"><button>Manage Questions</button></a>
+    </div>
+</body>
+
+</html>

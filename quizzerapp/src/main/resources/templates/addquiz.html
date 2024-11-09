@@ -2,28 +2,42 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add quiz</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Quiz</title>
     <link th:href="@{/styles/main.css}" rel="stylesheet" />
 </head>
 
 <body>
-    <h2>Add quizzes</h2>
+    <h2>Add Quiz</h2>
     <div>
-        <form th:object="${quiz}" th:action="@{/quiz/save}" method="post">
-            <label for="name">Name of the quiz</label>
-            <input type="text" id="name" th:field="*{name}" />
-            <label for="description">Description</label>
-            <input type="text" id="description" th:field="*{description}" />
-            <div id="questionList">
-                <label for="questionBody0">Question 1</label>
-                <input type="text" id="questionBody0" th:field="*{questions[0].questionBody}" />
-            </div>
-            <button type="button" onclick="addQuestion()" class="secondary">Add another question</button>
-            <input type="submit" value="Add quiz" class="submit" />
+        <form th:object="${quiz}" th:action="@{/quiz}" method="post">
+            <table>
+                <tbody>
+                    <tr>
+                        <td><label for="name">Name of the quiz</label></td>
+                        <td><input type="text" id="name" th:field="*{name}" required /></td>
+                    </tr>
+                    <tr>
+                        <td><label for="description">Description</label></td>
+                        <td><input type="text" id="description" th:field="*{description}" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div id="questionList">
+                                <label for="questionBody0">Question 1</label>
+                                <input type="text" id="questionBody0" th:field="*{questions[0].questionBody}" />
+                            </div>
+                            <button type="button" onclick="addQuestion()" class="secondary">Add another question</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="Add Quiz" class="submit" /></td>
+                    </tr>
+                </tbody>
+            </table>
         </form>
-        <p><a th:href="@{/}"><button class="secondary">Back to homepage</button></a></p>
+        <p><a th:href="@{/quiz}"><button class="secondary">Back to Quiz List</button></a></p>
     </div>
 
     <script>

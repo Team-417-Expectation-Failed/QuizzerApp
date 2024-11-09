@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Question Details</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <h2>Question Details</h2>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Question Body</td>
+                    <td th:text="${question.questionBody}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/quiz/{quizId}/questions/edit/{id}(quizId=${question.quiz.id}, id=${question.id})}"><button>Edit</button></a>
+        <form th:action="@{/quiz/{quizId}/questions/delete/{id}(quizId=${question.quiz.id}, id=${question.id})}" method="post" style="display:inline;">
+            <button type="submit" class="warning">Delete</button>
+        </form>
+        <a th:href="@{/quiz/{quizId}/questions(quizId=${question.quiz.id})}"><button>Back to Questions</button></a>
+        <a th:href="@{/quiz/{quizId}/questions/{questionId}/answers(quizId=${question.quiz.id}, questionId=${question.id})}"><button>View Answer Options</button></a>
+    </div>
+</body>
+
+</html>

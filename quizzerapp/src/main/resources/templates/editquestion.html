@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Question</title>
     <link th:href="@{/styles/main.css}" rel="stylesheet" />
 </head>
@@ -16,7 +16,7 @@
             <input type="text" id="questionBody" th:field="*{questionBody}" />
             <input type="submit" value="Save" class="submit"/>
         </form>
-        <p><a th:href="@{/question/{id}(id=${question.quiz.id})}"><button class="controlls">Back to Questions</button></a></p>
+        <p><a th:href="@{/quiz/{quizId}/questions(quizId=${quiz.id})}"><button class="controlls">Back to Questions</button></a></p>
     </div>
 </body>
 

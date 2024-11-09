@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Answer Option Details</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <h2>Answer Option Details</h2>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Answer Option Body</td>
+                    <td th:text="${answerOption.answerOptionBody}"></td>
+                </tr>
+                <tr>
+                    <td>Correct</td>
+                    <td th:text="${answerOption.correct ? 'Yes' : 'No'}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/quiz/{quizId}/questions/{questionId}/answers/edit/{id}(quizId=${answerOption.question.quiz.id}, questionId=${answerOption.question.id}, id=${answerOption.id})}"><button>Edit</button></a>
+        <form th:action="@{/quiz/{quizId}/questions/{questionId}/answers/delete/{id}(quizId=${answerOption.question.quiz.id}, questionId=${answerOption.question.id}, id=${answerOption.id})}" method="post" style="display:inline;">
+            <button type="submit" class="warning">Delete</button>
+        </form>
+        <a th:href="@{/quiz/{quizId}/questions/{questionId}/answers(quizId=${answerOption.question.quiz.id}, questionId=${answerOption.question.id})}"><button>Back to Answer Options</button></a>
+    </div>
+</body>
+
+</html>
