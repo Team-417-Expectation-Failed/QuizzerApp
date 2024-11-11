@@ -13,7 +13,7 @@ import fi.haagahelia.quizzerapp.domain.Quiz;
 import fi.haagahelia.quizzerapp.service.QuizService;
 
 @Controller
-@RequestMapping("/quiz")
+@RequestMapping("/")
 public class QuizController {
 
     @Autowired
@@ -27,14 +27,14 @@ public class QuizController {
     }
 
     // Get quiz by id
-    @GetMapping("/{quizId}")
+    @GetMapping("/quiz/{quizId}")
     public String getQuizById(@PathVariable Long quizId, Model model) {
         model.addAttribute("quiz", quizService.findQuizById(quizId));
         return "quizview"; // Render a view for a specific quiz
     }
 
     // Get quiz add view
-    @GetMapping("/add")
+    @GetMapping("/quiz/add")
     public String showAddQuizForm(Model model) {
         model.addAttribute("quiz", new Quiz());
         return "addquiz"; // Render a view for adding a quiz
@@ -48,21 +48,21 @@ public class QuizController {
     }
 
     // Get quiz edit view
-    @GetMapping("/edit/{id}")
+    @GetMapping("/quiz/edit/{id}")
     public String showEditQuizForm(@PathVariable Long id, Model model) {
         model.addAttribute("quiz", quizService.findQuizById(id));
         return "editquiz"; // Render a view for editing a quiz
     }
 
     // Update quiz by id
-    @PostMapping("/update/{id}")
+    @PostMapping("/quiz/update/{id}")
     public String updateQuiz(@PathVariable Long id, @ModelAttribute Quiz quiz) {
         quizService.updateQuiz(id, quiz);
         return "redirect:/quiz";
     }
 
     // Delete quiz by id
-    @PostMapping("/delete/{id}")
+    @PostMapping("/quiz/delete/{id}")
     public String deleteQuiz(@PathVariable Long id) {
         quizService.deleteQuiz(id);
         return "redirect:/quiz";

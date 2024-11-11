@@ -18,7 +18,7 @@
             <input type="checkbox" id="correct" th:field="*{correct}" /></br>
             <input type="submit" value="Save" class="submit"/>
         </form>
-        <p><a th:href="@{/question/{id}/viewAnswerOptions(id=${answerOption.question.id})}"><button class="controlls">Back to Answer Options</button></a></p>
+        <p><a th:href="@{/quiz/{quizId}/questions/{questionId}/answers/{id}(quizId=${question.quiz.id}, questionId=${question.id}, id=${answerOption.id})}"><button class="controlls">Back to Answer Options</button></a></p>
     </div>
 </body>
 

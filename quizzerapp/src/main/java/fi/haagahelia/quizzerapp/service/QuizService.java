@@ -29,6 +29,10 @@ public class QuizService {
         return quizRepository.findAll();
     }
 
+    public List<Quiz> findAllPublishedQuizzes() {
+        return quizRepository.findByPublished(true);
+    }
+
     public Quiz findQuizById(Long quizId) {
         return quizRepository.findById(quizId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid quiz ID:" + quizId));
