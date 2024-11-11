@@ -9,18 +9,18 @@
 </head>
 
 <body>
-    <h2>Add Quiz</h2>
+    <h2>Add a quiz</h2>
     <div>
         <form th:object="${quiz}" th:action="@{/quiz}" method="post">
             <table>
                 <tbody>
                     <tr>
-                        <td><label for="name">Name of the quiz</label></td>
+                        <td><label for="name">Name</label></td>
                         <td><input type="text" id="name" th:field="*{name}" required /></td>
                     </tr>
                     <tr>
                         <td><label for="description">Description</label></td>
-                        <td><input type="text" id="description" th:field="*{description}" /></td>
+                        <td><textarea id="description" th:field="*{description}" rows="3" cols="50"></textarea></td>
                     </tr>
                     <tr>
                         <td><label for="published">Published</label></td>
@@ -32,11 +32,13 @@
                                 <label for="questionBody0">Question 1</label>
                                 <input type="text" id="questionBody0" th:field="*{questions[0].questionBody}" />
                             </div>
-                            <button type="button" onclick="addQuestion()" class="secondary">Add another question</button>
+                            <button type="button" onclick="addQuestion()" class="secondary">Add another
+                                question</button>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2"><input type="submit" value="Add Quiz" class="submit" /></td>
+                        <td colspan="2"><input type="submit" value="Add" class="submit" /></td>
+                        <td><input type="reset" value="Cancel" /></td>
                     </tr>
                 </tbody>
             </table>
@@ -46,7 +48,7 @@
 
     <script>
         // logic to add more questions, number of questions starts at 1
-        let questionCounter = 1; 
+        let questionCounter = 1;
 
         function addQuestion() {
             const questionList = document.getElementById('questionList');
