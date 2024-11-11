@@ -11,9 +11,15 @@
 <body>
     <h2>Add Question to Quiz: <span th:text="${quiz.name}"></span></h2>
     <div>
-        <form th:action="@{/question/add/{id}(id=${quiz.id})}" th:object="${question}" method="post">
+        <form th:action="@{/quiz/{quizId}/questions/add(quizId=${quiz.id})}" th:object="${question}" method="post">
             <label for="questionBody">Question Body</label>
             <input type="text" id="questionBody" th:field="*{questionBody}" />
+            <label for="difficultyLevel">Difficulty Level</label>
+            <select id="difficultyLevel" th:field="*{difficultyLevel}">
+                <option value="EASY">Easy</option>
+                <option value="NORMAL">Normal</option>
+                <option value="HARD">Hard</option>
+            </select>
             <input type="submit" value="Add Question" class="submit"/>
         </form>
         <p><a th:href="@{/quiz/{quizId}/questions(quizId=${quiz.id})}"><button class="controlls">Back to Questions</button></a></p>

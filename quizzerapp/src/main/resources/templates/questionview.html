@@ -24,6 +24,13 @@
                     <td th:text="${question.questionBody}"></td>
                 </tr>
             </tbody>
+            <tbody>
+                <tr>
+                    <td>Difficulty Level</td>
+                    <td th:text="${question.difficultyLevel}"></td>
+                </tr>
+            </tbody>
+            
         </table>
         <a th:href="@{/quiz/{quizId}/questions/edit/{id}(quizId=${question.quiz.id}, id=${question.id})}"><button>Edit</button></a>
         <form th:action="@{/quiz/{quizId}/questions/delete/{id}(quizId=${question.quiz.id}, id=${question.id})}" method="post" style="display:inline;">
