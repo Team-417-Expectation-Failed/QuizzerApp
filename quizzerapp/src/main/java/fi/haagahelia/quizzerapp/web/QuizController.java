@@ -20,10 +20,17 @@ public class QuizController {
     private QuizService quizService;
 
     // Get all quizzes
-    @GetMapping
+    @GetMapping("/quiz")
     public String getAllQuizzes(Model model) {
         model.addAttribute("quizzes", quizService.findAllQuizzes());
         return "quizlist"; // Render a view for all quizzes
+    }
+
+    // Redirect to home page
+    @GetMapping
+    public String getHomePage()
+    {
+        return "redirect:/quiz";
     }
 
     // Get quiz by id
