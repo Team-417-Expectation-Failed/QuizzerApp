@@ -16,7 +16,8 @@
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>Created Date</th>
+                    <th>Published</th>
+                    <th>Added on</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -26,7 +27,8 @@
                 <tr th:each="quiz : ${quizzes}">
                     <td th:text="${quiz.name}"></td>
                     <td th:text="${quiz.description}"></td>
-                    <td th:text="${quiz.createdDate}"></td>
+                    <td th:text="${quiz.published ? 'Published' : 'Not published'}"></td>
+                    <td th:text="${#temporals.format(quiz.createdDate, 'dd.MM.yyyy')}"></td>
                     <td>
                         <form th:action="@{/quiz/delete/{id}(id=${quiz.id})}" method="post">
                             <button type="submit" class="warning">Delete</button>
