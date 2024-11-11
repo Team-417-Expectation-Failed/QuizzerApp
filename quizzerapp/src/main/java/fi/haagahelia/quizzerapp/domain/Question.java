@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -19,6 +21,10 @@ public class Question {
     @GeneratedValue
     private Long id;
     private String questionBody;
+
+    // DifficultyLevel Enum attribute, default value is NORMAL
+    @Enumerated(EnumType.STRING)
+    private DifficultyLevel difficultyLevel = DifficultyLevel.NORMAL;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "quiz_id")
@@ -33,6 +39,7 @@ public class Question {
 
     public Question(String questionBody) {
         this.questionBody = questionBody;
+        this.difficultyLevel = DifficultyLevel.NORMAL;
     }
 
     public Long getId() {
@@ -49,6 +56,14 @@ public class Question {
 
     public void setQuestionBody(String questionBody) {
         this.questionBody = questionBody;
+    }
+
+    public DifficultyLevel getDifficultyLevel() {
+        return difficultyLevel;
+    }
+
+    public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
     }
 
     public Quiz getQuiz() {
