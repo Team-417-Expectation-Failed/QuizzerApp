@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fi.haagahelia.quizzerapp.domain.Quiz;
-import fi.haagahelia.quizzerapp.domain.QuizRepository;
 import fi.haagahelia.quizzerapp.service.QuizService;
 
 
