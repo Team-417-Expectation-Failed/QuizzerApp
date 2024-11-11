@@ -1,22 +1,26 @@
+import { Box, Typography } from '@mui/material';
+
 function QuestionList({ questions }) {
 
     if (questions.length == 0) {
-        return (<p>There are no questions</p>)
+        return (
+            <Box>
+                <Typography>There are no questions</Typography>
+            </Box>
+        )
     }
     return (
-        <div>
-            <h2>All questions</h2>
+        <Box>
+            <Typography variant='h3'>All questions</Typography>
 
             {
                 questions.map(question => {
                     return (
-                        <p key={question.id}>
-                            Question: {question.questionBody} <br />
-                        </p>
+                        <Typography key={question.id}>{question.questionBody}</Typography>
                     );
                 })
             }
-        </div>
+        </Box>
     );
 }
 

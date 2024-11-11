@@ -7,13 +7,16 @@ function App() {
   const questions = [
     {
       id: 1,
-      questionBody: "fdajfldköafj"
-    }
+      questionBody: "first question"
+    },
+    {
+      id: 2,
+      questionBody: "second question"
+    },
   ]
 
   return (
     <>
-      <h1>Quizzer App</h1>
       <QuestionList questions={questions} />
     </>
   )
