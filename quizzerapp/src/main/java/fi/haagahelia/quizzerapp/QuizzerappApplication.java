@@ -26,7 +26,7 @@ public class QuizzerappApplication {
             Quiz quiz = new Quiz();
             quiz.setName("Example Quiz");
             quiz.setDescription("This is an example quiz.");
-
+            quiz.setPublished(true);
             // Create example questions
             Question question1 = new Question();
             question1.setQuestionBody("What is the capital of France?");

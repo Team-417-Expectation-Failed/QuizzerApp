@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import QuizList from './components/QuizList'
 import QuestionList from './components/QuestionList'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
 
   return (
     <>
+      <QuizList />
       <QuestionList questions={questions} />
     </>
   )
