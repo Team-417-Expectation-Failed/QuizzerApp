@@ -7,13 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import fi.haagahelia.quizzerapp.domain.Quiz;
 import fi.haagahelia.quizzerapp.service.QuizService;
 
 @Controller
-@RequestMapping("/")
 public class QuizController {
 
     @Autowired
@@ -48,7 +46,7 @@ public class QuizController {
     }
 
     // Create quiz
-    @PostMapping
+    @PostMapping("/quiz")
     public String createQuiz(@ModelAttribute Quiz quiz) {
         quizService.saveQuiz(quiz);
         return "redirect:/quiz";
