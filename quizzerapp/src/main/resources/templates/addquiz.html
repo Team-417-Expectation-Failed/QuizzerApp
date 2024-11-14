@@ -32,8 +32,8 @@
                                 <label for="questionBody0">Question 1</label>
                                 <input type="text" id="questionBody0" th:field="*{questions[0].questionBody}" />
                             </div>
-                            <button type="button" onclick="addQuestion()" class="secondary">Add another
-                                question</button>
+                            <button type="button" onclick="addQuestion()" class="secondary">Add another question</button>
+                            <button type="button" onclick="removeQuestion()" class="secondary">Remove last question</button>
                         </td>
                     </tr>
                     <tr>
@@ -53,12 +53,22 @@
         function addQuestion() {
             const questionList = document.getElementById('questionList');
             const newQuestion = document.createElement('div');
+            newQuestion.setAttribute('id', `question${questionCounter}`);
             newQuestion.innerHTML = `
                 <label for="questionBody${questionCounter}">Question ${questionCounter + 1}</label>
                 <input type="text" id="questionBody${questionCounter}" th:field="*{questions[${questionCounter}].questionBody}" />
             `;
             questionList.appendChild(newQuestion);
             questionCounter++;
+        }
+
+        function removeQuestion() {
+            if (questionCounter > 1) {
+                questionCounter--;
+                const questionList = document.getElementById('questionList');
+                const lastQuestion = document.getElementById(`question${questionCounter}`);
+                questionList.removeChild(lastQuestion);
+            }
         }
     </script>
 </body>
