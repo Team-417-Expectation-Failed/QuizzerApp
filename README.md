@@ -17,6 +17,14 @@ It aims to be used for creating educational quizzes, enabling teachers to create
 ```
 git clone https://github.com/Team-417-Expectation-Failed/QuizzerApp.git
 ```
+
+### Start the application
+
+```
+./mvnw spring-boot:run
+
+```
+
 ## Contributing
 
 Contact one of the team members below to learn how you can take part in this project.
@@ -32,4 +40,3 @@ Contact one of the team members below to learn how you can take part in this pro
 ## Backlog
 
 https://github.com/orgs/Team-417-Expectation-Failed/projects/1/views/1
-
