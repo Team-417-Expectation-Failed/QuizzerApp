@@ -36,8 +36,8 @@
         <form th:action="@{/quiz/{quizId}/questions/delete/{id}(quizId=${question.quiz.id}, id=${question.id})}" method="post" style="display:inline;">
             <button type="submit" class="warning">Delete</button>
         </form>
-        <a th:href="@{/quiz/{quizId}/questions(quizId=${question.quiz.id})}"><button>Back to Questions</button></a>
-        <a th:href="@{/quiz/{quizId}/questions/{questionId}/answers(quizId=${question.quiz.id}, questionId=${question.id})}"><button>View Answer Options</button></a>
+        <a th:href="@{/quiz/{quizId}/questions(quizId=${question.quiz.id})}"><button class="controlls">Back to Questions</button></a>
+        <a th:href="@{/quiz/{quizId}/questions/{questionId}/answers(quizId=${question.quiz.id}, questionId=${question.id})}"><button class="secondary">View Answer Options</button></a>
     </div>
 </body>
 

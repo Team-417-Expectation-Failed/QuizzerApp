@@ -37,12 +37,12 @@
         <form th:action="@{/quiz/delete/{id}(id=${quiz.id})}" method="post" style="display:inline;">
             <button type="submit" class="warning">Delete</button>
         </form>
-        <a th:href="@{/quiz}"><button>Back to Quiz List</button></a>
+        <a th:href="@{/quiz}"><button class="controlls">Back to Quiz List</button></a>
     </div>
 
     <h2>Questions</h2>
     <div>
-        <a th:href="@{/quiz/{quizId}/questions(quizId=${quiz.id})}"><button>Manage Questions</button></a>
+        <a th:href="@{/quiz/{quizId}/questions(quizId=${quiz.id})}"><button class="secondary">Manage Questions</button></a>
     </div>
 </body>
 

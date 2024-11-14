@@ -36,7 +36,7 @@
             </tbody>
         </table>
         <p><a th:href="@{/quiz/{quizId}/questions/{questionId}/answers/add(quizId=${question.quiz.id}, questionId=${question.id})}"><button>Add an Answer Option</button></a></p>
-        <a th:href="@{/quiz/{quizId}/questions(quizId=${question.quiz.id})}"><button>Back to Questions</button></a>
+        <p><a th:href="@{/quiz/{quizId}/questions(quizId=${question.quiz.id})}"><button class="controlls">Back to Questions</button></a></p>
     </div>
 </body>
 
