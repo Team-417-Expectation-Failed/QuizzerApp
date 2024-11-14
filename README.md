@@ -22,7 +22,6 @@ git clone https://github.com/Team-417-Expectation-Failed/QuizzerApp.git
 
 ```
 ./mvnw spring-boot:run
-
 ```
 
 ## Contributing
