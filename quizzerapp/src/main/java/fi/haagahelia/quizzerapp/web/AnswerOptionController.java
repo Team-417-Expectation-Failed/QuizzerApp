@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import fi.haagahelia.quizzerapp.domain.AnswerOption;
+import fi.haagahelia.quizzerapp.domain.Question;
 import fi.haagahelia.quizzerapp.service.AnswerOptionService;
+import fi.haagahelia.quizzerapp.service.QuestionService;
 
 @Controller
 @RequestMapping("/quiz/{quizId}/questions/{questionId}/answers")
@@ -18,6 +20,8 @@ public class AnswerOptionController {
 
     @Autowired
     private AnswerOptionService answerOptionService;
+
+    @Autowired QuestionService questionService;
 
     // Get all answer options by question id
     @GetMapping
@@ -37,20 +41,19 @@ public class AnswerOptionController {
         return "answeroptionview"; // View for a specific answer option
     }
 
-    // Show add answer option form view
+        // Show add question form view
     @GetMapping("/add")
-    public String showAddAnswerOptionForm(@PathVariable Long quizId, @PathVariable Long questionId, Model model) {
-        model.addAttribute("quizId", quizId);
-        model.addAttribute("question", answerOptionService.findQuestionById(questionId));
-        model.addAttribute("answerOption", new AnswerOption());
-        return "addansweroption"; // View for adding an answer option
+    public String showAddQuestionForm(@PathVariable Long quizId, Model model) {
+        model.addAttribute("quiz", questionService.findQuizById(quizId));
+        model.addAttribute("question", new Question());
+        return "addquestion"; // View for adding a question
     }
 
-    // Save new answer option to question id
+    // Save new question to quiz id
     @PostMapping("/add")
-    public String saveNewAnswerOption(@PathVariable Long quizId, @PathVariable Long questionId, @ModelAttribute AnswerOption answerOption) {
-        answerOptionService.addAnswerOptionToQuestion(questionId, answerOption);
-        return "redirect:/quiz/" + quizId + "/questions/" + questionId + "/answers";
+    public String saveNewQuestion(@PathVariable Long quizId, @ModelAttribute Question question) {
+        questionService.addQuestionToQuiz(quizId, question);
+        return "redirect:/quiz/" + quizId + "/questions";
     }
 
     // Show edit answer option form view
