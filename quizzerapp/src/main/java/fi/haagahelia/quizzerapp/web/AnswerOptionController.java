@@ -43,17 +43,18 @@ public class AnswerOptionController {
 
         // Show add question form view
     @GetMapping("/add")
-    public String showAddQuestionForm(@PathVariable Long quizId, Model model) {
-        model.addAttribute("quiz", questionService.findQuizById(quizId));
-        model.addAttribute("question", new Question());
-        return "addquestion"; // View for adding a question
+    public String showAddQuestionForm(@PathVariable Long quizId, @PathVariable Long questionId, Model model) {
+        model.addAttribute("quizId", quizId);
+        model.addAttribute("questionId", questionId);
+        model.addAttribute("newAnswerOption", new AnswerOption());
+        return "addansweroption"; // View for adding a question
     }
 
     // Save new question to quiz id
     @PostMapping("/add")
-    public String saveNewQuestion(@PathVariable Long quizId, @ModelAttribute Question question) {
-        questionService.addQuestionToQuiz(quizId, question);
-        return "redirect:/quiz/" + quizId + "/questions";
+    public String saveNewQuestion(@PathVariable Long quizId, @PathVariable Long questionId, @ModelAttribute AnswerOption answerOption) {
+        questionService.addAnswerOptionToQuestion(questionId, answerOption);
+        return "redirect:/quiz/" + quizId + "/questions/" + questionId + "/answers";
     }
 
     // Show edit answer option form view

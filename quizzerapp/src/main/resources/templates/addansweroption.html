@@ -9,16 +9,16 @@
 </head>
 
 <body>
-    <h2>Add Answer Option for Question: <span th:text="${question.questionBody}"></span></h2>
+    <h2>Add Answer Option for Question: </h2>
     <div>
-        <form th:action="@{/quiz/{quizId}/questions/{questionId}/answers/add(quizId=${quiz.id}, questionId=${quiz.question.id})}" th:object="${answerOption}" method="post">
+        <form th:action="@{/quiz/{quizId}/questions/{questionId}/answers/add(quizId=${quizId}, questionId=${questionId})}" th:object="${newAnswerOption}" method="post">
             <label for="answerOptionBody">Answer Option</label>
             <input type="text" name="answerOptionBody" th:field="*{answerOptionBody}" />
             <label for="correct">Correct</label>
             <input type="checkbox" id="correct" th:field="*{correct}" /></br>
             <input type="submit" value="Add Answer Option" class="submit"/>
         </form>
-        <p><a th:href="@{/quiz/{quizId}/questions(quizId=${quiz.id})}"><button class="controlls">Back to Questions</button></a></p>
+        <p><a th:href="@{/quiz/{quizId}/questions(quizId=${quizId})}"><button class="controlls">Back to Questions</button></a></p>
     </div>
 </body>
 </html>
