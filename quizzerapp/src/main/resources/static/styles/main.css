@@ -43,6 +43,10 @@ input.submit:active {
     transform: scale(0.8);
 }
 
+input#published {
+    width: initial;
+}
+
 input#correct {
     width: initial;
 }
@@ -139,6 +143,21 @@ tr:nth-child(even) {
 
 form {
     width: 100%;
+}
+
+form table tr:nth-child(even){
+    background-color: #fff;
+}
+
+textarea {
+    border-radius: 8px;
+    width: 100%;
+    margin: none;
+    resize: none;
+    font-size: .8rem;
+    border: 1px solid #ccc;
+    padding: 12px 20px;
+    box-sizing: border-box;
 }
 
 
