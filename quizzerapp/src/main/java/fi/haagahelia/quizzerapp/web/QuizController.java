@@ -66,12 +66,6 @@ public class QuizController {
         return "redirect:/quiz";
     }
 
-    @PostMapping("/quiz/publish/{id}")
-public String publishQuiz(@PathVariable("id") Long id) {
-    quizService.publishQuiz(id); // Define the publishQuiz method in the QuizService class
-    return "redirect:/quiz"; // Redirect back to the quiz list page after successful publishing
-}
-
     // Delete quiz by id
     @PostMapping("/quiz/delete/{id}")
     public String deleteQuiz(@PathVariable Long id) {

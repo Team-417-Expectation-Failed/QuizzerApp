@@ -14,7 +14,6 @@
         <form th:object="${quiz}" th:action="@{/quiz/update/{id}(id=${quiz.id})}" method="post">
             <table>
                 <tbody>
-                    <!-- The hidden field keeps the creation date the same -->
                     <tr>
                         <td colspan="2">
                             <input type="hidden" id="createdDate" th:field="*{createdDate}" />
@@ -30,15 +29,11 @@
                     </tr>
                     <tr>
                         <td><label for="published">Published</label></td>
-                        <td><input type="submit" id="published" th:field="*{published}" /></td>
+                        <td><input type="checkbox" id="published" th:field="*{published}" /></td>
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <!-- Update quiz -->
                             <input type="submit" value="Update Quiz" class="submit" />
-                            
-                            <!-- Publish quiz -->
-                            <button th:formaction="@{/quiz/publish/{id}(id=${quiz.id})}" formmethod="post" class="submit">Publish Quiz</button>
                         </td>
                     </tr>
                 </tbody>

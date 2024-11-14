@@ -81,11 +81,4 @@ public class QuizService {
         question.getAnswerOptions().add(answerOption);
         answerOptionRepository.save(answerOption);
     }
-
-    public void publishQuiz(Long id) {
-        Quiz quiz = quizRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid quiz Id:" + id));
-        quiz.setPublished(true);
-        quizRepository.save(quiz); //Save the published quiz
-    }
 }
