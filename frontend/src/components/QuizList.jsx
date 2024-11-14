@@ -7,7 +7,7 @@ function QuizList() {
 
   useEffect(() => {
     getPublishedQuizes()
-    .then((data) => console.log(data))
+    .then((data) => setQuizes(data))
   }, []);
 
   return (
