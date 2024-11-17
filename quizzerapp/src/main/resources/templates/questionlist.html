@@ -14,7 +14,8 @@
         <table>
             <thead>
                 <tr>
-                    <th>Question</th>
+                    <th>Question text</th>
+                    <th>Difficulty</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -23,13 +24,18 @@
             <tbody>
                 <tr th:each="question : ${questions}">
                     <td th:text="${question.questionBody}"></td>
-                    <td><a th:href="@{/quiz/{quizId}/questions/edit/{id}(quizId=${quiz.id}, id=${question.id})}"><button>Edit</button></a></td>
+                    <td th:text="${question.difficultyLevel}"></td>
+                    <td><a
+                            th:href="@{/quiz/{quizId}/questions/edit/{id}(quizId=${quiz.id}, id=${question.id})}"><button>Edit</button></a>
+                    </td>
                     <td>
-                        <form th:action="@{/quiz/{quizId}/questions/delete/{id}(quizId=${quiz.id}, id=${question.id})}" method="post">
+                        <form th:action="@{/quiz/{quizId}/questions/delete/{id}(quizId=${quiz.id}, id=${question.id})}"
+                            method="post">
                             <button type="submit" class="warning">Delete</button>
                         </form>
                     </td>
-                    <td><a th:href="@{/quiz/{quizId}/questions/{id}(quizId=${quiz.id}, id=${question.id})}"><button class="secondary">View</button></a></td>
+                    <td><a th:href="@{/quiz/{quizId}/questions/{id}(quizId=${quiz.id}, id=${question.id})}"><button
+                                class="secondary">View</button></a></td>
                 </tr>
             </tbody>
         </table>

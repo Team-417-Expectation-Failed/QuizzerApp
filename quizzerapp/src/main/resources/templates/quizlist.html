@@ -21,6 +21,7 @@
                     <th></th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -29,6 +30,7 @@
                     <td th:text="${quiz.description}"></td>
                     <td th:text="${quiz.published ? 'Published' : 'Not published'}"></td>
                     <td th:text="${#temporals.format(quiz.createdDate, 'dd.MM.yyyy')}"></td>
+                    <td><a th:href="@{/quiz/{quizId}/questions(quizId=${quiz.id})}">See questions</a></td>
                     <td>
                         <form th:action="@{/quiz/delete/{id}(id=${quiz.id})}" method="post">
                             <button type="submit" class="warning">Delete</button>
