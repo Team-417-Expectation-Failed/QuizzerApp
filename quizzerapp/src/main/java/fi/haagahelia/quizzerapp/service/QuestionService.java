@@ -59,6 +59,7 @@ public class QuestionService {
         Question existingQuestion = questionRepository.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid question ID:" + questionId));
         existingQuestion.setQuestionBody(updatedQuestion.getQuestionBody());
+        existingQuestion.setDifficultyLevel(updatedQuestion.getDifficultyLevel());
         questionRepository.save(existingQuestion);
     }
 
