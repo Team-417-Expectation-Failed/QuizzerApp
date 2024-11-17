@@ -14,7 +14,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>Answer Option</th>
+                    <th>Answer option text</th>
                     <th>Correct</th>
                     <th></th>
                     <th></th>
@@ -25,18 +25,27 @@
                 <tr th:each="answerOption : ${answerOptions}">
                     <td th:text="${answerOption.answerOptionBody}"></td>
                     <td th:text="${answerOption.correct ? 'Yes' : 'No'}"></td>
-                    <td><a th:href="@{/quiz/{quizId}/questions/{questionId}/answers/edit/{id}(quizId=${question.quiz.id}, questionId=${question.id}, id=${answerOption.id})}"><button>Edit</button></a></td>
+                    <td><a
+                            th:href="@{/quiz/{quizId}/questions/{questionId}/answers/edit/{id}(quizId=${question.quiz.id}, questionId=${question.id}, id=${answerOption.id})}"><button>Edit</button></a>
+                    </td>
                     <td>
-                        <form th:action="@{/quiz/{quizId}/questions/{questionId}/answers/delete/{id}(quizId=${question.quiz.id}, questionId=${question.id}, id=${answerOption.id})}" method="post">
+                        <form
+                            th:action="@{/quiz/{quizId}/questions/{questionId}/answers/delete/{id}(quizId=${question.quiz.id}, questionId=${question.id}, id=${answerOption.id})}"
+                            method="post">
                             <button type="submit" class="warning">Delete</button>
                         </form>
                     </td>
-                    <td><a th:href="@{/quiz/{quizId}/questions/{questionId}/answers/{id}(quizId=${question.quiz.id}, questionId=${question.id}, id=${answerOption.id})}"><button class="secondary">View</button></a></td>
+                    <td><a
+                            th:href="@{/quiz/{quizId}/questions/{questionId}/answers/{id}(quizId=${question.quiz.id}, questionId=${question.id}, id=${answerOption.id})}"><button
+                                class="secondary">View</button></a></td>
                 </tr>
             </tbody>
         </table>
-        <p><a th:href="@{/quiz/{quizId}/questions/{questionId}/answers/add(quizId=${question.quiz.id}, questionId=${question.id})}"><button>Add an Answer Option</button></a></p>
-        <p><a th:href="@{/quiz/{quizId}/questions(quizId=${question.quiz.id})}"><button class="controlls">Back to Questions</button></a></p>
+        <p><a
+                th:href="@{/quiz/{quizId}/questions/{questionId}/answers/add(quizId=${question.quiz.id}, questionId=${question.id})}"><button>Add
+                    an answer option</button></a></p>
+        <p><a th:href="@{/quiz/{quizId}/questions(quizId=${question.quiz.id})}"><button class="controlls">Back to
+                    questions</button></a></p>
     </div>
 </body>
 

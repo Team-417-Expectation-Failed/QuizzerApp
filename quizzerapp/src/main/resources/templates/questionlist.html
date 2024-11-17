@@ -19,12 +19,16 @@
                     <th></th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="question : ${questions}">
                     <td th:text="${question.questionBody}"></td>
                     <td th:text="${question.difficultyLevel}"></td>
+                    <td><a
+                            th:href="@{/quiz/{quizId}/questions/{questionId}/answers(quizId=${question.quiz.id}, questionId=${question.id})}">See
+                            answer options</a></td>
                     <td><a
                             th:href="@{/quiz/{quizId}/questions/edit/{id}(quizId=${quiz.id}, id=${question.id})}"><button>Edit</button></a>
                     </td>
@@ -40,7 +44,7 @@
             </tbody>
         </table>
         <p><a th:href="@{/quiz/{quizId}/questions/add(quizId=${quiz.id})}"><button>Add a Question</button></a></p>
-        <p><a th:href="@{/quiz/{quizId}(quizId=${quiz.id})}"><button class="controlls">Back to Quiz</button></a></p>
+        <p><a th:href="@{/quiz}"><button class="controlls">Back to Quizzes</button></a></p>
     </div>
 </body>
 
