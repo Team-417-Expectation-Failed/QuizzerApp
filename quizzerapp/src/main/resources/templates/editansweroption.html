@@ -11,14 +11,19 @@
 <body>
     <h2>Edit Answer Option</h2>
     <div>
-        <form th:action="@{/answerOption/edit/{id}(id=${answerOption.id})}" th:object="${answerOption}" method="post">
+        <form th:action="@{/quiz/{quizId}/questions/{questionId}/answers/edit/{id}(
+                  quizId=${quizId}, questionId=${questionId}, id=${answerOption.id})}" th:object="${answerOption}"
+            method="post">
             <label for="answerOptionBody">Answer Option</label>
             <input type="text" name="answerOptionBody" th:field="*{answerOptionBody}" />
             <label for="correct">Correct</label>
             <input type="checkbox" id="correct" th:field="*{correct}" /></br>
-            <input type="submit" value="Save" class="submit"/>
+            <input type="submit" value="Save" class="submit" />
         </form>
-        <p><a th:href="@{/quiz/{quizId}/questions/{questionId}/answers/{id}(quizId=${question.quiz.id}, questionId=${question.id}, id=${answerOption.id})}"><button class="controlls">Back to Answer Options</button></a></p>
+
+        <a th:href="@{/quiz/{quizId}/questions/{questionId}/answers(quizId=${quizId}, questionId=${questionId})}"><button
+                class="controlls">Back</button></a>
+
     </div>
 </body>
 
