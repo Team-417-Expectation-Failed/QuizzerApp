@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import fi.haagahelia.quizzerapp.domain.AnswerOption;
-import fi.haagahelia.quizzerapp.domain.Question;
 import fi.haagahelia.quizzerapp.service.AnswerOptionService;
 import fi.haagahelia.quizzerapp.service.QuestionService;
 
