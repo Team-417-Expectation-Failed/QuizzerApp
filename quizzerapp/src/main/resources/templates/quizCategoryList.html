@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quizzes</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <h1>Quiz categories</h1>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="quizCategory : ${quizCategories}">
+                    <td th:text="${quizCategory.name}"></td>
+                    <td th:text="${quizCategory.description}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <p><a th:href="@{/quizCategories/add}"><button>New category</button></a></p>
+    </div>
+</body>
+
+</html>

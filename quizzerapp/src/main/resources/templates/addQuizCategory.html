@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add quiz category</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <h2>Add a quiz category</h2>
+    <div>
+        <form th:object="${quizCategories}" th:action="@{/quizCategories}" method="post">
+            <table>
+                <tbody>
+                    <tr>
+                        <td><label for="name">Name</label></td>
+                        <td><input type="text" id="name" th:field="*{name}" required /></td>
+                    </tr>
+                    <tr>
+                        <td><label for="description">Description</label></td>
+                        <td><textarea id="description" th:field="*{description}" rows="3" cols="50"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="Add" class="submit" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <p><a><button class="secondary">Cancel</button></a></p>
+    </div>
+</body>
+
+</html>

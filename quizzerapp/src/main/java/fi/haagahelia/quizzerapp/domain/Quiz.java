@@ -1,4 +1,5 @@
 package fi.haagahelia.quizzerapp.domain;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -25,10 +28,15 @@ public class Quiz {
     private LocalDate createdDate;
     private boolean published;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "quizCategory_id")
+    @JsonIgnore
+    private QuizCategory quizCategory;
+
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Question> questions = new ArrayList<>();
-    
+
     public Quiz() {
     }
 
@@ -77,6 +85,14 @@ public class Quiz {
 
     public void setPublished(boolean published) {
         this.published = published;
+    }
+
+    public QuizCategory getQuizCategory() {
+        return quizCategory;
+    }
+
+    public void setQuizCategory(QuizCategory quizCategory) {
+        this.quizCategory = quizCategory;
     }
 
     public List<Question> getQuestions() {

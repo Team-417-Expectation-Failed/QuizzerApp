@@ -10,23 +10,32 @@ import fi.haagahelia.quizzerapp.domain.AnswerOptionRepository;
 import fi.haagahelia.quizzerapp.domain.Question;
 import fi.haagahelia.quizzerapp.domain.QuestionRepository;
 import fi.haagahelia.quizzerapp.domain.Quiz;
+import fi.haagahelia.quizzerapp.domain.QuizCategory;
+import fi.haagahelia.quizzerapp.domain.QuizCategoryRepository;
 import fi.haagahelia.quizzerapp.domain.QuizRepository;
 
 @SpringBootApplication
 public class QuizzerappApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(QuizzerappApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(QuizzerappApplication.class, args);
+    }
 
-	@Bean
-    public CommandLineRunner loadData(QuizRepository quizRepository, QuestionRepository questionRepository, AnswerOptionRepository answerOptionRepository) {
+    @Bean
+    public CommandLineRunner loadData(QuizCategoryRepository quizCategoryRepository, QuizRepository quizRepository,
+            QuestionRepository questionRepository, AnswerOptionRepository answerOptionRepository) {
         return args -> {
+            // Create an example quiz category
+            QuizCategory quizCategory = new QuizCategory();
+            quizCategory.setName("Geography");
+            quizCategory.setDescription("Learning capital cities");
+            quizCategoryRepository.save(quizCategory);
             // Create an example quiz
             Quiz quiz = new Quiz();
             quiz.setName("Example Quiz");
             quiz.setDescription("This is an example quiz.");
             quiz.setPublished(true);
+            quiz.setQuizCategory(quizCategory);
             // Create example questions
             Question question1 = new Question();
             question1.setQuestionBody("What is the capital of France?");
@@ -71,5 +80,5 @@ public class QuizzerappApplication {
             answerOptionRepository.save(answerOption3);
             answerOptionRepository.save(answerOption4);
         };
-	}
+    }
 }
