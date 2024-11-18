@@ -32,18 +32,19 @@
                                 <label for="questionBody0">Question 1</label>
                                 <input type="text" id="questionBody0" th:field="*{questions[0].questionBody}" />
                             </div>
-                            <button type="button" onclick="addQuestion()" class="secondary">Add another question</button>
-                            <button type="button" onclick="removeQuestion()" class="secondary">Remove last question</button>
+                            <button type="button" onclick="addQuestion()" class="secondary">Add another
+                                question</button>
+                            <button type="button" onclick="removeQuestion()" class="secondary">Remove last
+                                question</button>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2"><input type="submit" value="Add" class="submit" /></td>
-                        <td><input type="reset" value="Cancel" /></td>
                     </tr>
                 </tbody>
             </table>
         </form>
-        <p><a th:href="@{/quiz}"><button class="secondary">Back to Quiz List</button></a></p>
+        <p><a th:href="@{/quiz}"><button class="secondary">Cancel</button></a></p>
     </div>
 
     <script>
