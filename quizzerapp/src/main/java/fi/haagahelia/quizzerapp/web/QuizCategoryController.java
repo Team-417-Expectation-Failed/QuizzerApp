@@ -45,4 +45,10 @@ public class QuizCategoryController {
         return "redirect:/quizCategories";
     }
 
+     // Delete quiz category
+     @PostMapping("/quizCategories/delete/{id}")
+     public String deleteCategory(@PathVariable Long id) {
+         quizCategoryService.deleteQuizCategory(id);  
+         return "redirect:/quizCategories";
+     }
 }

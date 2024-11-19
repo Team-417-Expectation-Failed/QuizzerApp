@@ -62,10 +62,6 @@ public class QuizCategory {
         this.quizzes = quizzes;
     }
 
-    @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
-    }
+    
 
 }

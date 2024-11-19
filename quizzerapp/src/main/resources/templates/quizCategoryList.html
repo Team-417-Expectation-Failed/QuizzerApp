@@ -24,6 +24,11 @@
                 <tr th:each="quizCategory : ${quizCategories}">
                     <td th:text="${quizCategory.name}"></td>
                     <td th:text="${quizCategory.description}"></td>
+                    <td>
+                        <form th:action="@{/quizCategories/delete/{id}(id=${quizCategory.id})}" method="POST">
+                            <button type="submit" class="warning">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             </tbody>
         </table>
