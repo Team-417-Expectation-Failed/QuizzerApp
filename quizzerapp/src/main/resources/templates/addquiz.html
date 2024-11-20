@@ -1,77 +1,115 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Add Quiz</title>
+		<link th:href="@{/styles/main.css}" rel="stylesheet" />
+	</head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add Quiz</title>
-    <link th:href="@{/styles/main.css}" rel="stylesheet" />
-</head>
+	<body>
+		<h2>Add a quiz</h2>
+		<div>
+			<form
+				th:object="${quiz}"
+				th:action="@{/quiz}"
+				method="post"
+				onsubmit="return validateForm()"
+			>
+				<table>
+					<tbody>
+						<tr>
+							<td><label for="name">Name</label></td>
+							<td>
+								<input type="text" id="name" th:field="*{name}" required />
+							</td>
+						</tr>
+						<tr>
+							<td><label for="description">Description</label></td>
+							<td>
+								<textarea
+									id="description"
+									th:field="*{description}"
+									rows="3"
+									cols="50"
+								></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="published">Published</label></td>
+							<td>
+								<input type="checkbox" id="published" th:field="*{published}" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="questionList">
+									<!-- No default question input -->
+								</div>
+								<button type="button" onclick="addQuestion()" class="secondary">
+									Add another question
+								</button>
+								<button
+									type="button"
+									onclick="removeQuestion()"
+									class="secondary"
+								>
+									Remove last question
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="submit" value="Add" class="submit" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+			<p>
+				<a th:href="@{/quiz}"><button class="secondary">Cancel</button></a>
+			</p>
+		</div>
 
-<body>
-    <h2>Add a quiz</h2>
-    <div>
-        <form th:object="${quiz}" th:action="@{/quiz}" method="post">
-            <table>
-                <tbody>
-                    <tr>
-                        <td><label for="name">Name</label></td>
-                        <td><input type="text" id="name" th:field="*{name}" required /></td>
-                    </tr>
-                    <tr>
-                        <td><label for="description">Description</label></td>
-                        <td><textarea id="description" th:field="*{description}" rows="3" cols="50"></textarea></td>
-                    </tr>
-                    <tr>
-                        <td><label for="published">Published</label></td>
-                        <td><input type="checkbox" id="published" th:field="*{published}" /></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div id="questionList">
-                                <label for="questionBody0">Question 1</label>
-                                <input type="text" id="questionBody0" th:field="*{questions[0].questionBody}" />
-                            </div>
-                            <button type="button" onclick="addQuestion()" class="secondary">Add another
-                                question</button>
-                            <button type="button" onclick="removeQuestion()" class="secondary">Remove last
-                                question</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><input type="submit" value="Add" class="submit" /></td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
-        <p><a th:href="@{/quiz}"><button class="secondary">Cancel</button></a></p>
-    </div>
+		<script>
+			let questionCounter = 0;
 
-    <script>
-        // logic to add more questions, number of questions starts at 1
-        let questionCounter = 1;
-
-        function addQuestion() {
-            const questionList = document.getElementById('questionList');
-            const newQuestion = document.createElement('div');
-            newQuestion.setAttribute('id', `question${questionCounter}`);
-            newQuestion.innerHTML = `
-                <label for="questionBody${questionCounter}">Question ${questionCounter + 1}</label>
-                <input type="text" id="questionBody${questionCounter}" th:field="*{questions[${questionCounter}].questionBody}" />
+			function addQuestion() {
+				const questionList = document.getElementById("questionList");
+				const newQuestion = document.createElement("div");
+				newQuestion.setAttribute("id", `question${questionCounter}`);
+				newQuestion.innerHTML = `
+                <label for="questionBody${questionCounter}">Question ${
+					questionCounter + 1
+				}</label>
+                <input type="text" id="questionBody${questionCounter}" name="questions[${questionCounter}].questionBody" required />
             `;
-            questionList.appendChild(newQuestion);
-            questionCounter++;
-        }
+				questionList.appendChild(newQuestion);
+				questionCounter++;
+			}
 
-        function removeQuestion() {
-            if (questionCounter > 1) {
-                questionCounter--;
-                const questionList = document.getElementById('questionList');
-                const lastQuestion = document.getElementById(`question${questionCounter}`);
-                questionList.removeChild(lastQuestion);
-            }
-        }
-    </script>
-</body>
+			function removeQuestion() {
+				if (questionCounter > 0) {
+					questionCounter--;
+					const questionList = document.getElementById("questionList");
+					const lastQuestion = document.getElementById(
+						`question${questionCounter}`
+					);
+					questionList.removeChild(lastQuestion);
+				}
+			}
 
+			function validateForm() {
+				const questionList = document.getElementById("questionList");
+				const inputs = questionList.getElementsByTagName("input");
+				for (let i = 0; i < inputs.length; i++) {
+					if (inputs[i].value.trim() === "") {
+						alert("All questions must be filled out.");
+						return false;
+					}
+				}
+				return true;
+			}
+		</script>
+	</body>
 </html>
