@@ -30,6 +30,11 @@ public class QuizzerappApplication {
             quizCategory.setName("Geography");
             quizCategory.setDescription("Learning capital cities");
             quizCategoryRepository.save(quizCategory);
+            // Create another example quiz category
+            QuizCategory quizCategory2 = new QuizCategory();
+            quizCategory2.setName("History");
+            quizCategory2.setDescription("Learning about the past");
+            quizCategoryRepository.save(quizCategory2);
             // Create an example quiz
             Quiz quiz = new Quiz();
             quiz.setName("Example Quiz");
