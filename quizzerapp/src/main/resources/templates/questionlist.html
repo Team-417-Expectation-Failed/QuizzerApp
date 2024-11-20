@@ -1,51 +1,69 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Quiz Questions</title>
+		<link th:href="@{/styles/main.css}" rel="stylesheet" />
+	</head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quiz Questions</title>
-    <link th:href="@{/styles/main.css}" rel="stylesheet" />
-</head>
-
-<body>
-    <h2>Questions for Quiz: <span th:text="${quiz.name}"></span></h2>
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Question text</th>
-                    <th>Difficulty</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="question : ${questions}">
-                    <td th:text="${question.questionBody}"></td>
-                    <td th:text="${question.difficultyLevel}"></td>
-                    <td><a
-                            th:href="@{/quiz/{quizId}/questions/{questionId}/answers(quizId=${question.quiz.id}, questionId=${question.id})}">See
-                            answer options</a></td>
-                    <td><a
-                            th:href="@{/quiz/{quizId}/questions/edit/{id}(quizId=${quiz.id}, id=${question.id})}"><button>Edit</button></a>
-                    </td>
-                    <td>
-                        <form th:action="@{/quiz/{quizId}/questions/delete/{id}(quizId=${quiz.id}, id=${question.id})}"
-                            method="post">
-                            <button type="submit" class="warning">Delete</button>
-                        </form>
-                    </td>
-                    <td><a th:href="@{/quiz/{quizId}/questions/{id}(quizId=${quiz.id}, id=${question.id})}"><button
-                                class="secondary">View</button></a></td>
-                </tr>
-            </tbody>
-        </table>
-        <p><a th:href="@{/quiz/{quizId}/questions/add(quizId=${quiz.id})}"><button>Add a Question</button></a></p>
-        <p><a th:href="@{/quiz}"><button class="controlls">Back to Quizzes</button></a></p>
-    </div>
-</body>
-
+	<body>
+		<h2>Questions for Quiz: <span th:text="${quiz.name}"></span></h2>
+		<div>
+			<table>
+				<thead>
+					<tr>
+						<th>Question text</th>
+						<th>Difficulty</th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="question : ${questions}">
+						<td th:text="${question.questionBody}"></td>
+						<td th:text="${question.difficultyLevel}"></td>
+						<td>
+							<a
+								th:href="@{/quiz/{quizId}/questions/{questionId}/answers(quizId=${question.quiz.id}, questionId=${question.id})}"
+								><button class="secondary">Answer Options</button></a
+							>
+						</td>
+						<td>
+							<a
+								th:href="@{/quiz/{quizId}/questions/edit/{id}(quizId=${quiz.id}, id=${question.id})}"
+								><button>Edit</button></a
+							>
+						</td>
+						<td>
+							<form
+								th:action="@{/quiz/{quizId}/questions/delete/{id}(quizId=${quiz.id}, id=${question.id})}"
+								method="post"
+							>
+								<button type="submit" class="warning">Delete</button>
+							</form>
+						</td>
+						<td>
+							<a
+								th:href="@{/quiz/{quizId}/questions/{id}(quizId=${quiz.id}, id=${question.id})}"
+								><button class="secondary">View</button></a
+							>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>
+				<a th:href="@{/quiz/{quizId}/questions/add(quizId=${quiz.id})}"
+					><button>Add a Question</button></a
+				>
+			</p>
+			<p>
+				<a th:href="@{/quiz}"
+					><button class="controlls">Back to Quizzes</button></a
+				>
+			</p>
+		</div>
+	</body>
 </html>

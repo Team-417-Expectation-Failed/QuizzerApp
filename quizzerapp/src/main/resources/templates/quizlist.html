@@ -1,50 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Quizzes</title>
+		<link th:href="@{/styles/main.css}" rel="stylesheet" />
+	</head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quizzes</title>
-    <link th:href="@{/styles/main.css}" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>Quizzes</h1>
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Published</th>
-                    <th>Added on</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="quiz : ${quizzes}">
-                    <td th:text="${quiz.name}"></td>
-                    <td th:text="${quiz.description}"></td>
-                    <td th:text="${quiz.published ? 'Published' : 'Not published'}"></td>
-                    <td th:text="${#temporals.format(quiz.createdDate, 'dd.MM.yyyy')}"></td>
-                    <td><a th:href="@{/quiz/{quizId}/questions(quizId=${quiz.id})}">See questions</a></td>
-                    <td>
-                        <form th:action="@{/quiz/delete/{id}(id=${quiz.id})}" method="post">
-                            <button type="submit" class="warning">Delete</button>
-                        </form>
-                    </td>
-                    <td><a th:href="@{/quiz/edit/{id}(id=${quiz.id})}"><button>Edit</button></a></td>
-                    <td><a th:href="@{/quiz/{id}(id=${quiz.id})}"><button class="secondary">View</button></a></td>
-                </tr>
-            </tbody>
-        </table>
-        <a th:href="@{/quiz/add}"><button>Add a quiz</button></a>
-        <a th:href="@{/quizCategories}"><button class="secondary">See
-                categories</button></a>
-    </div>
-</body>
-
+	<body>
+		<h1>Quizzes</h1>
+		<div>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Published</th>
+						<th>Added on</th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="quiz : ${quizzes}">
+						<td th:text="${quiz.name}"></td>
+						<td th:text="${quiz.description}"></td>
+						<td
+							th:text="${quiz.published ? 'Published' : 'Not published'}"
+						></td>
+						<td
+							th:text="${#temporals.format(quiz.createdDate, 'dd.MM.yyyy')}"
+						></td>
+						<td>
+							<a th:href="@{/quiz/{quizId}/questions(quizId=${quiz.id})}"
+								><button class="secondary">Questions</button></a
+							>
+						</td>
+						<td>
+							<form
+								th:action="@{/quiz/delete/{id}(id=${quiz.id})}"
+								method="post"
+							>
+								<button type="submit" class="warning">Delete</button>
+							</form>
+						</td>
+						<td>
+							<a th:href="@{/quiz/edit/{id}(id=${quiz.id})}"
+								><button>Edit</button></a
+							>
+						</td>
+						<td>
+							<a th:href="@{/quiz/{id}(id=${quiz.id})}"
+								><button class="secondary">View</button></a
+							>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<a th:href="@{/quiz/add}"><button>Add a quiz</button></a>
+			<a th:href="@{/quizCategories}"
+				><button class="secondary">See categories</button></a
+			>
+		</div>
+	</body>
 </html>
