@@ -1,46 +1,75 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Edit Quiz</title>
+		<link th:href="@{/styles/main.css}" rel="stylesheet" />
+	</head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Quiz</title>
-    <link th:href="@{/styles/main.css}" rel="stylesheet" />
-</head>
-
-<body>
-    <h2>Edit Quiz</h2>
-    <div>
-        <form th:object="${quiz}" th:action="@{/quiz/update/{id}(id=${quiz.id})}" method="post">
-            <table>
-                <tbody>
-                    <tr>
-                        <td colspan="2">
-                            <input type="hidden" id="createdDate" th:field="*{createdDate}" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="name">Name of the quiz</label></td>
-                        <td><input type="text" id="name" th:field="*{name}" required /></td>
-                    </tr>
-                    <tr>
-                        <td><label for="description">Description</label></td>
-                        <td><input type="text" id="description" th:field="*{description}" /></td>
-                    </tr>
-                    <tr>
-                        <td><label for="published">Published</label></td>
-                        <td><input type="checkbox" id="published" th:field="*{published}" /></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <input type="submit" value="Update Quiz" class="submit" />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
-        <p><a th:href="@{/quiz}"><button class="controlls">Back to Quiz List</button></a></p>
-    </div>
-</body>
-
+	<body>
+		<h2>Edit Quiz</h2>
+		<div>
+			<form
+				th:object="${quiz}"
+				th:action="@{/quiz/update/{id}(id=${quiz.id})}"
+				method="post"
+			>
+				<table>
+					<tbody>
+						<tr>
+							<td colspan="2">
+								<input
+									type="hidden"
+									id="createdDate"
+									th:field="*{createdDate}"
+								/>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="name">Name of the quiz</label></td>
+							<td>
+								<input type="text" id="name" th:field="*{name}" required />
+							</td>
+						</tr>
+						<tr>
+							<td><label for="description">Description</label></td>
+							<td>
+								<input type="text" id="description" th:field="*{description}" />
+							</td>
+						</tr>
+						<tr>
+							<td><label for="published">Published</label></td>
+							<td>
+								<input type="checkbox" id="published" th:field="*{published}" />
+							</td>
+						</tr>
+						<tr>
+							<td><label for="quizCategory">Category</label></td>
+							<td>
+								<select id="quizCategory" th:field="*{quizCategory.id}">
+									<option value="" disabled>Select a category</option>
+									<option
+										th:each="category : ${categories}"
+										th:value="${category.id}"
+										th:text="${category.name}"
+									></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="submit" value="Update Quiz" class="submit" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+			<p>
+				<a th:href="@{/quiz}"
+					><button class="controlls">Back to Quiz List</button></a
+				>
+			</p>
+		</div>
+	</body>
 </html>

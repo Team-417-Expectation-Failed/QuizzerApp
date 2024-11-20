@@ -46,7 +46,8 @@ public class QuizController {
     // Get quiz add view
     @GetMapping("/quiz/add")
     public String showAddQuizForm(Model model) {
-        model.addAttribute("quiz", new Quiz());
+        Quiz quiz = new Quiz();
+        model.addAttribute("quiz", quiz);
         model.addAttribute("categories", quizCategoryService.findAllQuizCategories());
         return "addquiz"; // Render a view for adding a quiz
     }
@@ -66,13 +67,22 @@ public class QuizController {
     // Get quiz edit view
     @GetMapping("/quiz/edit/{id}")
     public String showEditQuizForm(@PathVariable Long id, Model model) {
-        model.addAttribute("quiz", quizService.findQuizById(id));
+        Quiz quiz = quizService.findQuizById(id);
+        model.addAttribute("quiz", quiz);
+        model.addAttribute("categories", quizCategoryService.findAllQuizCategories());
         return "editquiz"; // Render a view for editing a quiz
     }
 
     // Update quiz by id
     @PostMapping("/quiz/update/{id}")
-    public String updateQuiz(@PathVariable Long id, @ModelAttribute Quiz quiz) {
+    public String updateQuiz(@PathVariable Long id, @ModelAttribute Quiz quiz,
+            @RequestParam(value = "quizCategory.id", required = false) Long quizCategoryId) {
+        if (quizCategoryId != null) {
+            QuizCategory category = quizCategoryService.findQuizCategoryById(quizCategoryId);
+            quiz.setQuizCategory(category);
+        } else {
+            quiz.setQuizCategory(null);
+        }
         quizService.updateQuiz(id, quiz);
         return "redirect:/quiz";
     }

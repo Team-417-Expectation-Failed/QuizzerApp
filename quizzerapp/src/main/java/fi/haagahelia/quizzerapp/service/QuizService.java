@@ -39,8 +39,8 @@ public class QuizService {
     }
 
     public void saveQuiz(Quiz quiz) {
-          // Set the quiz property on each question
-          for (Question question : quiz.getQuestions()) {
+        // Set the quiz property on each question
+        for (Question question : quiz.getQuestions()) {
             question.setQuiz(quiz);
         }
         quizRepository.save(quiz);
@@ -51,8 +51,16 @@ public class QuizService {
         existingQuiz.setName(updatedQuiz.getName());
         existingQuiz.setDescription(updatedQuiz.getDescription());
         existingQuiz.setPublished(updatedQuiz.isPublished());
+        // Update the quiz category if provided
+        if (updatedQuiz.getQuizCategory() != null) {
+            existingQuiz.setQuizCategory(updatedQuiz.getQuizCategory());
+        } else {
+            existingQuiz.setQuizCategory(null);
+        }
         // Preserve existing questions and answer options
         existingQuiz.setQuestions(existingQuiz.getQuestions());
+
+        // Save the updated quiz to the repository
         quizRepository.save(existingQuiz);
     }
 
