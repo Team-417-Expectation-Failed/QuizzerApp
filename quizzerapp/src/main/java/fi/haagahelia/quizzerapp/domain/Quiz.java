@@ -28,7 +28,7 @@ public class Quiz {
     private LocalDate createdDate;
     private boolean published;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "quizCategory_id")
     @JsonIgnore
     private QuizCategory quizCategory;
