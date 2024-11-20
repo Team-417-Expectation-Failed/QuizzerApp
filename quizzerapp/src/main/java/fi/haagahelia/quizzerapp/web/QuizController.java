@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import fi.haagahelia.quizzerapp.domain.Quiz;
+import fi.haagahelia.quizzerapp.domain.QuizCategory;
+import fi.haagahelia.quizzerapp.service.QuizCategoryService;
 import fi.haagahelia.quizzerapp.service.QuizService;
 
 @Controller
@@ -16,6 +19,9 @@ public class QuizController {
 
     @Autowired
     private QuizService quizService;
+
+    @Autowired
+    private QuizCategoryService quizCategoryService;
 
     // Get all quizzes
     @GetMapping("/quiz")
@@ -26,8 +32,7 @@ public class QuizController {
 
     // Redirect to home page
     @GetMapping
-    public String getHomePage()
-    {
+    public String getHomePage() {
         return "redirect:/quiz";
     }
 
@@ -42,12 +47,18 @@ public class QuizController {
     @GetMapping("/quiz/add")
     public String showAddQuizForm(Model model) {
         model.addAttribute("quiz", new Quiz());
+        model.addAttribute("categories", quizCategoryService.findAllQuizCategories());
         return "addquiz"; // Render a view for adding a quiz
     }
 
     // Create quiz
     @PostMapping("/quiz")
-    public String createQuiz(@ModelAttribute Quiz quiz) {
+    public String createQuiz(@ModelAttribute Quiz quiz,
+            @RequestParam(value = "quizCategory.id", required = false) Long quizCategoryId) {
+        if (quizCategoryId != null) {
+            QuizCategory category = quizCategoryService.findQuizCategoryById(quizCategoryId);
+            quiz.setQuizCategory(category);
+        }
         quizService.saveQuiz(quiz);
         return "redirect:/quiz";
     }

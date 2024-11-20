@@ -42,6 +42,19 @@
 							</td>
 						</tr>
 						<tr>
+							<td><label for="quizCategory">Category</label></td>
+							<td>
+								<select id="quizCategory" th:field="*{quizCategory.id}">
+									<option value="" disabled selected>Select a category</option>
+									<option
+										th:each="category : ${categories}"
+										th:value="${category.id}"
+										th:text="${category.name}"
+									></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
 							<td colspan="2">
 								<div id="questionList">
 									<!-- No default question input -->
