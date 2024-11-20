@@ -10,45 +10,47 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/quizCategories")
 public class QuizCategoryController {
 
     @Autowired
     private QuizCategoryService quizCategoryService;
 
     // Get all quiz categories
-    @GetMapping("/quizCategories")
+    @GetMapping
     public String getAllQuizCategories(Model model) {
         model.addAttribute("quizCategories", quizCategoryService.findAllQuizCategories());
         return "quizCategoryList";
     }
 
     // Get quiz category by id
-    @GetMapping("/quizCategories/{quizCategoryId}")
+    @GetMapping("/{quizCategoryId}")
     public String getQuizCategoryById(@PathVariable Long quizCategoryId, Model model) {
         model.addAttribute("quizCategory", quizCategoryService.findQuizCategoryById(quizCategoryId));
         return "quizCategoryView";
     }
 
     // Adding a quiz category form
-    @GetMapping("/quizCategories/add")
+    @GetMapping("/add")
     public String showAddQuizCategoryForm(Model model) {
         model.addAttribute("quizCategories", new QuizCategory());
         return "addQuizCategory";
     }
 
     // Create quiz category
-    @PostMapping("/quizCategories")
+    @PostMapping("/add")
     public String createQuizCategory(@ModelAttribute QuizCategory quizCategory) {
         quizCategoryService.saveQuizCategory(quizCategory);
         return "redirect:/quizCategories";
     }
 
-     // Delete quiz category
-     @PostMapping("/quizCategories/delete/{id}")
-     public String deleteCategory(@PathVariable Long id) {
-         quizCategoryService.deleteQuizCategory(id);  
-         return "redirect:/quizCategories";
-     }
+    // Delete quiz category
+    @PostMapping("/delete/{id}")
+    public String deleteCategory(@PathVariable Long id) {
+        quizCategoryService.deleteQuizCategory(id);
+        return "redirect:/quizCategories";
+    }
 }
