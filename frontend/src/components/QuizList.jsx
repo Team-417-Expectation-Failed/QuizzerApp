@@ -1,12 +1,12 @@
 import { useState ,useEffect }  from "react";
 
-import { getPublishedQuizes } from "../quizapi";
+import { getPublishedQuizzes } from "../quizapi";
 
 function QuizList() {
   const [quizzes, setQuizzes] = useState([]);
 
   useEffect(() => {
-    getPublishedQuizes()
+    getPublishedQuizzes()
     .then((data) => setQuizzes(data))
   }, []);
 
