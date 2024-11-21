@@ -9,6 +9,19 @@
 
 	<body>
 		<h1>Quizzes</h1>
+
+		<form method="get" th:action="@{/quiz}" id="filterForm">
+			<label for="category">Filter by category:</label>
+			<select name="category" id="category" onchange="document.getElementById('filterForm').submit()">
+				<option value="">All Categories</option>
+				<option th:each="cat : ${quizCategories}" 
+						th:value="${cat.id}" 
+						th:text="${cat.name}" 
+						th:selected="${selectedCategory == cat.id}">
+					</option>
+			</select>
+		</form>
+
 		<div>
 			<table>
 				<thead>

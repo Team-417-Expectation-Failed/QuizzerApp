@@ -29,6 +29,10 @@ public class QuizService {
         return quizRepository.findAll();
     }
 
+    public List<Quiz> findQuizzesByCategoryId(Long categoryId) {
+        return quizRepository.findByQuizCategoryId(categoryId);
+    }
+
     public List<Quiz> findAllPublishedQuizzes() {
         return quizRepository.findByPublished(true);
     }

@@ -25,9 +25,21 @@ public class QuizController {
 
     // Get all quizzes
     @GetMapping("/quiz")
-    public String getAllQuizzes(Model model) {
-        model.addAttribute("quizzes", quizService.findAllQuizzes());
-        return "quizlist"; // Render a view for all quizzes
+    public String getAllQuizzes(@RequestParam(required = false) Long category, Model model) {
+        // Fetch quizzes by category if category is provided, else fetch all quizzes
+        if (category != null) {
+            model.addAttribute("quizzes", quizService.findQuizzesByCategoryId(category));
+        } 
+        else {
+            model.addAttribute("quizzes", quizService.findAllQuizzes());
+        }
+
+        model.addAttribute("quizCategories", quizCategoryService.findAllQuizCategories()); // Add categories for dropdown
+        
+        //Shows selected category for dropdown
+        model.addAttribute("selectedCategory", category);
+        
+        return "quizlist"; // Render the quiz list view
     }
 
     // Redirect to home page

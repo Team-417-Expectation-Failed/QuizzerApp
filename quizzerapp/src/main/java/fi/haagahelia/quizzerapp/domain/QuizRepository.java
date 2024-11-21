@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
     List<Quiz> findByPublished(boolean published);
+    List<Quiz> findByQuizCategoryId(Long categoryId);
 }
