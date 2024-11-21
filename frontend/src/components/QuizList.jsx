@@ -1,28 +1,45 @@
-import { useState ,useEffect }  from "react";
-
+import { useState, useEffect } from "react";
 import { getPublishedQuizzes } from "../quizapi";
-import  FetchQuizQuestions  from "./QuizQuestions";
+import { Box, Typography } from "@mui/material";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 function QuizList() {
   const [quizzes, setQuizzes] = useState([]);
 
   useEffect(() => {
     getPublishedQuizzes()
-    .then((data) => setQuizzes(data))
+      .then((data) => {
+        console.log(data); // Checking the data on the console
+        setQuizzes(data);
+      })
   }, []);
 
   return (
-    <div>
-      <h1>Quiz List</h1>
-      <ul>
-        {quizzes.map((quiz) => (
-          <li key={quiz.id}>
-            {quiz.name}
-            <FetchQuizQuestions quizId={quiz.id} />
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Box sx={{ margin: 5 }}>
+      <Typography variant="h4">Quizzes</Typography>
+      <TableContainer component={Paper} sx={{ marginTop: 2 }}>
+        <Table aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell variant="head" sx={{ fontWeight: 'bold' }}>Name</TableCell>
+              <TableCell variant="head" sx={{ fontWeight: 'bold' }}>Description</TableCell>
+              <TableCell variant="head" sx={{ fontWeight: 'bold' }}>Category</TableCell>
+              <TableCell variant="head" sx={{ fontWeight: 'bold' }}>Added on</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {quizzes.map((quiz) => (
+              <TableRow key={quiz.id}>
+                <TableCell variant="body">{quiz.name}</TableCell>
+                <TableCell variant="body">{quiz.description}</TableCell>
+                <TableCell variant="body"></TableCell>
+                <TableCell variant="body"></TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }
 

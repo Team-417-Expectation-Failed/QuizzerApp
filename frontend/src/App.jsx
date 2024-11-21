@@ -1,25 +1,12 @@
 import { useState } from 'react'
 import './App.css'
-import QuizList from './components/QuizList'
-import QuestionList from './components/QuestionList'
+import Menu from './components/Menu'
 
 function App() {
 
-  const questions = [
-    {
-      id: 1,
-      questionBody: "first question"
-    },
-    {
-      id: 2,
-      questionBody: "second question"
-    },
-  ]
-
   return (
     <>
-      <QuizList />
-
+      <Menu />
     </>
   )
 }
