@@ -8,7 +8,7 @@ export function getPublishedQuizzes() {
  })  
 }
 
-export function getQuestions(quizId) {
+export function getQuizQuestions(quizId) {
   return fetch(`${import.meta.env.VITE_API_URL}/quizzes/${quizId}/questions`)
   .then(response =>{
     if (!response.ok) 

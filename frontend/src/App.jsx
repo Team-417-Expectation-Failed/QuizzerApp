@@ -19,7 +19,7 @@ function App() {
   return (
     <>
       <QuizList />
-      <QuestionList questions={questions} />
+
     </>
   )
 }
