@@ -14,6 +14,11 @@ function QuizList() {
       })
   }, []);
 
+  const formatDate = (dateString) => {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Intl.DateTimeFormat('fi-FI', options).format(new Date(dateString));
+  };
+
   return (
     <Box sx={{ margin: 5 }}>
       <Typography variant="h4">Quizzes</Typography>
@@ -33,9 +38,10 @@ function QuizList() {
                 <TableCell variant="body">{quiz.name}</TableCell>
                 <TableCell variant="body">{quiz.description}</TableCell>
                 <TableCell variant="body"></TableCell>
-                <TableCell variant="body"></TableCell>
+                <TableCell variant="body">{formatDate(quiz.createdDate)}</TableCell>
               </TableRow>
             ))}
+
           </TableBody>
         </Table>
       </TableContainer>
