@@ -3,7 +3,7 @@ import { useState ,useEffect }  from "react";
 import { getPublishedQuizes } from "../quizapi";
 
 function QuizList() {
-  const [quizes, setQuizes] = useState([]);
+  const [quizzes, setQuizes] = useState([]);
 
   useEffect(() => {
     getPublishedQuizes()
@@ -14,7 +14,7 @@ function QuizList() {
     <div>
       <h1>Quiz List</h1>
       <ul>
-        {quizes.map((quiz) => (
+        {quizzes.map((quiz) => (
           <li key={quiz.id}>{quiz.name}</li>
         ))}
       </ul>
