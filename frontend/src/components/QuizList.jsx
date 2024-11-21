@@ -3,11 +3,11 @@ import { useState ,useEffect }  from "react";
 import { getPublishedQuizes } from "../quizapi";
 
 function QuizList() {
-  const [quizzes, setQuizes] = useState([]);
+  const [quizzes, setQuizzes] = useState([]);
 
   useEffect(() => {
     getPublishedQuizes()
-    .then((data) => setQuizes(data))
+    .then((data) => setQuizzes(data))
   }, []);
 
   return (
