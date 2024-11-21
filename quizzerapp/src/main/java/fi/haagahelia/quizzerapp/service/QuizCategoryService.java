@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import fi.haagahelia.quizzerapp.domain.Quiz;
 import fi.haagahelia.quizzerapp.domain.QuizCategory;
-import fi.haagahelia.quizzerapp.domain.QuizCategoryRepository;
-import fi.haagahelia.quizzerapp.domain.QuizRepository;
+import fi.haagahelia.quizzerapp.repositories.QuizCategoryRepository;
+import fi.haagahelia.quizzerapp.repositories.QuizRepository;
 
 @Service
 public class QuizCategoryService {

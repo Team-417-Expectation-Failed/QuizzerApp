@@ -15,9 +15,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import fi.haagahelia.quizzerapp.service.QuestionService;
-import fi.haagahelia.quizzerapp.domain.QuestionRepository;
-import fi.haagahelia.quizzerapp.domain.QuizRepository;
-import fi.haagahelia.quizzerapp.domain.AnswerOptionRepository;
+import fi.haagahelia.quizzerapp.repositories.AnswerOptionRepository;
+import fi.haagahelia.quizzerapp.repositories.QuestionRepository;
+import fi.haagahelia.quizzerapp.repositories.QuizRepository;
 import fi.haagahelia.quizzerapp.domain.Question;
 import fi.haagahelia.quizzerapp.domain.Quiz;
 

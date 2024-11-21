@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fi.haagahelia.quizzerapp.domain.AnswerOption;
-import fi.haagahelia.quizzerapp.domain.AnswerOptionRepository;
 import fi.haagahelia.quizzerapp.domain.Question;
-import fi.haagahelia.quizzerapp.domain.QuestionRepository;
+import fi.haagahelia.quizzerapp.repositories.AnswerOptionRepository;
+import fi.haagahelia.quizzerapp.repositories.QuestionRepository;
 
 @Service
 public class AnswerOptionService {

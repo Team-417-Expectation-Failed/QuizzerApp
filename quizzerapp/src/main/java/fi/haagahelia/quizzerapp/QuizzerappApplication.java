@@ -6,13 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import fi.haagahelia.quizzerapp.domain.AnswerOption;
-import fi.haagahelia.quizzerapp.domain.AnswerOptionRepository;
 import fi.haagahelia.quizzerapp.domain.Question;
-import fi.haagahelia.quizzerapp.domain.QuestionRepository;
 import fi.haagahelia.quizzerapp.domain.Quiz;
 import fi.haagahelia.quizzerapp.domain.QuizCategory;
-import fi.haagahelia.quizzerapp.domain.QuizCategoryRepository;
-import fi.haagahelia.quizzerapp.domain.QuizRepository;
+import fi.haagahelia.quizzerapp.repositories.AnswerOptionRepository;
+import fi.haagahelia.quizzerapp.repositories.QuestionRepository;
+import fi.haagahelia.quizzerapp.repositories.QuizCategoryRepository;
+import fi.haagahelia.quizzerapp.repositories.QuizRepository;
 
 @SpringBootApplication
 public class QuizzerappApplication {
