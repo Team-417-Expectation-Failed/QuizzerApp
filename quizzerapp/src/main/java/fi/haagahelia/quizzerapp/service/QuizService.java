@@ -38,8 +38,7 @@ public class QuizService {
     }
 
     public Quiz findQuizById(Long quizId) {
-        return quizRepository.findById(quizId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid quiz ID:" + quizId));
+        return quizRepository.findById(quizId).orElse(null);
     }
 
     public void saveQuiz(Quiz quiz) {
