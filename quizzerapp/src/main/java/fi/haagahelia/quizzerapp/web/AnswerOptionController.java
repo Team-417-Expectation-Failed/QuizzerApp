@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import fi.haagahelia.quizzerapp.domain.AnswerOption;
 import fi.haagahelia.quizzerapp.service.AnswerOptionService;
-import fi.haagahelia.quizzerapp.service.QuestionService;
 
 @Controller
 @RequestMapping("/quiz/{quizId}/questions/{questionId}/answers")
@@ -19,8 +18,6 @@ public class AnswerOptionController {
 
     @Autowired
     private AnswerOptionService answerOptionService;
-
-    @Autowired QuestionService questionService;
 
     // Get all answer options by question id
     @GetMapping
@@ -40,19 +37,19 @@ public class AnswerOptionController {
         return "answeroptionview"; // View for a specific answer option
     }
 
-        // Show add question form view
+    // Show add question form view
     @GetMapping("/add")
     public String showAddQuestionForm(@PathVariable Long quizId, @PathVariable Long questionId, Model model) {
         model.addAttribute("quizId", quizId);
         model.addAttribute("questionId", questionId);
         model.addAttribute("newAnswerOption", new AnswerOption());
-        return "addansweroption"; // View for adding a question
+        return "addansweroption"; // View for adding an answer option
     }
 
-    // Save new question to quiz id
+    // Save new answer option to question
     @PostMapping("/add")
-    public String saveNewQuestion(@PathVariable Long quizId, @PathVariable Long questionId, @ModelAttribute AnswerOption answerOption) {
-        questionService.addAnswerOptionToQuestion(questionId, answerOption);
+    public String saveNewAnswerOption(@PathVariable Long quizId, @PathVariable Long questionId, @ModelAttribute AnswerOption answerOption) {
+        answerOptionService.addAnswerOptionToQuestion(questionId, answerOption); // Use AnswerOptionService to add the option to the question
         return "redirect:/quiz/" + quizId + "/questions/" + questionId + "/answers";
     }
 

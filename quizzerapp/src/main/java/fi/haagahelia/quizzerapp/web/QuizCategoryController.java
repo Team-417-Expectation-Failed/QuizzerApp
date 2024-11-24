@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/quizCategories")
@@ -33,24 +34,26 @@ public class QuizCategoryController {
         return "quizCategoryView";
     }
 
-    // Adding a quiz category form
+    // Show form to add a new quiz category
     @GetMapping("/add")
     public String showAddQuizCategoryForm(Model model) {
-        model.addAttribute("quizCategories", new QuizCategory());
+        model.addAttribute("quizCategory", new QuizCategory()); // Oikea attribuutin nimi, ei quizCategories
         return "addQuizCategory";
     }
 
-    // Create quiz category
+    // Create a new quiz category
     @PostMapping("/add")
     public String createQuizCategory(@ModelAttribute QuizCategory quizCategory) {
         quizCategoryService.saveQuizCategory(quizCategory);
         return "redirect:/quizCategories";
     }
+    
 
     // Delete quiz category
-    @PostMapping("/delete/{id}")
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public String deleteCategory(@PathVariable Long id) {
         quizCategoryService.deleteQuizCategory(id);
         return "redirect:/quizCategories";
     }
 }
+

@@ -1,7 +1,5 @@
 package fi.haagahelia.quizzerapp.web;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,41 +9,39 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fi.haagahelia.quizzerapp.domain.Question;
-import fi.haagahelia.quizzerapp.domain.Quiz;
+import fi.haagahelia.quizzerapp.dto.QuestionDTO;
 import fi.haagahelia.quizzerapp.service.QuestionService;
-import fi.haagahelia.quizzerapp.service.QuizService;
+import fi.haagahelia.quizzerapp.domain.Question;
+
+import java.util.List;
+import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 @CrossOrigin(origins = "*")
 public class QuizzerRestController {
 
-    @Autowired
-    private QuizService quizService;
 
     @Autowired
     private QuestionService questionService;
 
-    @GetMapping("/quizzes")
-    public List<Quiz> findAllPublishedQuizzes() {
-        return quizService.findAllPublishedQuizzes();
-    }
-
-    // Get quiz by id using ResponseEntity to handle exceptions
-    @GetMapping("/quizzes/{quizId}")
-    public ResponseEntity<Object> findQuizById(@PathVariable Long quizId) {
-        Quiz quiz = quizService.findQuizById(quizId); // Returns quiz or null
-        if (quiz != null) {
-            return ResponseEntity.ok(quiz); // HTTP 200
-        } else {
-            String errorMessage = "Quiz not found with ID: " + quizId;
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage); // HTTP 404
-        }
-    }
-
+    // Get questions by quiz id
     @GetMapping("/quizzes/{quizId}/questions")
-    public List<Question> findQuestionsByQuizId(@PathVariable Long quizId) {
-        return questionService.findQuestionsByQuizId(quizId);
+    public ResponseEntity<List<QuestionDTO>> findQuestionsByQuizId(@PathVariable Long quizId) {
+        List<Question> questions = questionService.findQuestionsByQuizId(quizId);
+
+        List<QuestionDTO> questionDTOs = new ArrayList<>();
+        for (Question question : questions) {
+            QuestionDTO questionDTO = new QuestionDTO();
+            questionDTO.setId(question.getId());
+            questionDTO.setQuestionBody(question.getQuestionBody());
+            questionDTOs.add(questionDTO);
+        }
+
+        if (questionDTOs.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 if no questions found
+        }
+
+        return ResponseEntity.ok(questionDTOs); // Return HTTP 200 with question DTOs
     }
 }

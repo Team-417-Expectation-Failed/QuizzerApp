@@ -11,7 +11,7 @@
 <body>
     <h2>Add a quiz category</h2>
     <div>
-        <form th:object="${quizCategories}" th:action="@{/quizCategories}" method="post">
+        <form th:object="${quizCategory}" th:action="@{/quizCategories/add}" method="post">
             <table>
                 <tbody>
                     <tr>

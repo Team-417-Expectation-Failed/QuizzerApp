@@ -9,9 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.containsString;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import fi.haagahelia.quizzerapp.service.QuestionService;
@@ -31,16 +31,16 @@ public class QuestionControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private QuestionService questionService;
 
-    @MockBean
+    @Mock
     private QuestionRepository questionRepository;
 
-    @MockBean
+    @Mock
     private QuizRepository quizRepository;
 
-    @MockBean
+    @Mock
     private AnswerOptionRepository answerOptionRepository;
 
     @Test
