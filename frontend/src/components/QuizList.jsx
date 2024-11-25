@@ -37,7 +37,7 @@ function QuizList() {
               <TableRow key={quiz.id}>
                 <TableCell variant="body">{quiz.name}</TableCell>
                 <TableCell variant="body">{quiz.description}</TableCell>
-                <TableCell variant="body"></TableCell>
+                <TableCell variant="body">{quiz.quizCategoryName}</TableCell>
                 <TableCell variant="body">{formatDate(quiz.createdDate)}</TableCell>
               </TableRow>
             ))}

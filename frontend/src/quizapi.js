@@ -1,5 +1,7 @@
+const apiUrl = import.meta.env.VITE_API_URL + '/v1';
+
 export function getPublishedQuizzes() {
-  return fetch(`${import.meta.env.VITE_API_URL}/quizzes`)
+  return fetch(`${apiUrl}/quizzes`)
   .then(response =>{
     if (!response.ok) 
         throw new Error("Error in fetch" + response.statusText);
@@ -9,7 +11,7 @@ export function getPublishedQuizzes() {
 }
 
 export function getQuizQuestions(quizId) {
-  return fetch(`${import.meta.env.VITE_API_URL}/quizzes/${quizId}/questions`)
+  return fetch(`${apiUrl}/quizzes/${quizId}/questions`)
   .then(response =>{
     if (!response.ok) 
         throw new Error("Error in fetch" + response.statusText);
