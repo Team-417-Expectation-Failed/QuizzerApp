@@ -1,6 +1,7 @@
 package fi.haagahelia.quizzerapp.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class QuizDTO {
     private Long id;
@@ -9,10 +10,12 @@ public class QuizDTO {
     private LocalDate createdDate;
     private boolean published;
     private String quizCategoryName;
+    private List<QuestionDTO> questions;
 
     public QuizDTO() {
     }
 
+    // Constructor without questions
     public QuizDTO(Long id, String name, String description, LocalDate createdDate, boolean published, String quizCategoryName) {
         this.id = id;
         this.name = name;
@@ -22,7 +25,18 @@ public class QuizDTO {
         this.quizCategoryName = quizCategoryName;
     }
 
-    // Getters and setters  
+    // Constructor with questions
+    public QuizDTO(Long id, String name, String description, LocalDate createdDate, boolean published, String quizCategoryName, List<QuestionDTO> questions) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.createdDate = createdDate;
+        this.published = published;
+        this.quizCategoryName = quizCategoryName;
+        this.questions = questions;
+    }
+
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -71,5 +85,11 @@ public class QuizDTO {
         this.quizCategoryName = quizCategoryName;
     }
 
-    
+    public List<QuestionDTO> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<QuestionDTO> questions) {
+        this.questions = questions;  // Tähän ei ole enää virheitä, koska kysymykset asetetaan oikein.
+    }
 }

@@ -6,15 +6,12 @@ import fi.haagahelia.quizzerapp.domain.DifficultyLevel;
 public class QuestionDTO {
     private Long id;
     private String questionBody;
-    private List<String> answerOptions;
+    private List<AnswerOptionDTO> answerOptions; // Changed the answer options to also include information about the correct answer
     private DifficultyLevel difficultyLevel;
 
-    // Oletuskonstruktori (ilman parametreja)
-    public QuestionDTO() {
-        // Ei tarvitse tehdä mitään tässä, jos ei ole erityisiä alustuslogiikoita
-    }
-    // Muokattu konstruktori, joka ottaa DifficultyLevel ja List<String>
-    public QuestionDTO(Long id, String questionBody, DifficultyLevel difficultyLevel, List<String> answerOptions) {
+    public QuestionDTO() {}
+
+    public QuestionDTO(Long id, String questionBody, DifficultyLevel difficultyLevel, List<AnswerOptionDTO> answerOptions) {
         this.id = id;
         this.questionBody = questionBody;
         this.difficultyLevel = difficultyLevel;
@@ -38,11 +35,11 @@ public class QuestionDTO {
         this.questionBody = questionBody;
     }
 
-    public List<String> getAnswerOptions() {
+    public List<AnswerOptionDTO> getAnswerOptions() {
         return answerOptions;
     }
 
-    public void setAnswerOptions(List<String> answerOptions) {
+    public void setAnswerOptions(List<AnswerOptionDTO> answerOptions) {
         this.answerOptions = answerOptions;
     }
 

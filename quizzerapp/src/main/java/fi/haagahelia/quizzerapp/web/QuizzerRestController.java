@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import fi.haagahelia.quizzerapp.dto.AnswerOptionDTO;
 import fi.haagahelia.quizzerapp.dto.QuestionDTO;
 import fi.haagahelia.quizzerapp.dto.QuizDTO;
 import fi.haagahelia.quizzerapp.service.QuestionService;
@@ -65,6 +66,43 @@ public class QuizzerRestController {
         }
     }
 
+    // Get questions and answers for a quiz (new method)
+    @GetMapping("/quizzes/{quizId}/full")
+    public ResponseEntity<QuizDTO> getFullQuiz(@PathVariable Long quizId) {
+        Quiz quiz = quizService.findQuizById(quizId); // Retrieve quiz details
+        if (quiz == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // If quiz is not found, return 404
+        }
+
+        // Map questions and answer options, including information about the correct answer
+        List<QuestionDTO> questionDTOs = quiz.getQuestions().stream()
+                .map(question -> new QuestionDTO(
+                        question.getId(),
+                        question.getQuestionBody(),
+                        question.getDifficultyLevel(),
+                        question.getAnswerOptions().stream()
+                                .map(answerOption -> new AnswerOptionDTO(
+                                        answerOption.getAnswerOptionBody(),
+                                        answerOption.isCorrect() // Include information about the correct answer
+                                ))
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
+
+        // Create a QuizDTO and add questions to it
+        QuizDTO quizDTO = new QuizDTO(
+                quiz.getId(),
+                quiz.getName(),
+                quiz.getDescription(),
+                quiz.getCreatedDate(),
+                quiz.isPublished(),
+                quiz.getQuizCategory().getName()
+        );
+        quizDTO.setQuestions(questionDTOs); // Add questions to the quizDTO
+
+        return ResponseEntity.ok(quizDTO); // Return quiz and questions
+    }
+
     // Get questions by quiz id
     @GetMapping("/quizzes/{quizId}/questions")
     public ResponseEntity<List<QuestionDTO>> findQuestionsByQuizId(@PathVariable Long quizId) {
@@ -76,7 +114,9 @@ public class QuizzerRestController {
                         question.getQuestionBody(),
                         question.getDifficultyLevel(),
                         question.getAnswerOptions().stream()
-                                .map(answerOption -> answerOption.getAnswerOptionBody())
+                                .map(answerOption -> new AnswerOptionDTO(
+                                        answerOption.getAnswerOptionBody(),
+                                        answerOption.isCorrect())) // Lisää oikean vastauksen tieto
                                 .collect(Collectors.toList())))
                 .collect(Collectors.toList());
 
