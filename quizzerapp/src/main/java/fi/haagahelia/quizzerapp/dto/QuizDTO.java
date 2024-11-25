@@ -2,8 +2,6 @@ package fi.haagahelia.quizzerapp.dto;
 
 import java.time.LocalDate;
 
-import fi.haagahelia.quizzerapp.domain.QuizCategory;
-
 public class QuizDTO {
     private Long id;
     private String name;

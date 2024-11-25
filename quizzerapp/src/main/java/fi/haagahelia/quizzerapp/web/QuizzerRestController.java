@@ -19,10 +19,9 @@ import fi.haagahelia.quizzerapp.domain.Quiz;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 @CrossOrigin(origins = "*")
 public class QuizzerRestController {
 
