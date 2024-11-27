@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { getPublishedQuizzes } from "../quizapi";
 import { Box, Typography } from "@mui/material";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 function QuizList() {
   const [quizzes, setQuizzes] = useState([]);
@@ -35,7 +36,7 @@ function QuizList() {
           <TableBody>
             {quizzes.map((quiz) => (
               <TableRow key={quiz.id}>
-                <TableCell variant="body">{quiz.name}</TableCell>
+                <TableCell variant="body"><RouterLink to={`/quiz/${quiz.id}/questions`}>{quiz.name}</RouterLink></TableCell>
                 <TableCell variant="body">{quiz.description}</TableCell>
                 <TableCell variant="body">{quiz.quizCategoryName}</TableCell>
                 <TableCell variant="body">{formatDate(quiz.createdDate)}</TableCell>

@@ -60,18 +60,6 @@ public class QuizzerRestController {
         return ResponseEntity.ok(quizDTOs); // Return HTTP 200 with quizzes
     }
 
-    // Get quiz by id
-    @GetMapping("/quizzes/{quizId}")
-    public Quiz findQuizById(@PathVariable Long quizId) {
-        Quiz quiz = quizService.findQuizById(quizId); // Returns quiz or null
-        if (quiz != null) {
-            return quiz; // HTTP 200
-        } else {
-            String errorMessage = "Quiz not found with ID: " + quizId;
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage); // HTTP 404
-        }
-    }
-
     // Get questions and answers for a quiz (new method)
     @GetMapping("/quizzes/{quizId}/full")
     public ResponseEntity<QuizDTO> getFullQuiz(@PathVariable Long quizId) {
@@ -106,6 +94,20 @@ public class QuizzerRestController {
         quizDTO.setQuestions(questionDTOs); // Add questions to the quizDTO
 
         return ResponseEntity.ok(quizDTO); // Return quiz and questions
+    }
+
+    // Get quiz by id
+    @GetMapping("/quizzes/{quizId}")
+    public QuizDTO findQuizById(@PathVariable Long quizId) {
+        Quiz quiz = quizService.findQuizById(quizId); // Returns quiz or null
+        if (quiz != null) {
+            QuizDTO quizDTO = new QuizDTO(quiz.getId(), quiz.getName(), quiz.getDescription(), quiz.getCreatedDate(),
+                    quiz.isPublished(), quiz.getQuizCategory().getName());
+            return quizDTO; // HTTP 200
+        } else {
+            String errorMessage = "Quiz not found with ID: " + quizId;
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage); // HTTP 404
+        }
     }
 
     // Get questions by quiz id
