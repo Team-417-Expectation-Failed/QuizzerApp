@@ -12,11 +12,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 import fi.haagahelia.quizzerapp.dto.AnswerOptionDTO;
 import fi.haagahelia.quizzerapp.dto.QuestionDTO;
+import fi.haagahelia.quizzerapp.dto.QuizCategoryDTO;
 import fi.haagahelia.quizzerapp.dto.QuizDTO;
 import fi.haagahelia.quizzerapp.service.QuestionService;
+import fi.haagahelia.quizzerapp.service.QuizCategoryService;
 import fi.haagahelia.quizzerapp.service.QuizService;
 import fi.haagahelia.quizzerapp.domain.Question;
 import fi.haagahelia.quizzerapp.domain.Quiz;
+import fi.haagahelia.quizzerapp.domain.QuizCategory;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +34,9 @@ public class QuizzerRestController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private QuizCategoryService quizCategoryService;
 
     // Get all published quizzes
     @GetMapping("/quizzes")
@@ -74,7 +80,8 @@ public class QuizzerRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // If quiz is not found, return 404
         }
 
-        // Map questions and answer options, including information about the correct answer
+        // Map questions and answer options, including information about the correct
+        // answer
         List<QuestionDTO> questionDTOs = quiz.getQuestions().stream()
                 .map(question -> new QuestionDTO(
                         question.getId(),
@@ -85,8 +92,7 @@ public class QuizzerRestController {
                                         answerOption.getAnswerOptionBody(),
                                         answerOption.isCorrect() // Include information about the correct answer
                                 ))
-                                .collect(Collectors.toList())
-                ))
+                                .collect(Collectors.toList())))
                 .collect(Collectors.toList());
 
         // Create a QuizDTO and add questions to it
@@ -96,8 +102,7 @@ public class QuizzerRestController {
                 quiz.getDescription(),
                 quiz.getCreatedDate(),
                 quiz.isPublished(),
-                quiz.getQuizCategory().getName()
-        );
+                quiz.getQuizCategory().getName());
         quizDTO.setQuestions(questionDTOs); // Add questions to the quizDTO
 
         return ResponseEntity.ok(quizDTO); // Return quiz and questions
@@ -125,5 +130,21 @@ public class QuizzerRestController {
         }
 
         return ResponseEntity.ok(questionDTOs); // Return HTTP 200 with question DTOs
+    }
+
+    // Get all Categories
+    @GetMapping("/categories")
+    public ResponseEntity<List<QuizCategoryDTO>> findAllCategories() {
+        List<QuizCategory> quizCategories = quizCategoryService.findAllQuizCategories();
+
+        if (quizCategories.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 if no categories found
+        }
+
+        List<QuizCategoryDTO> categoryDTOs = quizCategories.stream()
+                .map(category -> new QuizCategoryDTO(category.getId(), category.getName(), category.getDescription()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(categoryDTOs); // Return HTTP 200 with categories
     }
 }
