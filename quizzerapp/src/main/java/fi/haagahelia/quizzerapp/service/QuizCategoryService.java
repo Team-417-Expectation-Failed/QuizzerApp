@@ -42,7 +42,15 @@ public class QuizCategoryService {
     }
 
     public void deleteQuizCategory(Long quizCategoryId) {
-        quizCategoryRepository.deleteById(quizCategoryId);
-    }
 
+        quizCategoryRepository.findById(quizCategoryId).ifPresent(quizCategory -> {
+          
+            for (Quiz quiz : quizCategory.getQuizzes()) {
+                quiz.setQuizCategory(null);
+                quizRepository.save(quiz);
+            }
+           
+            quizCategoryRepository.deleteById(quizCategoryId);
+        });
+    }
 }

@@ -18,7 +18,7 @@ public class QuizCategory {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "quizCategory", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "quizCategory", orphanRemoval = false)
     private List<Quiz> quizzes = new ArrayList<>();
 
     public QuizCategory() {
