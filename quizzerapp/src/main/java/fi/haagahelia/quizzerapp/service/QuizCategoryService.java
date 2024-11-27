@@ -24,8 +24,7 @@ public class QuizCategoryService {
     }
 
     public QuizCategory findQuizCategoryById(Long quizCategoryId) {
-        return quizCategoryRepository.findById(quizCategoryId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid quiz category ID:" + quizCategoryId));
+        return quizCategoryRepository.findById(quizCategoryId).orElse(null);
     }
 
     public void addQuizToQuizCategory(Long QuizCategoryId, Quiz quiz) {
@@ -44,12 +43,12 @@ public class QuizCategoryService {
     public void deleteQuizCategory(Long quizCategoryId) {
 
         quizCategoryRepository.findById(quizCategoryId).ifPresent(quizCategory -> {
-          
+
             for (Quiz quiz : quizCategory.getQuizzes()) {
                 quiz.setQuizCategory(null);
                 quizRepository.save(quiz);
             }
-           
+
             quizCategoryRepository.deleteById(quizCategoryId);
         });
     }

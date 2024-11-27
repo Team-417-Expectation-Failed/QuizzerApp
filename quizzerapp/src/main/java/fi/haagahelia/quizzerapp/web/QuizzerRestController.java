@@ -147,4 +147,20 @@ public class QuizzerRestController {
 
         return ResponseEntity.ok(categoryDTOs); // Return HTTP 200 with categories
     }
+
+    // Get category by id
+    @GetMapping("/categories/{categoryId}")
+    public QuizCategoryDTO findCategoryById(@PathVariable Long categoryId) {
+        QuizCategory quizCategory = quizCategoryService.findQuizCategoryById(categoryId);
+
+        if (quizCategory != null) {
+            QuizCategoryDTO categoryDTO = new QuizCategoryDTO(quizCategory.getId(), quizCategory.getName(),
+                    quizCategory.getDescription());
+            return categoryDTO; // HTTP 200
+        } else {
+            String errorMessage = "Category not found with ID: " + categoryId;
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage); // HTTP 404
+        }
+    }
+
 }
