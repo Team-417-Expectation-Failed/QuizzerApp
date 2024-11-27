@@ -12,11 +12,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 import fi.haagahelia.quizzerapp.dto.AnswerOptionDTO;
 import fi.haagahelia.quizzerapp.dto.QuestionDTO;
+import fi.haagahelia.quizzerapp.dto.QuizCategoryDTO;
 import fi.haagahelia.quizzerapp.dto.QuizDTO;
 import fi.haagahelia.quizzerapp.service.QuestionService;
+import fi.haagahelia.quizzerapp.service.QuizCategoryService;
 import fi.haagahelia.quizzerapp.service.QuizService;
 import fi.haagahelia.quizzerapp.domain.Question;
 import fi.haagahelia.quizzerapp.domain.Quiz;
+import fi.haagahelia.quizzerapp.domain.QuizCategory;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +34,9 @@ public class QuizzerRestController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private QuizCategoryService quizCategoryService;
 
     // Get all published quizzes
     @GetMapping("/quizzes")
@@ -124,5 +130,21 @@ public class QuizzerRestController {
         }
 
         return ResponseEntity.ok(questionDTOs); // Return HTTP 200 with question DTOs
+    }
+
+    // Get all Categories
+    @GetMapping("/categories")
+    public ResponseEntity<List<QuizCategoryDTO>> findAllCategories() {
+        List<QuizCategory> quizCategories = quizCategoryService.findAllQuizCategories();
+
+        if (quizCategories.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 if no categories found
+        }
+
+        List<QuizCategoryDTO> categoryDTOs = quizCategories.stream()
+                .map(category -> new QuizCategoryDTO(category.getId(), category.getName(), category.getDescription()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(categoryDTOs); // Return HTTP 200 with categories
     }
 }
