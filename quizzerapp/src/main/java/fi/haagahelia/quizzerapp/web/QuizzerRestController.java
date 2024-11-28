@@ -60,6 +60,27 @@ public class QuizzerRestController {
         return ResponseEntity.ok(quizDTOs); // Return HTTP 200 with quizzes
     }
 
+    @GetMapping("/categories/{categoryId}/quizzes")
+    public ResponseEntity<List<QuizDTO>> findQuizzesByCategoryId(@PathVariable Long categoryId) {
+        List<Quiz> quizzes = quizService.findQuizzesByCategoryId(categoryId);
+
+        List<QuizDTO> quizDTOs = quizzes.stream()
+                .map(quiz -> new QuizDTO(
+                        quiz.getId(),
+                        quiz.getName(),
+                        quiz.getDescription(),
+                        quiz.getCreatedDate(),
+                        quiz.isPublished(),
+                        quiz.getQuizCategory().getName()))
+                .collect(Collectors.toList());
+
+        if (quizDTOs.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 if no quizzes found
+        }
+
+        return ResponseEntity.ok(quizDTOs); // Return HTTP 200 with quizzes
+    }
+
     // Get questions and answers for a quiz (new method)
     @GetMapping("/quizzes/{quizId}/full")
     public ResponseEntity<QuizDTO> getFullQuiz(@PathVariable Long quizId) {
