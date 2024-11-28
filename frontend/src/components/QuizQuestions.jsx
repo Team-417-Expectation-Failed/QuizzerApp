@@ -18,14 +18,14 @@ function FetchQuizQuestions() {
                 setQuiz(quizData); // set quiz data
             })
             .catch((error) => {
-                console.error("Error fetching quiz data:", error); // This has to be here if the fetch is slower than the rendering
+                console.error("Error fetching quiz data:", error); 
             });
 
         getQuizQuestions(quizId)
             .then((data) => setQuestions(data));
     }, [quizId]);
 
-    if (!quiz) {
+    if (!quiz) { // This has to be here if the fetch is slower than the rendering
         return <Typography variant="h6">Loading...</Typography>;
     }
 
