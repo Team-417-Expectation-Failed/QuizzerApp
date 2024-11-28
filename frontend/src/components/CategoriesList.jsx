@@ -29,7 +29,7 @@ function CategoriesList() {
           <TableBody>
             {categories.map((category) => (
               <TableRow key={category.id}>
-                <TableCell variant="body"><RouterLink to={`#`}>{category.name}</RouterLink></TableCell>
+                <TableCell variant="body"><RouterLink to={`/categories/${category.id}/quizzes`}>{category.name}</RouterLink></TableCell>
                 <TableCell variant="body">{category.description}</TableCell>
               </TableRow>
             ))}

@@ -20,6 +20,16 @@ export function getQuizById(quizId) {
     })
 }
 
+export function getQuizzesByCategory(categoryId) {
+  return fetch(`${apiUrl}/categories/${categoryId}/quizzes`)
+    .then(response => {
+      if (!response.ok)
+        throw new Error("Error in fetch" + response.statusText);
+      return response.json();
+
+    })
+}
+
 export function getQuizQuestions(quizId) {
   return fetch(`${apiUrl}/quizzes/${quizId}/questions`)
     .then(response => {
