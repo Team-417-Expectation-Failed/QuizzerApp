@@ -98,6 +98,7 @@ public class QuizzerRestController {
                         question.getDifficultyLevel(),
                         question.getAnswerOptions().stream()
                                 .map(answerOption -> new AnswerOptionDTO(
+                                        answerOption.getId(),
                                         answerOption.getAnswerOptionBody(),
                                         answerOption.isCorrect() // Include information about the correct answer
                                 ))
@@ -143,6 +144,7 @@ public class QuizzerRestController {
                         question.getDifficultyLevel(),
                         question.getAnswerOptions().stream()
                                 .map(answerOption -> new AnswerOptionDTO(
+                                        answerOption.getId(),
                                         answerOption.getAnswerOptionBody(),
                                         answerOption.isCorrect())) // Lisää oikean vastauksen tieto
                                 .collect(Collectors.toList())))

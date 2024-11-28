@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getQuizQuestions } from '../quizapi';
 import { getQuizById } from '../quizapi';
 import { Box, Typography, Paper } from "@mui/material";
+import QuizAnswerOptions from './QuizAnswerOptions';
 
 function FetchQuizQuestions() {
     const { id: quizId } = useParams();
@@ -46,6 +47,7 @@ function FetchQuizQuestions() {
                 <Paper key={question.id} sx={{ padding: 3, marginBottom: 3 }}>
                     <Typography variant="h6">{question.questionBody}</Typography>
                     <Typography variant="subtitle1">Question {index + 1} of {questions.length} - Difficulty: {formatDifficulty(question.difficultyLevel)}</Typography>
+                    <QuizAnswerOptions answerOptions={question.answerOptions} />
                 </Paper>
             ))}
         </Box>

@@ -1,13 +1,15 @@
 package fi.haagahelia.quizzerapp.dto;
 
 public class AnswerOptionDTO {
+    private Long id;
     private String answerOptionBody; // The string of the answer-option
     private boolean correct; // the boolean if the answer option is correct
 
     public AnswerOptionDTO() {}
 
     // Constructor
-    public AnswerOptionDTO(String answerOptionBody, boolean correct) {
+    public AnswerOptionDTO(Long id,String answerOptionBody, boolean correct) {
+        this.id = id;
         this.answerOptionBody = answerOptionBody;
         this.correct = correct;
     }
@@ -15,6 +17,14 @@ public class AnswerOptionDTO {
     // Getters and setters
     public String getAnswerOptionBody() {
         return answerOptionBody;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setAnswerOptionBody(String answerOptionBody) {
