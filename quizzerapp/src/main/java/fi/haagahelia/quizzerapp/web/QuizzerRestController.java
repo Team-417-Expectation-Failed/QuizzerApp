@@ -17,6 +17,10 @@ import fi.haagahelia.quizzerapp.dto.QuizDTO;
 import fi.haagahelia.quizzerapp.service.QuestionService;
 import fi.haagahelia.quizzerapp.service.QuizCategoryService;
 import fi.haagahelia.quizzerapp.service.QuizService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import fi.haagahelia.quizzerapp.domain.Question;
 import fi.haagahelia.quizzerapp.domain.Quiz;
 import fi.haagahelia.quizzerapp.domain.QuizCategory;
@@ -27,6 +31,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*")
+@Tag(name = "Quizzer application", description = "Operations for accessing and managing quizzes")
 public class QuizzerRestController {
 
     @Autowired
@@ -38,7 +43,11 @@ public class QuizzerRestController {
     @Autowired
     private QuizCategoryService quizCategoryService;
 
-    // Get all published quizzes
+    @Operation(summary = "Get all published quizzes", description = "Returns a list of published quizzes with id, name, description, created date, published status and category name")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Quizzes are not found")
+    })
     @GetMapping("/quizzes")
     public ResponseEntity<List<QuizDTO>> findAllPublishedQuizzes() {
         List<Quiz> quizzes = quizService.findAllPublishedQuizzes();
@@ -60,6 +69,11 @@ public class QuizzerRestController {
         return ResponseEntity.ok(quizDTOs); // Return HTTP 200 with quizzes
     }
 
+    @Operation(summary = "Get all quizzes of a category", description = "Returns a list of published quizzes using a category id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Quizzes are not found")
+    })
     @GetMapping("/categories/{categoryId}/quizzes")
     public ResponseEntity<List<QuizDTO>> findQuizzesByCategoryId(@PathVariable Long categoryId) {
         List<Quiz> quizzes = quizService.findQuizzesByCategoryId(categoryId);
@@ -81,7 +95,11 @@ public class QuizzerRestController {
         return ResponseEntity.ok(quizDTOs); // Return HTTP 200 with quizzes
     }
 
-    // Get questions and answers for a quiz (new method)
+    @Operation(summary = "Get questions and answers for a quiz", description = "Returns a quiz with questions and answer options, including information about the correct answer")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Quiz is not found")
+    })
     @GetMapping("/quizzes/{quizId}/full")
     public ResponseEntity<QuizDTO> getFullQuiz(@PathVariable Long quizId) {
         Quiz quiz = quizService.findQuizById(quizId); // Retrieve quiz details
@@ -118,7 +136,11 @@ public class QuizzerRestController {
         return ResponseEntity.ok(quizDTO); // Return quiz and questions
     }
 
-    // Get quiz by id
+    @Operation(summary = "Get a quiz by id", description = "Returns a quiz with id, name, description, created date, published status and category name")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Quiz is not found")
+    })
     @GetMapping("/quizzes/{quizId}")
     public QuizDTO findQuizById(@PathVariable Long quizId) {
         Quiz quiz = quizService.findQuizById(quizId); // Returns quiz or null
@@ -132,7 +154,11 @@ public class QuizzerRestController {
         }
     }
 
-    // Get questions by quiz id
+    @Operation(summary = "Get questions by quiz id", description = "Returns a list of questions with id, question body, difficulty level and answer options")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Questions are not found")
+    })
     @GetMapping("/quizzes/{quizId}/questions")
     public ResponseEntity<List<QuestionDTO>> findQuestionsByQuizId(@PathVariable Long quizId) {
         List<Question> questions = questionService.findQuestionsByQuizId(quizId);
@@ -157,7 +183,11 @@ public class QuizzerRestController {
         return ResponseEntity.ok(questionDTOs); // Return HTTP 200 with question DTOs
     }
 
-    // Get all Categories
+    @Operation(summary = "Get all Categories", description = "Returns a list of quiz categories with id, name and description")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Categories are not found")
+    })
     @GetMapping("/categories")
     public ResponseEntity<List<QuizCategoryDTO>> findAllCategories() {
         List<QuizCategory> quizCategories = quizCategoryService.findAllQuizCategories();
@@ -173,7 +203,11 @@ public class QuizzerRestController {
         return ResponseEntity.ok(categoryDTOs); // Return HTTP 200 with categories
     }
 
-    // Get category by id
+    @Operation(summary = "Get category by id", description = "Returns a category with id, name and description")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Category is not found")
+    })
     @GetMapping("/categories/{categoryId}")
     public QuizCategoryDTO findCategoryById(@PathVariable Long categoryId) {
         QuizCategory quizCategory = quizCategoryService.findQuizCategoryById(categoryId);

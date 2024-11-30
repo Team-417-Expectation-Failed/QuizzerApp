@@ -90,6 +90,10 @@ classDiagram
     Student "0..*" --> "0..*" Quiz : participates in
 ```
 
+## REST API
+
+[Swagger documentation](http://localhost:8080/swagger-ui/index.html)
+
 ## Contributing
 
 Contact one of the team members below to learn how you can take part in this project.
