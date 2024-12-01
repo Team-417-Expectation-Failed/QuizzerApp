@@ -18,11 +18,32 @@ It aims to be used for creating educational quizzes, enabling teachers to create
 git clone https://github.com/Team-417-Expectation-Failed/QuizzerApp.git
 ```
 
-### Start the application
+### Start the Backend (Spring Boot)
 
 ```
 ./mvnw spring-boot:run
 ```
+
+### Start the Frontend (React)
+
+1. Navigate to the frontend folder:
+
+    ```
+    cd frontend
+    ```
+
+2. Install the necessary dependencies:
+
+    ```
+    npm install
+    ```
+
+3. Start the React development server:
+
+    ```
+    npm run dev
+    ```
+This will start the React application, which by default runs on **http://localhost:5173**.
 
 ## Data Model
 
