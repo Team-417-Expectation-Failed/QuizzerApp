@@ -38,7 +38,7 @@ function QuizList() {
               <TableRow key={quiz.id}>
                 <TableCell variant="body"><RouterLink to={`/quiz/${quiz.id}/questions`}>{quiz.name}</RouterLink></TableCell>
                 <TableCell variant="body">{quiz.description}</TableCell>
-                <TableCell variant="body">{quiz.quizCategoryName}</TableCell>
+                <TableCell variant="body">{quiz.quizCategoryName ? quiz.quizCategoryName : "Uncategorized"}</TableCell>
                 <TableCell variant="body">{formatDate(quiz.createdDate)}</TableCell>
                 <TableCell variant="body"><RouterLink to={`/quiz/${quiz.id}/results`}>See results</RouterLink></TableCell>
                 {/* <RouterLink to={`/quiz/${quiz.id}/results`}>See results</RouterLink> Replace the above RouterLink with this when fetching 

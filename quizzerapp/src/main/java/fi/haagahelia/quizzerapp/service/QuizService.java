@@ -34,7 +34,13 @@ public class QuizService {
     }
 
     public List<Quiz> findAllPublishedQuizzes() {
-        return quizRepository.findByPublished(true);
+        List<Quiz> quizzes = quizRepository.findByPublished(true);
+        quizzes.forEach(quiz -> {
+            if (quiz.getQuizCategory() == null) {
+                quiz.setQuizCategory(null);
+            }
+        });
+        return quizzes;
     }
 
     public Quiz findQuizById(Long quizId) {
