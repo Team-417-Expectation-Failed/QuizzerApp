@@ -88,28 +88,12 @@ classDiagram
         HARD
     }
 
- class Teacher {
-        Long id
-        String name
-        String email
-        List~Quiz~ quizzes
-    }
-
-    class Student {
-        Long id
-        String name
-        String email
-        List~Quiz~ participatedQuizzes
-    }
-
     Quiz "1" --> "0..*" Question : contains
     Question "1" --> "0..*" AnswerOption : contains
     QuizCategory "1" --> "0..*" Quiz : categorizes
     Question "1" --> "1" Quiz : belongs to
     AnswerOption "1" --> "1" Question : belongs to
     Question "1" --> "1" DifficultyLevel : has
-    Teacher "0..*" --> "0..*" Quiz : creates
-    Student "0..*" --> "0..*" Quiz : participates in
 ```
 
 ## REST API
