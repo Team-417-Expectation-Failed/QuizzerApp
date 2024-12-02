@@ -25,65 +25,62 @@ public class QuizzerappApplication {
     public CommandLineRunner loadData(QuizCategoryRepository quizCategoryRepository, QuizRepository quizRepository,
             QuestionRepository questionRepository, AnswerOptionRepository answerOptionRepository) {
         return args -> {
-            // Create an example quiz category
-            QuizCategory quizCategory = new QuizCategory();
-            quizCategory.setName("Geography");
-            quizCategory.setDescription("Learning capital cities");
-            quizCategoryRepository.save(quizCategory);
-            // Create another example quiz category
-            QuizCategory quizCategory2 = new QuizCategory();
-            quizCategory2.setName("History");
-            quizCategory2.setDescription("Learning about the past");
-            quizCategoryRepository.save(quizCategory2);
-            // Create an example quiz
-            Quiz quiz = new Quiz();
-            quiz.setName("Example Quiz");
-            quiz.setDescription("This is an example quiz.");
-            quiz.setPublished(true);
-            quiz.setQuizCategory(quizCategory);
-            // Create example questions
-            Question question1 = new Question();
-            question1.setQuestionBody("What is the capital of France?");
-            question1.setQuiz(quiz);
+            // Create categories
+            QuizCategory geography = new QuizCategory("Geography", "Learning capital cities");
+            QuizCategory history = new QuizCategory("History", "Learning about the past");
+            QuizCategory science = new QuizCategory("Science", "Understanding the world around us");
 
-            Question question2 = new Question();
-            question2.setQuestionBody("What is 2 + 2?");
-            question2.setQuiz(quiz);
+            quizCategoryRepository.save(geography);
+            quizCategoryRepository.save(history);
+            quizCategoryRepository.save(science);
 
-            // Add questions to the quiz
-            quiz.getQuestions().add(question1);
-            quiz.getQuestions().add(question2);
+            // Create quizzes
+            Quiz geoQuiz = new Quiz("Geography Quiz", "Quiz on world capitals", true, geography);
+            Quiz historyQuiz = new Quiz("History Quiz", "Quiz about major historical events", true, history);
+            Quiz scienceQuiz = new Quiz("Science Quiz", "Basic science quiz", true, science);
 
-            // Save the quiz (cascades to save questions)
-            quizRepository.save(quiz);
+            quizRepository.save(geoQuiz);
+            quizRepository.save(historyQuiz);
+            quizRepository.save(scienceQuiz);
 
-            // Create example answer options for question1
-            AnswerOption answerOption1 = new AnswerOption();
-            answerOption1.setAnswerOptionBody("Paris");
-            answerOption1.setCorrect(true);
-            answerOption1.setQuestion(question1);
+            // Create questions for geoQuiz
+            Question geoQ1 = new Question("What is the capital of France?", geoQuiz);
+            Question geoQ2 = new Question("Which country is Berlin the capital of?", geoQuiz);
 
-            AnswerOption answerOption2 = new AnswerOption();
-            answerOption2.setAnswerOptionBody("London");
-            answerOption2.setCorrect(false);
-            answerOption2.setQuestion(question1);
+            questionRepository.save(geoQ1);
+            questionRepository.save(geoQ2);
 
-            // Create example answer options for question2
-            AnswerOption answerOption3 = new AnswerOption();
-            answerOption3.setAnswerOptionBody("4");
-            answerOption3.setCorrect(true);
-            answerOption3.setQuestion(question2);
+            // Create questions for historyQuiz
+            Question historyQ1 = new Question("Who was the first president of the USA?", historyQuiz);
+            Question historyQ2 = new Question("In which year did World War II end?", historyQuiz);
 
-            AnswerOption answerOption4 = new AnswerOption();
-            answerOption4.setAnswerOptionBody("5");
-            answerOption4.setCorrect(false);
-            answerOption4.setQuestion(question2);
+            questionRepository.save(historyQ1);
+            questionRepository.save(historyQ2);
 
-            // Save answer options
-            answerOptionRepository.save(answerOption1);
-            answerOptionRepository.save(answerOption2);
-            answerOptionRepository.save(answerOption3);
-            answerOptionRepository.save(answerOption4);
+            // Create questions for scienceQuiz
+            Question scienceQ1 = new Question("What is the chemical symbol for water?", scienceQuiz);
+            Question scienceQ2 = new Question("How many planets are in the Solar System?", scienceQuiz);
+
+            questionRepository.save(scienceQ1);
+            questionRepository.save(scienceQ2);
+
+            // Create answer options for geoQuiz
+            answerOptionRepository.save(new AnswerOption("Paris", true, geoQ1));
+            answerOptionRepository.save(new AnswerOption("London", false, geoQ1));
+            answerOptionRepository.save(new AnswerOption("Berlin", true, geoQ2));
+            answerOptionRepository.save(new AnswerOption("Madrid", false, geoQ2));
+
+            // Create answer options for historyQuiz
+            answerOptionRepository.save(new AnswerOption("George Washington", true, historyQ1));
+            answerOptionRepository.save(new AnswerOption("Abraham Lincoln", false, historyQ1));
+            answerOptionRepository.save(new AnswerOption("1945", true, historyQ2));
+            answerOptionRepository.save(new AnswerOption("1939", false, historyQ2));
+
+            // Create answer options for scienceQuiz
+            answerOptionRepository.save(new AnswerOption("H2O", true, scienceQ1));
+            answerOptionRepository.save(new AnswerOption("CO2", false, scienceQ1));
+            answerOptionRepository.save(new AnswerOption("8", true, scienceQ2));
+            answerOptionRepository.save(new AnswerOption("9", false, scienceQ2));
         };
     }
 }

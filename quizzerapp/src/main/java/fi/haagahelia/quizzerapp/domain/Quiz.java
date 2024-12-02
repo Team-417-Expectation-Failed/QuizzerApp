@@ -47,6 +47,14 @@ public class Quiz {
         this.published = published;
     }
 
+    // Constructor for test data
+    public Quiz(String name, String description, boolean published, QuizCategory quizCategory) {
+        this.name = name;
+        this.description = description;
+        this.published = published;
+        this.quizCategory = quizCategory;
+    }
+
     public Long getId() {
         return id;
     }

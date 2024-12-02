@@ -42,6 +42,12 @@ public class Question {
         this.difficultyLevel = DifficultyLevel.NORMAL;
     }
 
+    // Constructor with parameters for test data
+    public Question(String questionBody, Quiz quiz) {
+        this.questionBody = questionBody;
+        this.quiz = quiz;
+    }
+
     public Long getId() {
         return id;
     }
