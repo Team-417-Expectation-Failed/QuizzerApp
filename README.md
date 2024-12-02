@@ -4,6 +4,7 @@ This project is a full-stack application built with Spring Boot and React.
 It aims to be used for creating educational quizzes, enabling teachers to create and manage quizzes, and students to participate and review their answers.
 
 [The detailed project description](https://software-development-project-1.github.io/project-description)
+[Current version of the application](https://quizzerapp-student-dashboard.onrender.com/)
 
 ## Installation
 
