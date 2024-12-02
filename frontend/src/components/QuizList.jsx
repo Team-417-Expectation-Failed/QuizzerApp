@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { getPublishedQuizzes } from "../quizapi";
-import { Box, Typography } from "@mui/material";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 function QuizList() {
@@ -31,6 +30,7 @@ function QuizList() {
               <TableCell variant="head" sx={{ fontWeight: 'bold' }}>Description</TableCell>
               <TableCell variant="head" sx={{ fontWeight: 'bold' }}>Category</TableCell>
               <TableCell variant="head" sx={{ fontWeight: 'bold' }}>Added on</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -40,6 +40,10 @@ function QuizList() {
                 <TableCell variant="body">{quiz.description}</TableCell>
                 <TableCell variant="body">{quiz.quizCategoryName}</TableCell>
                 <TableCell variant="body">{formatDate(quiz.createdDate)}</TableCell>
+                <TableCell variant="body"><RouterLink to={`/quiz/${quiz.id}/results`}>See results</RouterLink></TableCell>
+                {/* <RouterLink to={`/quiz/${quiz.id}/results`}>See results</RouterLink> Replace the above RouterLink with this when fetching 
+                results is ready */}
+
               </TableRow>
             ))}
 

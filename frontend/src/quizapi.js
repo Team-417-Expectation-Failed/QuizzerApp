@@ -11,7 +11,7 @@ export function getPublishedQuizzes() {
 }
 
 export function getQuizById(quizId) {
-  return fetch(`${apiUrl}/quizzes/${quizId}`)
+  return fetch(`${apiUrl}/quizzes/${quizId}/full`)
     .then(response => {
       if (!response.ok)
         throw new Error("Error in fetch" + response.statusText);

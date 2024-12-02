@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './App.css'
 import Menu from './components/Menu'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -6,6 +5,7 @@ import QuizList from './components/QuizList';
 import QuizQuestions from './components/QuizQuestions';
 import CategoriesList from './components/CategoriesList';
 import QuestionsByCategory from './components/QuestionsByCategory';
+import QuizResults from './components/QuizResults';
 
 function App() {
 
@@ -28,6 +28,10 @@ function App() {
         {
           path: "/categories/:id/quizzes",
           element: <QuestionsByCategory />,
+        },
+        {
+          path: "/quiz/:id/results",
+          element: <QuizResults />,
         },
       ]
     },
