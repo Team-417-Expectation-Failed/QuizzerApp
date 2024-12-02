@@ -29,6 +29,11 @@ public class QuizCategory {
         this.description = description;
     }
 
+    public QuizCategory(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
     }

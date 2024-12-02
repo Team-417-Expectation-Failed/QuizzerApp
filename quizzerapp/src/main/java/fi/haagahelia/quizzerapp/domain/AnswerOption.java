@@ -26,7 +26,7 @@ public class AnswerOption {
     public AnswerOption() {
     }
 
-    // Constructor with parameters
+    // Constructor with parameters, also used for test data
     public AnswerOption(String answerOptionBody, boolean correct, Question question) {
         this.answerOptionBody = answerOptionBody;
         this.correct = correct;
