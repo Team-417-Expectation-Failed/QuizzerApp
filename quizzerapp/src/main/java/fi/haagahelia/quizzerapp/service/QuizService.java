@@ -43,6 +43,14 @@ public class QuizService {
         return quizzes;
     }
 
+    public Quiz findPublishedQuizById(Long quizId) {
+        Quiz quiz = findAllPublishedQuizzes().stream()
+                .filter(q -> q.getId().equals(quizId))
+                .findFirst()
+                .orElse(null);
+        return quiz;
+    }
+
     public Quiz findQuizById(Long quizId) {
         return quizRepository.findById(quizId).orElse(null);
     }

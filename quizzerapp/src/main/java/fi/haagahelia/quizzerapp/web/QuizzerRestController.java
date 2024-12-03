@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import fi.haagahelia.quizzerapp.dto.AnswerDTO;
 import fi.haagahelia.quizzerapp.dto.AnswerOptionDTO;
 import fi.haagahelia.quizzerapp.dto.QuestionDTO;
 import fi.haagahelia.quizzerapp.dto.QuizCategoryDTO;
 import fi.haagahelia.quizzerapp.dto.QuizDTO;
+import fi.haagahelia.quizzerapp.repositories.AnswerRepository;
+import fi.haagahelia.quizzerapp.service.AnswerService;
 import fi.haagahelia.quizzerapp.service.QuestionService;
 import fi.haagahelia.quizzerapp.service.QuizCategoryService;
 import fi.haagahelia.quizzerapp.service.QuizService;
@@ -21,12 +24,16 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import fi.haagahelia.quizzerapp.domain.Answer;
+import fi.haagahelia.quizzerapp.domain.AnswerOption;
 import fi.haagahelia.quizzerapp.domain.Question;
 import fi.haagahelia.quizzerapp.domain.Quiz;
 import fi.haagahelia.quizzerapp.domain.QuizCategory;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api")
@@ -42,6 +49,12 @@ public class QuizzerRestController {
 
         @Autowired
         private QuizCategoryService quizCategoryService;
+
+        @Autowired
+        private AnswerService answerService;
+
+        @Autowired
+        private AnswerRepository answerRepository;
 
         @Operation(summary = "Get all published quizzes", description = "Returns a list of published quizzes with id, name, description, created date, published status and category name")
         @ApiResponses(value = {
@@ -232,6 +245,38 @@ public class QuizzerRestController {
                 } else {
                         String errorMessage = "Category not found with ID: " + categoryId;
                         throw new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage); // HTTP 404
+                }
+        }
+
+        @Operation(summary = "Greate a new answer", description = "Creates a new answer for a question")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Successful operation"),
+                        @ApiResponse(responseCode = "404", description = "Question is not found")
+        })
+        @PostMapping("/answers")
+        public AnswerDTO createAnswer(@RequestBody AnswerDTO answerDTO) {
+                Quiz quiz = quizService.findPublishedQuizById(answerDTO.getQuizId());
+                Question question = answerService.findQuestionById(answerDTO.getQuestionId());
+                AnswerOption answerOption = question.getAnswerOptions().stream()
+                                .filter(ao -> ao.getId().equals(answerDTO.getAnswerOptionId()))
+                                .findFirst()
+                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                                "Answer option not found"));
+                if (quiz == null) {
+                        String errorMessage = "Quiz not found with ID: " + answerDTO.getQuizId();
+                        throw new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage); // HTTP 404
+                } else if (answerOption == null) {
+                        String errorMessage = "Answer option not found with ID: " + answerDTO.getAnswerOptionId();
+                        throw new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage); // HTTP 404
+                } else {
+                        boolean correct = false;
+                        if (answerOption.isCorrect()) {
+                                correct = true;
+                        }
+                        // Create and save the answer
+                        Answer answer = new Answer(question, answerOption, quiz, correct);
+                        answerRepository.save(answer);
+                        return answerDTO; // HTTP 200
                 }
         }
 
