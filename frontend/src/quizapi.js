@@ -51,6 +51,7 @@ export function getCategories() {
     })
 }
 
+<<<<<<< HEAD
 export function getQuizReviews(quizId) {
   return fetch (`${apiUrl}/quizzes/${quizId}/reviews`)
   .then(response => {
@@ -60,4 +61,21 @@ export function getQuizReviews(quizId) {
     return response.json();
 
   })
+=======
+export function addQuizAnswer(answerObject) {
+  console.log(answerObject);
+  return fetch(`${apiUrl}/answers`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(answerObject)
+  })
+    .then(response => {
+      if (!response.ok)
+        throw new Error("Error in fetch" + response.statusText);
+      return response.json();
+
+    })
+>>>>>>> 45d387a056d490dabc24b547bcee4eea3bad32a0
 }
