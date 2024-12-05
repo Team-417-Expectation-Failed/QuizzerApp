@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { useParams } from "react-router-dom";
-import { getQuizById } from '../quizapi';
+import { getQuizById } from '../quizapi'; // Only use getQuizById
 import {
     Box,
     Button,
@@ -17,15 +17,16 @@ import {
 const ReviewForm = () => {
 
     const { id: quizId } = useParams();
-    const [quiz, setQuiz] = useState(null);
+    const [quiz, setQuiz] = useState(null); // Holds the full quiz data
     const [nickname, setNickname] = useState('');
     const [rating, setRating] = useState('');
     const [reviewMessage, setReviewMessage] = useState('');
 
+    // Use useEffect to fetch quiz data by quizId
     useEffect(() => {
         getQuizById(quizId)
             .then((quizData) => {
-                setQuiz(quizData);
+                setQuiz(quizData); // Set the entire quiz data
             })
             .catch((error) => {
                 console.error("Error fetching quiz data:", error); 

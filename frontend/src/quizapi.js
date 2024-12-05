@@ -51,19 +51,13 @@ export function getCategories() {
     })
 }
 
-export function addQuizAnswer(answerObject) {
-  console.log(answerObject);
-  return fetch(`${apiUrl}/answers`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(answerObject)
-  })
-    .then(response => {
-      if (!response.ok)
-        throw new Error("Error in fetch" + response.statusText);
-      return response.json();
+export function getQuizReviews(quizId) {
+  return fetch (`${apiUrl}/quizzes/${quizId}/reviews`)
+  .then(response => {
+    if (!response.ok)
+      throw new Error("Error in fetch" + response.statusText);
+    console.log(response);
+    return response.json();
 
-    })
+  })
 }

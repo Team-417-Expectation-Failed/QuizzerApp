@@ -47,7 +47,7 @@ function FetchQuizQuestions() {
                 <Paper key={question.id} sx={{ padding: 3, marginBottom: 3 }}>
                     <Typography variant="h6">{question.questionBody}</Typography>
                     <Typography variant="subtitle1">Question {index + 1} of {questions.length} - Difficulty: {formatDifficulty(question.difficultyLevel)}</Typography>
-                    <QuizAnswerOptions questionId={question.id} answerOptions={question.answerOptions} quizId={quizId} />
+                    <QuizAnswerOptions answerOptions={question.answerOptions} />
                 </Paper>
             ))}
         </Box>
