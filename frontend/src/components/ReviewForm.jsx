@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { useParams } from "react-router-dom";
+import { getQuizById } from '../quizapi';
 import {
     Box,
     Button,
@@ -13,15 +14,26 @@ import {
     Radio,
 } from '@mui/material';
 
-const ReviewForm = ({ onSubmitReview }) => {
+const ReviewForm = () => {
 
-    const { quizId } = useParams();
-
+    const { id: quizId } = useParams();
+    const [quiz, setQuiz] = useState(null);
     const [nickname, setNickname] = useState('');
     const [rating, setRating] = useState('');
     const [reviewMessage, setReviewMessage] = useState('');
 
-    const handleSubmit = (e) => {
+    useEffect(() => {
+        getQuizById(quizId)
+            .then((quizData) => {
+                setQuiz(quizData);
+            })
+            .catch((error) => {
+                console.error("Error fetching quiz data:", error); 
+            });
+    }, [quizId]);
+
+    const handleSubmit = (e) => { 
+        console.log("Submit");
         e.preventDefault();
 
         if (!nickname || !rating || !reviewMessage) {
@@ -38,7 +50,7 @@ const ReviewForm = ({ onSubmitReview }) => {
             datestamp,
         };
 
-        onSubmitReview(reviewData);
+        console.log(reviewData);
 
         setNickname('');
         setRating('');
@@ -61,7 +73,7 @@ const ReviewForm = ({ onSubmitReview }) => {
             }}
         >
             <Typography variant="h5" component="h1">
-                Add a review for &quot;{quizId}&quot;
+                Add a review for &quot;{quiz ? quiz.name : 'Loading...'}&quot;
             </Typography>
 
             <TextField
