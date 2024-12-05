@@ -1,17 +1,22 @@
 import { useState } from 'react';
 import dayjs from 'dayjs';
+import { useParams } from "react-router-dom";
 import {
     Box,
     Button,
     FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
+    RadioGroup,
+    FormLabel,
+    FormControlLabel,
     TextField,
     Typography,
+    Radio,
 } from '@mui/material';
 
 const ReviewForm = ({ onSubmitReview }) => {
+
+    const { quizId } = useParams();
+
     const [nickname, setNickname] = useState('');
     const [rating, setRating] = useState('');
     const [reviewMessage, setReviewMessage] = useState('');
@@ -48,15 +53,15 @@ const ReviewForm = ({ onSubmitReview }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 2,
-                maxWidth: 400,
+                maxWidth: 1200,
                 margin: 'auto',
                 padding: 2,
                 boxShadow: 3,
                 borderRadius: 2,
             }}
         >
-            <Typography variant="h5" component="h1" textAlign="center">
-                Submit Your Review
+            <Typography variant="h5" component="h1">
+                Add a review for &quot;{quizId}&quot;
             </Typography>
 
             <TextField
@@ -64,22 +69,22 @@ const ReviewForm = ({ onSubmitReview }) => {
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
                 required
-                fullWidth
             />
 
             <FormControl fullWidth required>
-                <InputLabel id="rating-label">Rating</InputLabel>
-                <Select
-                    labelId="rating-label"
+                <FormLabel id="rating-radio-buttons-group-label">Rating</FormLabel>
+                <RadioGroup
+                    aria-labelledby="rating-radio-buttons-group-label"
                     value={rating}
                     onChange={(e) => setRating(e.target.value)}
+                    name="radio-buttons-group"
                 >
-                    <MenuItem value={1}>1 - Useless</MenuItem>
-                    <MenuItem value={2}>2 - Poor</MenuItem>
-                    <MenuItem value={3}>3 - Ok</MenuItem>
-                    <MenuItem value={4}>4 - Good</MenuItem>
-                    <MenuItem value={5}>5 - Excellent</MenuItem>
-                </Select>
+                    <FormControlLabel value="1" control={<Radio />} label="1 - Useless" />
+                    <FormControlLabel value="2" control={<Radio />} label="2 - Poor" />
+                    <FormControlLabel value="3" control={<Radio />} label="3 - Ok" />
+                    <FormControlLabel value="4" control={<Radio />} label="4 - Good" />
+                    <FormControlLabel value="5" control={<Radio />} label="5 - Excellent" />
+                </RadioGroup>
             </FormControl>
 
             <TextField
@@ -88,7 +93,6 @@ const ReviewForm = ({ onSubmitReview }) => {
                 onChange={(e) => setReviewMessage(e.target.value)}
                 required
                 multiline
-                rows={4}
                 fullWidth
             />
 
