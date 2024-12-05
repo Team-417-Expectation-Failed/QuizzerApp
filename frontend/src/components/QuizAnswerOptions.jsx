@@ -3,23 +3,29 @@ import { FormControl, Radio, RadioGroup, FormControlLabel, Snackbar, Button } fr
 import { addQuizAnswer } from '../quizapi';
 
 function QuizAnswerOptions({questionId, answerOptions, quizId}) {
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(0);
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState('');
+    const [disabled, setDisabled] = useState(true);
     const [answerObject, setAnswerObject] = useState({
         questionId: questionId,
-        answerOptionId: 0,
+        answerOptionId: value,
         quizId: parseInt(quizId, 10),
         correct: false,
     });
 
     const handleRadioChange = (event) => {
         setValue(event.target.value);
+        setDisabled(false);
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const selectedOption = answerOptions.find(option => option.id === parseInt(value)).correct;
+        setDisabled(true);
+        if (value === '') {
+            console.log("No value selected");
+        }
+        const selectedOption = answerOptions.find(option => option.id === parseInt(value, 10)).correct;
         if (selectedOption) {
             setMessage("That is correct, good job!");
         } else {
@@ -45,7 +51,7 @@ function QuizAnswerOptions({questionId, answerOptions, quizId}) {
         <>
             <form onSubmit={handleSubmit}>
                 <FormControl variant='standard'>
-                    <RadioGroup value={value} onChange={handleRadioChange}>
+                    <RadioGroup disabled={false} value={value} onChange={handleRadioChange}>
                         {answerOptions.map((answerOption) => (
                             <FormControlLabel
                                 key={answerOption.id}
@@ -55,7 +61,7 @@ function QuizAnswerOptions({questionId, answerOptions, quizId}) {
                             />
                         ))}
                     </RadioGroup>
-                    <Button type="submit" variant="contained" color="primary">
+                    <Button disabled={disabled} type="submit" variant="contained" color="primary">
                         Submit
                     </Button>
                 </FormControl>
