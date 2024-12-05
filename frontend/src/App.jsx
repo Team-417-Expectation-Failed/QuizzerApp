@@ -6,6 +6,7 @@ import QuizQuestions from './components/QuizQuestions';
 import CategoriesList from './components/CategoriesList';
 import QuestionsByCategory from './components/QuestionsByCategory';
 import QuizResults from './components/QuizResults';
+import ReviewList from './components/ReviewList';
 
 function App() {
 
@@ -33,6 +34,11 @@ function App() {
           path: "/quiz/:id/results",
           element: <QuizResults />,
         },
+        {
+          path: "/quiz/:id/reviews",
+          element: <ReviewList />,
+        },
+
       ]
     },
   ]);
