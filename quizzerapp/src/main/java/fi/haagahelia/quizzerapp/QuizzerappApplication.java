@@ -9,10 +9,12 @@ import fi.haagahelia.quizzerapp.domain.AnswerOption;
 import fi.haagahelia.quizzerapp.domain.Question;
 import fi.haagahelia.quizzerapp.domain.Quiz;
 import fi.haagahelia.quizzerapp.domain.QuizCategory;
+import fi.haagahelia.quizzerapp.domain.Review;
 import fi.haagahelia.quizzerapp.repositories.AnswerOptionRepository;
 import fi.haagahelia.quizzerapp.repositories.QuestionRepository;
 import fi.haagahelia.quizzerapp.repositories.QuizCategoryRepository;
 import fi.haagahelia.quizzerapp.repositories.QuizRepository;
+import fi.haagahelia.quizzerapp.repositories.ReviewRepository;
 
 @SpringBootApplication
 public class QuizzerappApplication {
@@ -23,7 +25,8 @@ public class QuizzerappApplication {
 
     @Bean
     public CommandLineRunner loadData(QuizCategoryRepository quizCategoryRepository, QuizRepository quizRepository,
-            QuestionRepository questionRepository, AnswerOptionRepository answerOptionRepository) {
+            QuestionRepository questionRepository, AnswerOptionRepository answerOptionRepository,
+            ReviewRepository reviewRepository) {
         return args -> {
             // Create categories
             QuizCategory geography = new QuizCategory("Geography", "Learning capital cities");
@@ -81,6 +84,20 @@ public class QuizzerappApplication {
             answerOptionRepository.save(new AnswerOption("CO2", false, scienceQ1));
             answerOptionRepository.save(new AnswerOption("8", true, scienceQ2));
             answerOptionRepository.save(new AnswerOption("9", false, scienceQ2));
+
+            // Create reviews for quizzes
+            Review review = new Review("Jane Doe", 4, "Good quiz!", geoQuiz);
+            Review review2 = new Review("John Smith", 3, "Not bad", geoQuiz);
+            Review review3 = new Review("Janet Doe", 5, "Great quiz!", historyQuiz);
+            Review review4 = new Review("John Doe", 2, "Not good", historyQuiz);
+            Review review5 = new Review("Jane Smith", 4, "Good quiz!", scienceQuiz);
+            Review review6 = new Review("John Doe", 3, "Not bad", scienceQuiz);
+            reviewRepository.save(review);
+            reviewRepository.save(review2);
+            reviewRepository.save(review3);
+            reviewRepository.save(review4);
+            reviewRepository.save(review5);
+            reviewRepository.save(review6);
         };
     }
 }
