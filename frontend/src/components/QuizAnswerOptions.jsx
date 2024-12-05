@@ -3,28 +3,29 @@ import { FormControl, Radio, RadioGroup, FormControlLabel, Snackbar, Button } fr
 import { addQuizAnswer } from '../quizapi';
 
 function QuizAnswerOptions({questionId, answerOptions, quizId}) {
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState('');
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState('');
     const [disabled, setDisabled] = useState(true);
     const [answerObject, setAnswerObject] = useState({
         questionId: questionId,
-        answerOptionId: value,
+        answerOptionId: null,
         quizId: parseInt(quizId, 10),
         correct: false,
     });
 
     const handleRadioChange = (event) => {
-        setValue(event.target.value);
+        const selectedValue = event.target.value;
+        setValue(selectedValue);
         setDisabled(false);
-    };
+        setAnswerObject((prevAnswerObject) => ({
+            ...prevAnswerObject,
+            answerOptionId: parseInt(selectedValue, 10),
+        }))};
 
     const handleSubmit = (event) => {
         event.preventDefault();
         setDisabled(true);
-        if (value === '') {
-            console.log("No value selected");
-        }
         const selectedOption = answerOptions.find(option => option.id === parseInt(value, 10)).correct;
         if (selectedOption) {
             setMessage("That is correct, good job!");
