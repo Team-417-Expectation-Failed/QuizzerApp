@@ -17,7 +17,9 @@ function QuizAnswerOptions({questionId, answerOptions, quizId}) {
     const handleRadioChange = (event) => {
         const selectedValue = event.target.value;
         setValue(selectedValue);
-        setDisabled(false);
+        if (message === '') {
+            setDisabled(false);
+        }
         setAnswerObject((prevAnswerObject) => ({
             ...prevAnswerObject,
             answerOptionId: parseInt(selectedValue, 10),
