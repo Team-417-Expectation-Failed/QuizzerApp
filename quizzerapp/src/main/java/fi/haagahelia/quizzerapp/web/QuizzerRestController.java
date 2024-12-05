@@ -56,6 +56,7 @@ public class QuizzerRestController {
         @Autowired
         private AnswerRepository answerRepository;
 
+        // Swagger documentation
         @Operation(summary = "Get all published quizzes", description = "Returns a list of published quizzes with id, name, description, created date, published status and category name")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Successful operation"),
@@ -248,7 +249,7 @@ public class QuizzerRestController {
                 }
         }
 
-        @Operation(summary = "Greate a new answer", description = "Creates a new answer for a question")
+        @Operation(summary = "Create a new answer", description = "Creates a new answer for a question")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Successful operation"),
                         @ApiResponse(responseCode = "404", description = "Question is not found")
@@ -270,6 +271,7 @@ public class QuizzerRestController {
                         throw new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage); // HTTP 404
                 } else {
                         boolean correct = false;
+                        // Maybe this needs to be removed:
                         if (answerOption.isCorrect()) {
                                 correct = true;
                         }
