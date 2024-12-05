@@ -20,6 +20,7 @@ import fi.haagahelia.quizzerapp.service.AnswerService;
 import fi.haagahelia.quizzerapp.service.QuestionService;
 import fi.haagahelia.quizzerapp.service.QuizCategoryService;
 import fi.haagahelia.quizzerapp.service.QuizService;
+import fi.haagahelia.quizzerapp.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -29,6 +30,7 @@ import fi.haagahelia.quizzerapp.domain.AnswerOption;
 import fi.haagahelia.quizzerapp.domain.Question;
 import fi.haagahelia.quizzerapp.domain.Quiz;
 import fi.haagahelia.quizzerapp.domain.QuizCategory;
+import fi.haagahelia.quizzerapp.domain.Review;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,6 +57,9 @@ public class QuizzerRestController {
 
         @Autowired
         private AnswerRepository answerRepository;
+
+        @Autowired
+        private ReviewService reviewService;
 
         // Swagger documentation
         @Operation(summary = "Get all published quizzes", description = "Returns a list of published quizzes with id, name, description, created date, published status and category name")
@@ -280,6 +285,20 @@ public class QuizzerRestController {
                         answerRepository.save(answer);
                         return answerDTO; // HTTP 200
                 }
+        }
+
+        @Operation(summary = "Get all reviews of a quiz", description = "Get all reviews of a quiz by quiz id")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Successful operation"),
+                        @ApiResponse(responseCode = "404", description = "Question is not found")
+        })
+        @GetMapping("/quizzes/{quizId}/reviews")
+        public ResponseEntity<List<Review>> getReviewsByQuizId(@PathVariable Long quizId) {
+                List<Review> reviews = reviewService.findReviewsByQuizId(quizId);
+                if (reviews.isEmpty()) {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 if no reviews found
+                }
+                return ResponseEntity.ok(reviews); // Return HTTP 200 with reviews
         }
 
 }
