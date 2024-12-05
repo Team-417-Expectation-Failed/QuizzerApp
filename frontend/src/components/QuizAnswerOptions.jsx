@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import { FormControl, Radio, RadioGroup, FormControlLabel, Snackbar, Button } from '@mui/material';
+import { addQuizAnswer } from '../quizapi';
 
-function QuizAnswerOptions({answerOptions}) {
+function QuizAnswerOptions({questionId, answerOptions, quizId}) {
     const [value, setValue] = useState('');
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState('');
+    const [answerObject, setAnswerObject] = useState({
+        questionId: questionId,
+        answerOptionId: 0,
+        quizId: parseInt(quizId, 10),
+        correct: false,
+    });
 
     const handleRadioChange = (event) => {
         setValue(event.target.value);
@@ -19,6 +26,14 @@ function QuizAnswerOptions({answerOptions}) {
             setMessage("That is not correct, try again!");
         }
         setOpen(true);
+        setAnswerObject({...answerObject, answerOptionId: parseInt(value, 10), correct: selectedOption});
+        addQuizAnswer(answerObject)
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error("Error adding answer:", error);
+            });
     };
 
     const handleClose = () => {

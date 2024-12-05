@@ -50,3 +50,20 @@ export function getCategories() {
 
     })
 }
+
+export function addQuizAnswer(answerObject) {
+  console.log(answerObject);
+  return fetch(`${apiUrl}/answers`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(answerObject)
+  })
+    .then(response => {
+      if (!response.ok)
+        throw new Error("Error in fetch" + response.statusText);
+      return response.json();
+
+    })
+}
