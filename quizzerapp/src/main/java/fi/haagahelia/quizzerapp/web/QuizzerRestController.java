@@ -301,4 +301,15 @@ public class QuizzerRestController {
                 return ResponseEntity.ok(reviews); // Return HTTP 200 with reviews
         }
 
+        @Operation(summary = "Deletes review", description = "Deletes review by review id")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Successful operation"),
+                        @ApiResponse(responseCode = "404", description = "Question is not found")
+        })
+        @PostMapping("/reviews/{reviewId}")
+        public String deleteReviewById(@RequestBody Review review) {
+                reviewService.deleteReviewById(review.getId());
+                return "Review deleted successfully";
+        }
+
 }

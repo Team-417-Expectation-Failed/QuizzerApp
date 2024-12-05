@@ -29,4 +29,8 @@ public class ReviewService {
         return reviewRepository.findByQuizId(quizId);
     }
 
+    public void deleteReviewById(Long quizId) {
+        reviewRepository.deleteById(quizId);
+    }
+
 }
