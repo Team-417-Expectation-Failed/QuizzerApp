@@ -6,20 +6,29 @@ function QuizAnswerOptions({questionId, answerOptions, quizId}) {
     const [value, setValue] = useState('');
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState('');
+    const [disabled, setDisabled] = useState(true);
     const [answerObject, setAnswerObject] = useState({
         questionId: questionId,
-        answerOptionId: 0,
+        answerOptionId: null,
         quizId: parseInt(quizId, 10),
         correct: false,
     });
 
     const handleRadioChange = (event) => {
-        setValue(event.target.value);
-    };
+        const selectedValue = event.target.value;
+        setValue(selectedValue);
+        if (message === '') {
+            setDisabled(false);
+        }
+        setAnswerObject((prevAnswerObject) => ({
+            ...prevAnswerObject,
+            answerOptionId: parseInt(selectedValue, 10),
+        }))};
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const selectedOption = answerOptions.find(option => option.id === parseInt(value)).correct;
+        setDisabled(true);
+        const selectedOption = answerOptions.find(option => option.id === parseInt(value, 10)).correct;
         if (selectedOption) {
             setMessage("That is correct, good job!");
         } else {
@@ -45,7 +54,7 @@ function QuizAnswerOptions({questionId, answerOptions, quizId}) {
         <>
             <form onSubmit={handleSubmit}>
                 <FormControl variant='standard'>
-                    <RadioGroup value={value} onChange={handleRadioChange}>
+                    <RadioGroup disabled={false} value={value} onChange={handleRadioChange}>
                         {answerOptions.map((answerOption) => (
                             <FormControlLabel
                                 key={answerOption.id}
@@ -55,7 +64,7 @@ function QuizAnswerOptions({questionId, answerOptions, quizId}) {
                             />
                         ))}
                     </RadioGroup>
-                    <Button type="submit" variant="contained" color="primary">
+                    <Button disabled={disabled} type="submit" variant="contained" color="primary">
                         Submit
                     </Button>
                 </FormControl>
