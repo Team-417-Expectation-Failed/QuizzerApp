@@ -4,6 +4,7 @@ This project is a full-stack application built with Spring Boot and React.
 It aims to be used for creating educational quizzes, enabling teachers to create and manage quizzes, and students to participate and review their answers.
 
 [The detailed project description](https://software-development-project-1.github.io/project-description)
+
 [Current version of the application](https://quizzerapp-student-dashboard.onrender.com/)
 
 ## Installation
@@ -58,6 +59,7 @@ classDiagram
         boolean published
         QuizCategory quizCategory
         List~Question~ questions
+        List~Review~ reviews
     }
 
     class Question {
@@ -88,7 +90,15 @@ classDiagram
         HARD
     }
 
-    Quiz "1" --> "0..*" Question : contains
+    class Review {
+        Long id 
+        String nickname;
+        Integer rating;
+        String reviewText;
+    }
+
+    Quiz "1" --> "0..*" Question : has
+    Quiz "1" --> "0..*" Review : contains
     Question "1" --> "0..*" AnswerOption : contains
     QuizCategory "1" --> "0..*" Quiz : categorizes
     Question "1" --> "1" Quiz : belongs to
