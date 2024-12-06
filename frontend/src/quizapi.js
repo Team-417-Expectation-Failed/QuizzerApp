@@ -52,12 +52,22 @@ export function getCategories() {
 }
 
 export function getQuizReviews(quizId) {
-  return fetch (`${apiUrl}/quizzes/${quizId}/reviews`)
-  .then(response => {
-    if (!response.ok)
-      throw new Error("Error in fetch" + response.statusText);
-    console.log(response);
-    return response.json();
+  return fetch(`${apiUrl}/quizzes/${quizId}/reviews`)
+    .then(response => {
+      if (!response.ok)
+        throw new Error("Error in fetch" + response.statusText);
+      console.log(response);
+      return response.json();
 
+    })
+}
+
+export function deleteReview(reviewId) {
+  return fetch(`${apiUrl}/reviews/${reviewId}`, {
+    method: 'DELETE',
   })
+    .then(response => {
+      if (!response.ok)
+        throw new Error("Error in fetch" + response.statusText);
+    })
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -301,15 +302,20 @@ public class QuizzerRestController {
                 return ResponseEntity.ok(reviews); // Return HTTP 200 with reviews
         }
 
-        @Operation(summary = "Deletes review", description = "Deletes review by review id")
+        @Operation(summary = "Deletes a review", description = "Deletes a review by review id")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Successful operation"),
                         @ApiResponse(responseCode = "404", description = "Question is not found")
         })
-        @PostMapping("/reviews/{reviewId}")
-        public String deleteReviewById(@RequestBody Review review) {
-                reviewService.deleteReviewById(review.getId());
-                return "Review deleted successfully";
+        @DeleteMapping("/reviews/{reviewId}")
+        public ResponseEntity<String> deleteReviewById(@PathVariable Long reviewId) {
+                try {
+                        reviewService.deleteReviewById(reviewId);
+                        return ResponseEntity.ok("Review deleted successfully");
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                        .body("Failed to delete review: " + e.getMessage());
+                }
         }
 
 }

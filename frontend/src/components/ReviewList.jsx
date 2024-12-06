@@ -1,17 +1,13 @@
 import { Box, Typography, Paper, Button } from "@mui/material";
-import { getQuizReviews } from "../quizapi";
-import { useParams } from "react-router-dom";
+import { getQuizReviews, deleteReview as deleteReviewApi, getQuizById } from "../quizapi";
 import { useState, useEffect } from "react";
-import { getQuizById } from "../quizapi";
-import { Link as RouterLink } from "react-router-dom";
+import { useParams, Link as RouterLink } from "react-router-dom";
 
 
 function ReviewList() {
     const { id: quizId } = useParams();
     const [reviews, setReviews] = useState([]);
     const [quiz, setQuiz] = useState(null);
-
-
 
     useEffect(() => {
 
@@ -32,6 +28,16 @@ function ReviewList() {
         return <Typography variant="h6">Loading...</Typography>;
     }
 
+    const deleteReview = (id) => {
+        deleteReviewApi(id)
+            .then(() => {
+                setReviews(reviews.filter(review => review.id !== id));
+            })
+            .catch((error) => {
+                console.error("Error deleting review:", error);
+            });
+    };
+
     return (
         <Box sx={{ margin: 5 }}>
             <Typography variant="h4" sx={{ marginBottom: 2 }}>Reviews of "{quiz.name}"</Typography>
@@ -46,7 +52,7 @@ function ReviewList() {
                     <Typography>{review.reviewText}</Typography>
                     <Typography>Written on: {new Intl.DateTimeFormat('fi-FI').format(new Date(review.reviewDate))}</Typography>
                     <Box sx={{ marginTop: 2 }}>
-                        <Button>Delete</Button>
+                        <Button onClick={() => deleteReview(review.id)}>Delete</Button>
                         <Button>Edit</Button>
                     </Box>
                 </Paper>
