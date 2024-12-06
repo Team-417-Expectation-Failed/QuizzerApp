@@ -1,5 +1,9 @@
 package fi.haagahelia.quizzerapp.domain;
 
+import java.time.LocalDate;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -17,6 +21,16 @@ public class Review {
     private String nickname;
     private Integer rating;
     private String reviewText;
+    @CreationTimestamp
+    private LocalDate reviewDate;
+
+    public LocalDate getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(LocalDate reviewDate) {
+        this.reviewDate = reviewDate;
+    }
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "quiz_id")
@@ -81,6 +95,7 @@ public class Review {
                 ", rating=" + rating +
                 ", reviewText='" + reviewText + '\'' +
                 ", quiz=" + quiz +
+                ", reviewDate=" + reviewDate +
                 '}';
     }
 }
