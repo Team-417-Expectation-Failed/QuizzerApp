@@ -1,5 +1,7 @@
 package fi.haagahelia.quizzerapp.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +34,9 @@ public class AnswerService {
 
     public Answer findAnswerById(Long answerId) {
         return answerRepository.findById(answerId).orElseThrow(() -> new RuntimeException("Answer not found"));
+    }
+
+    public List<Answer> findAnswersByQuizId(Long quizId) {
+        return answerRepository.findByQuizId(quizId);
     }
 }

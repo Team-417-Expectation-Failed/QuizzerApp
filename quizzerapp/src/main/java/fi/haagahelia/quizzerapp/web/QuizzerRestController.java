@@ -290,8 +290,22 @@ public class QuizzerRestController {
         answerRepository.save(answer);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Answer created successfully");
-    }
+        }
 
+        @Operation(summary = "Get all answers for a specific quiz", description = "Returns a list of answers for a quiz ID")
+        @ApiResponses(value = {
+                @ApiResponse(responseCode = "200", description = "Successful operation"),
+                @ApiResponse(responseCode = "404", description = "Answers are not found for quiz ID")
+        })
+
+        @GetMapping("/quizzes/{quizId}/answers")
+        public ResponseEntity<List<Answer>> getAnswersByQuizId(@PathVariable Long quizId) {
+                List<Answer> answers = answerService.findAnswersByQuizId(quizId);
+                if (answers.isEmpty()) {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 if no answers found
+                }
+                return ResponseEntity.ok(answers); // Return HTTP 200 with answers
+        }
 
         @Operation(summary = "Get all reviews of a quiz", description = "Get all reviews of a quiz by quiz id")
         @ApiResponses(value = {
