@@ -23,12 +23,6 @@ public class QuizCategory {
     public QuizCategory() {
     }
 
-    public QuizCategory(Long id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
-
     public QuizCategory(String name, String description) {
         this.name = name;
         this.description = description;
