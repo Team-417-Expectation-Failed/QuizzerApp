@@ -7,6 +7,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+/**
+ * Represents an answer option for a quiz question.
+ * Each answer option is associated with a specific question and 
+ * indicates whether it is the correct answer or not.
+ */
 @Entity
 public class AnswerOption {
 
@@ -66,10 +71,6 @@ public class AnswerOption {
         this.question = question;
     }
 
-    // This method can be kept, though it's essentially the same as getAnswerOptionBody()
-    public String getOptionText() {
-        return answerOptionBody;
-    }
 
     // Override toString() to provide meaningful information about AnswerOption
     @Override
@@ -78,6 +79,7 @@ public class AnswerOption {
                 "id=" + id +
                 ", answerOptionBody='" + answerOptionBody + '\'' +
                 ", correct=" + correct +
+                ", question=" + (question != null ? question.getId() : null) +
                 '}';
     }
 }

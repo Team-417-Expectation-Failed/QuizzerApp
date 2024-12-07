@@ -39,13 +39,13 @@ public class Question {
 
     public Question(String questionBody) {
         this.questionBody = questionBody;
-        this.difficultyLevel = DifficultyLevel.NORMAL;
     }
 
     // Constructor with parameters for test data
     public Question(String questionBody, Quiz quiz) {
         this.questionBody = questionBody;
         this.quiz = quiz;
+        this.difficultyLevel = DifficultyLevel.NORMAL;
     }
 
     public Long getId() {
@@ -93,8 +93,8 @@ public class Question {
         return "Question{" +
                 "id=" + id +
                 ", questionBody='" + questionBody + '\'' +
-                ", quiz=" + quiz +
-                ", answerOptions=" + answerOptions +
+                ", quizId=" + (quiz != null ? quiz.getId() : null) +
+                ", answerOptionsCount=" + (answerOptions != null ? answerOptions.size() : 0) +
                 '}';
     }
 }
