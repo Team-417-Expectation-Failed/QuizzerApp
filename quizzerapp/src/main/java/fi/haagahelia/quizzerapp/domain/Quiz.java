@@ -28,7 +28,7 @@ public class Quiz {
     private LocalDate createdDate;
     private boolean published;
 
-    @ManyToOne(optional = true)
+    @ManyToOne
     @JoinColumn(name = "quizCategory_id")
     @JsonIgnore
     private QuizCategory quizCategory;
@@ -38,6 +38,7 @@ public class Quiz {
     private List<Question> questions = new ArrayList<>();
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Review> reviews = new ArrayList<>();
 
     public Quiz() {
@@ -121,6 +122,8 @@ public class Quiz {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", createdDate=" + createdDate +
+                ", published=" + published +
+                ", quizCategory=" + (quizCategory != null ? quizCategory.getName() : "null") +
                 '}';
     }
 }
