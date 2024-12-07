@@ -7,17 +7,22 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import fi.haagahelia.quizzerapp.domain.Answer;
+import fi.haagahelia.quizzerapp.domain.Question;
+import fi.haagahelia.quizzerapp.domain.Quiz;
+import fi.haagahelia.quizzerapp.domain.QuizCategory;
+import fi.haagahelia.quizzerapp.domain.Review;
 import fi.haagahelia.quizzerapp.dto.AnswerDTO;
 import fi.haagahelia.quizzerapp.dto.AnswerOptionDTO;
 import fi.haagahelia.quizzerapp.dto.QuestionDTO;
 import fi.haagahelia.quizzerapp.dto.QuizCategoryDTO;
 import fi.haagahelia.quizzerapp.dto.QuizDTO;
-import fi.haagahelia.quizzerapp.repositories.AnswerOptionRepository;
-import fi.haagahelia.quizzerapp.repositories.AnswerRepository;
 import fi.haagahelia.quizzerapp.service.AnswerService;
 import fi.haagahelia.quizzerapp.service.QuestionService;
 import fi.haagahelia.quizzerapp.service.QuizCategoryService;
@@ -28,17 +33,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import fi.haagahelia.quizzerapp.domain.Answer;
-import fi.haagahelia.quizzerapp.domain.AnswerOption;
-import fi.haagahelia.quizzerapp.domain.Question;
-import fi.haagahelia.quizzerapp.domain.Quiz;
-import fi.haagahelia.quizzerapp.domain.QuizCategory;
-import fi.haagahelia.quizzerapp.domain.Review;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api")
@@ -60,12 +57,6 @@ public class QuizzerRestController {
 
         @Autowired
         private ReviewService reviewService;
-
-        @Autowired
-        private AnswerRepository answerRepository;
-
-        @Autowired
-        private AnswerOptionRepository answerOptionRepository;
 
         // Swagger documentation
         @Operation(summary = "Get all published quizzes", description = "Returns a list of published quizzes with id, name, description, created date, published status and category name")
@@ -173,7 +164,7 @@ public class QuizzerRestController {
                         @ApiResponse(responseCode = "404", description = "Quiz is not found")
         })
         @GetMapping("/quizzes/{quizId}")
-        public QuizDTO findQuizById(@PathVariable Long quizId) {
+        public ResponseEntity<QuizDTO> findQuizById(@PathVariable Long quizId) {
                 Quiz quiz = quizService.findQuizById(quizId); // Returns quiz or null
                 if (quiz != null) {
                         QuizDTO quizDTO = new QuizDTO(quiz.getId(), quiz.getName(), quiz.getDescription(),
@@ -181,7 +172,7 @@ public class QuizzerRestController {
                                         quiz.isPublished(),
                                         quiz.getQuizCategory() != null ? quiz.getQuizCategory().getName()
                                                         : "Uncategorized");
-                        return quizDTO; // HTTP 200
+                        return ResponseEntity.ok(quizDTO); // HTTP 200
                 } else {
                         String errorMessage = "Quiz not found with ID: " + quizId;
                         throw new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage); // HTTP 404
@@ -206,10 +197,11 @@ public class QuizzerRestController {
                                                                 .map(answerOption -> new AnswerOptionDTO(
                                                                                 answerOption.getId(),
                                                                                 answerOption.getAnswerOptionBody(),
-                                                                                answerOption.isCorrect())) // Lisää
-                                                                                                           // oikean
-                                                                                                           // vastauksen
-                                                                                                           // tieto
+                                                                                answerOption.isCorrect())) // Include
+                                                                                                           // information
+                                                                                                           // about the
+                                                                                                           // correct
+                                                                                                           // answer
                                                                 .collect(Collectors.toList())))
                                 .collect(Collectors.toList());
 
@@ -260,7 +252,6 @@ public class QuizzerRestController {
                 }
         }
 
-        @PostMapping("/answers")
         @Operation(summary = "Submit an answer", description = "Allows the user to submit an answer option for a question.")
         @ApiResponses(value = {
                 @ApiResponse(responseCode = "201", description = "Answer created successfully"),
@@ -268,28 +259,10 @@ public class QuizzerRestController {
                 @ApiResponse(responseCode = "404", description = "AnswerOption not found"),
                 @ApiResponse(responseCode = "403", description = "Quiz is not published")
         })
-
+        @PostMapping("/answers")
         public ResponseEntity<String> submitAnswer(@Valid @RequestBody AnswerDTO answerDTO) {
-        // Validate that answerOptionId is not null (handled by @Valid and @NotNull)
-        Long answerOptionId = answerDTO.getAnswerOptionId();
-
-        // Fetch the AnswerOption and validate it exists
-        AnswerOption answerOption = answerOptionRepository.findById(answerOptionId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                        "AnswerOption not found with ID: " + answerOptionId));
-
-        // Check if the quiz is published
-        Question question = answerOption.getQuestion();
-        Quiz quiz = question.getQuiz();
-        if (!quizService.isQuizPublished(quiz.getId())) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Quiz is not published");
-        }
-
-        // Save the Answer
-        Answer answer = new Answer(answerOption, answerOption.isCorrect());
-        answerRepository.save(answer);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("Answer created successfully");
+                answerService.submitAnswer(answerDTO);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Answer created successfully");
         }
 
         @Operation(summary = "Get all answers for a specific quiz", description = "Returns a list of answers for a quiz ID")
@@ -309,7 +282,7 @@ public class QuizzerRestController {
 
         @Operation(summary = "Get all reviews of a quiz", description = "Get all reviews of a quiz by quiz id")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Successful operation"),
+                        @ApiResponse(responseCode = "404", description = "Review is not found"),
                         @ApiResponse(responseCode = "404", description = "Question is not found")
         })
         @GetMapping("/quizzes/{quizId}/reviews")
