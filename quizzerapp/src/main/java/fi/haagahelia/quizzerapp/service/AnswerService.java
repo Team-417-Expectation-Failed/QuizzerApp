@@ -33,11 +33,4 @@ public class AnswerService {
     public Answer findAnswerById(Long answerId) {
         return answerRepository.findById(answerId).orElseThrow(() -> new RuntimeException("Answer not found"));
     }
-
-    public void addAnswerToQuestion(Long questionId, Answer answer) {
-        Question question = findQuestionById(questionId);
-        answer.setQuestion(question);
-        answerRepository.save(answer);
-    }
-
 }
