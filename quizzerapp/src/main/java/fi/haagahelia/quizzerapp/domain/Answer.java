@@ -1,41 +1,40 @@
 package fi.haagahelia.quizzerapp.domain;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Answer {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Boolean correct;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "question_id", nullable = false)
-    @JsonIgnore
-    private Question question;
+    // prefer @NotNull instead of @Column(nullable = false) for validation
+    @NotNull
+    private boolean isCorrect;
 
+    // Relate Answer only to AnswerOption
     @ManyToOne
     @JoinColumn(name = "answer_option_id", nullable = false)
     @JsonIgnore
     private AnswerOption answerOption;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "quiz_id", nullable = false)
-    @JsonIgnore
-    private Quiz quiz;
+    public Answer() {
+    }
 
-    public Answer(Question question, AnswerOption answerOption, Quiz quiz, boolean correct) {
-        this.question = question;
+    public Answer(AnswerOption answerOption, boolean isCorrect) {
         this.answerOption = answerOption;
-        this.quiz = quiz;
-        this.correct = correct;
+        this.isCorrect = isCorrect;
     }
 
     public Long getId() {
@@ -46,14 +45,6 @@ public class Answer {
         this.id = id;
     }
 
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
-
     public AnswerOption getAnswerOption() {
         return answerOption;
     }
@@ -62,15 +53,31 @@ public class Answer {
         this.answerOption = answerOption;
     }
 
-    public Boolean isCorrect() {
-        return correct;
+    public Boolean getIsCorrect() {
+        return isCorrect;
     }
 
-    public void setCorrect(Boolean correct) {
-        this.correct = correct;
+    public void setIsCorrect(boolean isCorrect) {
+        this.isCorrect = isCorrect;
     }
 
-    public Answer() {
+    // toString method
+    @Override
+    public String toString() {
+    return "Answer{id=" + id + ", isCorrect=" + isCorrect + "}";
+    }
 
+    // equals and hashCode methods to compare Answer objects
+    @Override
+    public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Answer answer = (Answer) o;
+    return isCorrect == answer.isCorrect && id.equals(answer.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, isCorrect);
     }
 }
