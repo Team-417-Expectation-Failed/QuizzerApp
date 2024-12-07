@@ -16,6 +16,7 @@ import fi.haagahelia.quizzerapp.dto.AnswerOptionDTO;
 import fi.haagahelia.quizzerapp.dto.QuestionDTO;
 import fi.haagahelia.quizzerapp.dto.QuizCategoryDTO;
 import fi.haagahelia.quizzerapp.dto.QuizDTO;
+import fi.haagahelia.quizzerapp.repositories.AnswerOptionRepository;
 import fi.haagahelia.quizzerapp.repositories.AnswerRepository;
 import fi.haagahelia.quizzerapp.service.AnswerService;
 import fi.haagahelia.quizzerapp.service.QuestionService;
@@ -26,6 +27,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import fi.haagahelia.quizzerapp.domain.Answer;
 import fi.haagahelia.quizzerapp.domain.AnswerOption;
 import fi.haagahelia.quizzerapp.domain.Question;
@@ -57,10 +59,13 @@ public class QuizzerRestController {
         private AnswerService answerService;
 
         @Autowired
+        private ReviewService reviewService;
+
+        @Autowired
         private AnswerRepository answerRepository;
 
         @Autowired
-        private ReviewService reviewService;
+        private AnswerOptionRepository answerOptionRepository;
 
         // Swagger documentation
         @Operation(summary = "Get all published quizzes", description = "Returns a list of published quizzes with id, name, description, created date, published status and category name")
@@ -255,38 +260,38 @@ public class QuizzerRestController {
                 }
         }
 
-        @Operation(summary = "Create a new answer", description = "Creates a new answer for a question")
-        @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Successful operation"),
-                        @ApiResponse(responseCode = "404", description = "Question is not found")
-        })
         @PostMapping("/answers")
-        public AnswerDTO createAnswer(@RequestBody AnswerDTO answerDTO) {
-                Quiz quiz = quizService.findPublishedQuizById(answerDTO.getQuizId());
-                Question question = answerService.findQuestionById(answerDTO.getQuestionId());
-                AnswerOption answerOption = question.getAnswerOptions().stream()
-                                .filter(ao -> ao.getId().equals(answerDTO.getAnswerOptionId()))
-                                .findFirst()
-                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                                "Answer option not found"));
-                if (quiz == null) {
-                        String errorMessage = "Quiz not found with ID: " + answerDTO.getQuizId();
-                        throw new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage); // HTTP 404
-                } else if (answerOption == null) {
-                        String errorMessage = "Answer option not found with ID: " + answerDTO.getAnswerOptionId();
-                        throw new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage); // HTTP 404
-                } else {
-                        boolean correct = false;
-                        // Maybe this needs to be removed:
-                        if (answerOption.isCorrect()) {
-                                correct = true;
-                        }
-                        // Create and save the answer
-                        Answer answer = new Answer(question, answerOption, quiz, correct);
-                        answerRepository.save(answer);
-                        return answerDTO; // HTTP 200
-                }
+        @Operation(summary = "Submit an answer", description = "Allows the user to submit an answer option for a question.")
+        @ApiResponses(value = {
+                @ApiResponse(responseCode = "201", description = "Answer created successfully"),
+                @ApiResponse(responseCode = "400", description = "AnswerOption ID is missing"),
+                @ApiResponse(responseCode = "404", description = "AnswerOption not found"),
+                @ApiResponse(responseCode = "403", description = "Quiz is not published")
+        })
+
+        public ResponseEntity<String> submitAnswer(@Valid @RequestBody AnswerDTO answerDTO) {
+        // Validate that answerOptionId is not null (handled by @Valid and @NotNull)
+        Long answerOptionId = answerDTO.getAnswerOptionId();
+
+        // Fetch the AnswerOption and validate it exists
+        AnswerOption answerOption = answerOptionRepository.findById(answerOptionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
+                        "AnswerOption not found with ID: " + answerOptionId));
+
+        // Check if the quiz is published
+        Question question = answerOption.getQuestion();
+        Quiz quiz = question.getQuiz();
+        if (!quizService.isQuizPublished(quiz.getId())) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Quiz is not published");
         }
+
+        // Save the Answer
+        Answer answer = new Answer(answerOption, answerOption.isCorrect());
+        answerRepository.save(answer);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Answer created successfully");
+    }
+
 
         @Operation(summary = "Get all reviews of a quiz", description = "Get all reviews of a quiz by quiz id")
         @ApiResponses(value = {
