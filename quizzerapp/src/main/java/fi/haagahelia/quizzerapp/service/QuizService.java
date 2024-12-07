@@ -106,4 +106,9 @@ public class QuizService {
         question.getAnswerOptions().add(answerOption);
         answerOptionRepository.save(answerOption);
     }
+
+    public boolean isQuizPublished(Long quizId) {
+        Quiz quiz = findQuizById(quizId);
+        return quiz.isPublished();
+    }
 }
