@@ -3,17 +3,20 @@ package fi.haagahelia.quizzerapp.dto;
 import java.util.List;
 import fi.haagahelia.quizzerapp.domain.DifficultyLevel;
 
+/**
+ * Data Transfer Object for Question.
+ * This DTO includes the question body, difficulty level, and a list of answer options.
+ * The answer options include information about the correct answer.
+ */
 public class QuestionDTO {
     private Long id;
     private String questionBody;
-    private List<AnswerOptionDTO> answerOptions; // Changed the answer options to also include information about the correct answer
+    private List<AnswerOptionDTO> answerOptions;
     private DifficultyLevel difficultyLevel;
 
-    public QuestionDTO() {}
 
     public QuestionDTO(Long id, String questionBody, DifficultyLevel difficultyLevel, List<AnswerOptionDTO> answerOptions) {
         this.id = id;
-        this.questionBody = questionBody;
         this.difficultyLevel = difficultyLevel;
         this.answerOptions = answerOptions;
     }

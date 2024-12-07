@@ -81,7 +81,7 @@ public class QuizDTO {
         return quizCategoryName;
     }
 
-    public void setQuizCategory(String quizCategoryName) {
+    public void setQuizCategoryName(String quizCategoryName) {
         this.quizCategoryName = quizCategoryName;
     }
 
@@ -90,6 +90,6 @@ public class QuizDTO {
     }
 
     public void setQuestions(List<QuestionDTO> questions) {
-        this.questions = questions;  // Tähän ei ole enää virheitä, koska kysymykset asetetaan oikein.
+        this.questions = questions;  // There are no more errors here because the questions are set correctly.
     }
 }
