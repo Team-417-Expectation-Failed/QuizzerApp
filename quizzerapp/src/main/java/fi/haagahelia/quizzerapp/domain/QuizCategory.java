@@ -17,7 +17,7 @@ public class QuizCategory {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "quizCategory", orphanRemoval = false)
+    @OneToMany(mappedBy = "quizCategory")
     private List<Quiz> quizzes = new ArrayList<>();
 
     public QuizCategory() {
@@ -36,10 +36,6 @@ public class QuizCategory {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -65,7 +61,4 @@ public class QuizCategory {
     public void setQuizzes(List<Quiz> quizzes) {
         this.quizzes = quizzes;
     }
-
-    
-
 }

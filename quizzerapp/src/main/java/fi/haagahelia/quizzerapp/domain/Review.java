@@ -19,23 +19,29 @@ public class Review {
     @GeneratedValue
     private Long id;
     private String nickname;
+    
     private Integer rating;
+    
     private String reviewText;
+    
     @CreationTimestamp
-    private LocalDate reviewDate;
+    public LocalDate reviewDate;
 
-    public LocalDate getReviewDate() {
-        return reviewDate;
-    }
-
-    public void setReviewDate(LocalDate reviewDate) {
-        this.reviewDate = reviewDate;
-    }
-
+    // Specifies that each Review must be associated with a Quiz and the association is mandatory (not optional)
     @ManyToOne(optional = false)
     @JoinColumn(name = "quiz_id")
     @JsonIgnore
     private Quiz quiz;
+
+    public Review() {
+    }
+
+    public Review(String nickname, Integer rating, String reviewText, Quiz quiz) {
+        this.nickname = nickname;
+        this.rating = rating;
+        this.reviewText = reviewText;
+        this.quiz = quiz;
+    }
 
     public Quiz getQuiz() {
         return quiz;
@@ -75,16 +81,6 @@ public class Review {
 
     public void setReviewText(String reviewText) {
         this.reviewText = reviewText;
-    }
-
-    public Review() {
-    }
-
-    public Review(String nickname, Integer rating, String reviewText, Quiz quiz) {
-        this.nickname = nickname;
-        this.rating = rating;
-        this.reviewText = reviewText;
-        this.quiz = quiz;
     }
 
     @Override
