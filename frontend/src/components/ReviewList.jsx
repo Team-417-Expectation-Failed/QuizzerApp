@@ -66,7 +66,7 @@ function ReviewList() {
                 {averageRating} rating average based on {reviews.length} reviews
             </Typography>
             <Typography sx={{ marginBottom: 3 }}>
-                <Typography variant="body"><RouterLink to={`#`}>Write your review</RouterLink></Typography>
+                <Typography variant="body"><RouterLink to={"/quiz/:id/review"}>Write your review</RouterLink></Typography>
             </Typography>
             {reviews.map((review) => (
                 <Paper key={review.id} sx={{ padding: 3, marginBottom: 3 }}>
