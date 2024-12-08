@@ -21,6 +21,7 @@ import fi.haagahelia.quizzerapp.domain.Review;
 import fi.haagahelia.quizzerapp.dto.AnswerDTO;
 import fi.haagahelia.quizzerapp.dto.AnswerOptionDTO;
 import fi.haagahelia.quizzerapp.dto.QuestionDTO;
+import fi.haagahelia.quizzerapp.dto.QuestionStatsDTO;
 import fi.haagahelia.quizzerapp.dto.QuizCategoryDTO;
 import fi.haagahelia.quizzerapp.dto.QuizDTO;
 import fi.haagahelia.quizzerapp.service.AnswerService;
@@ -254,10 +255,10 @@ public class QuizzerRestController {
 
         @Operation(summary = "Submit an answer", description = "Allows the user to submit an answer option for a question.")
         @ApiResponses(value = {
-                @ApiResponse(responseCode = "201", description = "Answer created successfully"),
-                @ApiResponse(responseCode = "400", description = "AnswerOption ID is missing"),
-                @ApiResponse(responseCode = "404", description = "AnswerOption not found"),
-                @ApiResponse(responseCode = "403", description = "Quiz is not published")
+                        @ApiResponse(responseCode = "201", description = "Answer created successfully"),
+                        @ApiResponse(responseCode = "400", description = "AnswerOption ID is missing"),
+                        @ApiResponse(responseCode = "404", description = "AnswerOption not found"),
+                        @ApiResponse(responseCode = "403", description = "Quiz is not published")
         })
         @PostMapping("/answers")
         public ResponseEntity<String> submitAnswer(@Valid @RequestBody AnswerDTO answerDTO) {
@@ -267,8 +268,8 @@ public class QuizzerRestController {
 
         @Operation(summary = "Get all answers for a specific quiz", description = "Returns a list of answers for a quiz ID")
         @ApiResponses(value = {
-                @ApiResponse(responseCode = "200", description = "Successful operation"),
-                @ApiResponse(responseCode = "404", description = "Answers are not found for quiz ID")
+                        @ApiResponse(responseCode = "200", description = "Successful operation"),
+                        @ApiResponse(responseCode = "404", description = "Answers are not found for quiz ID")
         })
 
         @GetMapping("/quizzes/{quizId}/answers")
@@ -308,6 +309,20 @@ public class QuizzerRestController {
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                         .body("Failed to delete review: " + e.getMessage());
                 }
+        }
+
+        @Operation(summary = "Get number of correct and wrong answers of each question of a quiz", description = "Get number of correct and wrong answers of each question of a quiz by quiz id")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Successful operation"),
+                        @ApiResponse(responseCode = "404", description = "Question is not found")
+        })
+        @GetMapping("/quizzes/{quizId}/results")
+        public ResponseEntity<List<QuestionStatsDTO>> getQuizResults(@PathVariable Long quizId) {
+                List<QuestionStatsDTO> results = answerService.getQuizResults(quizId);
+                if (results.isEmpty()) {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 if no stats found
+                }
+                return ResponseEntity.ok(results); // Return HTTP 200 with stats
         }
 
 }

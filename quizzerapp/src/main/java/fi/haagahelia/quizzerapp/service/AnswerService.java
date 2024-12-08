@@ -1,6 +1,7 @@
 package fi.haagahelia.quizzerapp.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import fi.haagahelia.quizzerapp.domain.AnswerOption;
 import fi.haagahelia.quizzerapp.domain.Question;
 import fi.haagahelia.quizzerapp.domain.Quiz;
 import fi.haagahelia.quizzerapp.dto.AnswerDTO;
+import fi.haagahelia.quizzerapp.dto.QuestionStatsDTO;
 import fi.haagahelia.quizzerapp.repositories.AnswerOptionRepository;
 import fi.haagahelia.quizzerapp.repositories.AnswerRepository;
 import fi.haagahelia.quizzerapp.repositories.QuestionRepository;
@@ -57,7 +59,7 @@ public class AnswerService {
 
         // Fetch the AnswerOption and validate it exists
         AnswerOption answerOption = answerOptionRepository.findById(answerOptionId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "AnswerOption not found with ID: " + answerOptionId));
 
         // Check if the quiz is published
@@ -71,4 +73,15 @@ public class AnswerService {
         Answer answer = new Answer(answerOption, answerOption.isCorrect());
         answerRepository.save(answer);
     }
+
+    public List<QuestionStatsDTO> getQuizResults(Long quizId) {
+        List<Object[]> stats = answerRepository.findAnswerStatsByQuizId(quizId);
+        return stats.stream().map(stat -> new QuestionStatsDTO(
+                (Long) stat[0], // questionId
+                questionRepository.findById((Long) stat[0]).get().getQuestionBody(),
+                ((Number) stat[1]).intValue(), // correctAnswers
+                ((Number) stat[2]).intValue() // wrongAnswers
+        )).collect(Collectors.toList());
+    }
+
 }
