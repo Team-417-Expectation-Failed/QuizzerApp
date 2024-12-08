@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -281,6 +282,7 @@ public class QuizzerRestController {
                 return ResponseEntity.ok(answers); // Return HTTP 200 with answers
         }
 
+// GETS ALL REVIEWS OF A QUIZ
         @Operation(summary = "Get all reviews of a quiz", description = "Get all reviews of a quiz by quiz id")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "404", description = "Review is not found"),
@@ -295,6 +297,36 @@ public class QuizzerRestController {
                 return ResponseEntity.ok(reviews); // Return HTTP 200 with reviews
         }
 
+// UPDATES REVIEW
+        @Operation(summary = "Update an existing review", description = "Update the details of a review by its ID")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Review successfully updated"),
+                        @ApiResponse(responseCode = "404", description = "Review not found")
+        })
+        @PutMapping("/reviews/{reviewId}")
+        public ResponseEntity<Review> updateReview(@PathVariable Long reviewId,
+                        @Valid @RequestBody Review updatedReview) {
+                // Retrieve the existing review by ID
+                Review existingReview = reviewService.findReviewById(reviewId);
+
+                if (existingReview == null) {
+                        // Return 404 Not Found if the review doesn't exist
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                }
+
+                // Update the fields of the existing review
+                existingReview.setNickname(updatedReview.getNickname());
+                existingReview.setRating(updatedReview.getRating());
+                existingReview.setReviewText(updatedReview.getReviewText());
+
+                // Save the updated review
+                Review savedReview = reviewService.saveReview(existingReview);
+
+                // Return the updated review with a 200 OK status
+                return ResponseEntity.ok(savedReview);
+        }
+
+// DELETES A REVIEW
         @Operation(summary = "Deletes a review", description = "Deletes a review by review id")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Successful operation"),
