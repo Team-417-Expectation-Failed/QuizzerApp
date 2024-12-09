@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-import { getQuizzesByCategory } from '../quizapi';
+import { getCategoryById, getQuizzesByCategory } from '../quizapi';
 import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -12,9 +12,9 @@ function QuestionsByCategory() {
     useEffect(() => {
 
         // fetch category data
-        getQuizzesByCategory(categoryId)
-            .then((categoryData) => {
-                setCategory(categoryData);
+        getCategoryById(categoryId)
+            .then((data) => {
+                setCategory(data);
             })
             .catch((error) => {
                 console.error("Error fetching category data:", error);
