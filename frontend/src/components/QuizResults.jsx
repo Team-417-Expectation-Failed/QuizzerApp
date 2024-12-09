@@ -48,7 +48,7 @@ function QuizResults() {
                         {results.map((result) => (
                             <TableRow key={result.questionId}>
                                 <TableCell variant="body"><RouterLink to={`#`}></RouterLink>{result.questionText}</TableCell>
-                                <TableCell variant="body"><RouterLink to={`#`}></RouterLink></TableCell>
+                                <TableCell variant="body"><RouterLink to={`#`}></RouterLink>{result.difficultyLevel}</TableCell>
                                 <TableCell variant="body"><RouterLink to={`#`}></RouterLink>{result.correctAnswers + result.wrongAnswers}</TableCell>
                                 <TableCell variant="body"><RouterLink to={`#`}></RouterLink>{Math.round((result.correctAnswers / (result.correctAnswers + result.wrongAnswers)) * 100) + "%"}</TableCell>
                                 <TableCell variant="body"><RouterLink to={`#`}></RouterLink>{result.correctAnswers}</TableCell>

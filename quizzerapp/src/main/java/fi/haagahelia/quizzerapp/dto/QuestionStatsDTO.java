@@ -1,14 +1,18 @@
 package fi.haagahelia.quizzerapp.dto;
 
+import fi.haagahelia.quizzerapp.domain.DifficultyLevel;
+
 public class QuestionStatsDTO {
     private Long questionId;
     private String questionText;
+    private DifficultyLevel difficultyLevel;
     private int correctAnswers;
     private int wrongAnswers;
 
-    public QuestionStatsDTO(Long questionId, String questionText, int correctAnswers, int wrongAnswers) {
+    public QuestionStatsDTO(Long questionId, String questionText, DifficultyLevel difficultyLevel, int correctAnswers, int wrongAnswers) {
         this.questionId = questionId;
         this.questionText = questionText;
+        this.difficultyLevel = difficultyLevel;
         this.correctAnswers = correctAnswers;
         this.wrongAnswers = wrongAnswers;
     }
@@ -26,6 +30,13 @@ public class QuestionStatsDTO {
         return questionText;
     }
 
+    public DifficultyLevel getDifficultyLevel() {
+        return difficultyLevel;
+    }
+
+    public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
+    }
     public void setQuestionText(String questionText) {
         this.questionText = questionText;
     }
@@ -49,6 +60,6 @@ public class QuestionStatsDTO {
     @Override
     public String toString() {
         return "QuestionStatsDTO [correctAnswers=" + correctAnswers + ", questionId=" + questionId + ", questionText="
-                + questionText + ", wrongAnswers=" + wrongAnswers + "]";
+                + questionText + ", wrongAnswers=" + wrongAnswers + "difficultyLevel=" + difficultyLevel +"]";
     }
 }

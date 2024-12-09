@@ -79,6 +79,7 @@ public class AnswerService {
         return stats.stream().map(stat -> new QuestionStatsDTO(
                 (Long) stat[0], // questionId
                 questionRepository.findById((Long) stat[0]).get().getQuestionBody(),
+                questionRepository.findById((Long) stat[0]).get().getDifficultyLevel(),
                 ((Number) stat[1]).intValue(), // correctAnswers
                 ((Number) stat[2]).intValue() // wrongAnswers
         )).collect(Collectors.toList());
