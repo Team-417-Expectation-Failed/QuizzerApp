@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
-import { getQuizById } from '../quizapi';
+import { useEffect, useState } from 'react';
+import { useParams, Link as RouterLink } from "react-router-dom";
+import { getQuizById, getQuizResults } from '../quizapi';
 import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 function QuizResults() {
     const { id: quizId } = useParams();
     const [quiz, setQuiz] = useState(null);
+    const [results, setResults] = useState([]);
 
     useEffect(() => {
-
         // fetch quiz data
         getQuizById(quizId)
             .then((quizData) => {
@@ -18,8 +18,8 @@ function QuizResults() {
                 console.error("Error fetching quiz data:", error);
             });
 
-        //     getQuizResults(quizId)
-        //         .then((data) => setResults(data));
+           getQuizResults(quizId)
+            .then((data) => setResults(data));
     }, [quizId]);
 
 
@@ -44,19 +44,19 @@ function QuizResults() {
                             <TableCell variant="head" sx={{ fontWeight: 'bold' }}>Wrong answers</TableCell>
                         </TableRow>
                     </TableHead>
-                    {/* <TableBody>
+                    {<TableBody>
                         {results.map((result) => (
-                            <TableRow key={result.id}>
+                            <TableRow key={result.questionId}>
+                                <TableCell variant="body"><RouterLink to={`#`}></RouterLink>{result.questionText}</TableCell>
                                 <TableCell variant="body"><RouterLink to={`#`}></RouterLink></TableCell>
-                                <TableCell variant="body"><RouterLink to={`#`}></RouterLink></TableCell>
-                                <TableCell variant="body"><RouterLink to={`#`}></RouterLink></TableCell>
-                                <TableCell variant="body"><RouterLink to={`#`}></RouterLink></TableCell>
-                                <TableCell variant="body"><RouterLink to={`#`}></RouterLink></TableCell>
-                                <TableCell variant="body"><RouterLink to={`#`}></RouterLink></TableCell>
+                                <TableCell variant="body"><RouterLink to={`#`}></RouterLink>{result.correctAnswers + result.wrongAnswers}</TableCell>
+                                <TableCell variant="body"><RouterLink to={`#`}></RouterLink>{Math.round((result.correctAnswers / (result.correctAnswers + result.wrongAnswers)) * 100) + "%"}</TableCell>
+                                <TableCell variant="body"><RouterLink to={`#`}></RouterLink>{result.correctAnswers}</TableCell>
+                                <TableCell variant="body"><RouterLink to={`#`}></RouterLink>{result.wrongAnswers}</TableCell>
                             </TableRow>
                         ))}
 
-                    </TableBody> */}
+                    </TableBody> }
                 </Table>
             </TableContainer>
         </Box>
