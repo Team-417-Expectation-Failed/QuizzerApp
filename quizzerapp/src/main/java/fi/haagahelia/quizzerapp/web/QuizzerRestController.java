@@ -188,6 +188,12 @@ public class QuizzerRestController {
         public ResponseEntity<List<QuestionDTO>> findQuestionsByQuizId(@PathVariable Long quizId) {
                 List<Question> questions = questionService.findQuestionsByQuizId(quizId);
 
+                Quiz quiz = quizService.findQuizById(quizId);
+                if (quiz == null) {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                        .body(null); // Return HTTP 404 if quiz not found
+                }
+
                 List<QuestionDTO> questionDTOs = questions.stream()
                                 .map(question -> new QuestionDTO(
                                                 question.getId(),
@@ -204,10 +210,6 @@ public class QuizzerRestController {
                                                                                                            // answer
                                                                 .collect(Collectors.toList())))
                                 .collect(Collectors.toList());
-
-                if (questionDTOs.isEmpty()) {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 if no questions found
-                }
 
                 return ResponseEntity.ok(questionDTOs); // Return HTTP 200 with question DTOs
         }
