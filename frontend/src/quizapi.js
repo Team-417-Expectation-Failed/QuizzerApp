@@ -69,12 +69,12 @@ export function addAnswer(answerOptionId) {
     },
     body: JSON.stringify({ answerOptionId }),
   })
-  .then ((response) => {
-    if (!response.ok) {
-      throw new Error("Failed to submit answer: " + response.statusText);
-    }
-    return response.json();
-  });
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to submit answer: " + response.statusText);
+      }
+      return response.json();
+    });
 }
 
 export function getQuizReviews(quizId) {
@@ -105,7 +105,7 @@ export function createReview(reviewData) {
 }
 
 export function editReview(reviewData) {
-  return fetch(`${apiUrl}/reviews`, {
+  return fetch(`${apiUrl}/reviews/${reviewId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ export function editReview(reviewData) {
 }
 
 export function getReviewById(reviewId) {
-  return fetch(`reviews/${reviewId}`)
+  return fetch(`reviews/${reviewId}/edit`)
     .then((response) => {
       if (!response.ok) {
         throw new Error("Error fetching review");
