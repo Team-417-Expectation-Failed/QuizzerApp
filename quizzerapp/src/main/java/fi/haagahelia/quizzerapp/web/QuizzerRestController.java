@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,6 +26,7 @@ import fi.haagahelia.quizzerapp.dto.QuestionDTO;
 import fi.haagahelia.quizzerapp.dto.QuestionStatsDTO;
 import fi.haagahelia.quizzerapp.dto.QuizCategoryDTO;
 import fi.haagahelia.quizzerapp.dto.QuizDTO;
+import fi.haagahelia.quizzerapp.dto.ReviewDTO;
 import fi.haagahelia.quizzerapp.service.AnswerService;
 import fi.haagahelia.quizzerapp.service.QuestionService;
 import fi.haagahelia.quizzerapp.service.QuizCategoryService;
@@ -35,6 +37,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -282,7 +285,7 @@ public class QuizzerRestController {
                 return ResponseEntity.ok(answers); // Return HTTP 200 with answers
         }
 
-// GETS ALL REVIEWS OF A QUIZ
+        // GETS ALL REVIEWS OF A QUIZ
         @Operation(summary = "Get all reviews of a quiz", description = "Get all reviews of a quiz by quiz id")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "404", description = "Review is not found"),
@@ -297,7 +300,27 @@ public class QuizzerRestController {
                 return ResponseEntity.ok(reviews); // Return HTTP 200 with reviews
         }
 
-// UPDATES REVIEW
+        // CREATES A NEW REVIEW
+        @Operation(summary = "Create a new review", description = "Create a new review for a quiz")
+        @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Review successfully created"),
+        @ApiResponse(responseCode = "400", description = "Invalid input data")
+        })
+        @PostMapping("/reviews")
+        @ResponseStatus(HttpStatus.CREATED)
+        public Review createReview(@RequestBody ReviewDTO reviewDTO) {
+        Review review = new Review();
+        review.setNickname(reviewDTO.getNickname());
+        review.setRating(reviewDTO.getRating());
+        review.setReviewText(reviewDTO.getReviewText());
+        review.setQuiz(reviewService.findQuizById(reviewDTO.getQuizId()));
+
+        return reviewService.saveReview(review);
+        }
+
+
+
+        // UPDATES REVIEW
         @Operation(summary = "Update an existing review", description = "Update the details of a review by its ID")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Review successfully updated"),
@@ -326,7 +349,7 @@ public class QuizzerRestController {
                 return ResponseEntity.ok(savedReview);
         }
 
-// DELETES A REVIEW
+        // DELETES A REVIEW
         @Operation(summary = "Deletes a review", description = "Deletes a review by review id")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Successful operation"),

@@ -1,5 +1,7 @@
 package fi.haagahelia.quizzerapp;
 
+import java.time.LocalDate;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -99,12 +101,12 @@ public class QuizzerappApplication {
 
             // Create and save reviews
             reviewRepository.saveAll(java.util.List.of(
-                    new Review("Jane Doe", 4, "Good quiz!", geoQuiz),
-                    new Review("John Smith", 3, "Not bad", geoQuiz),
-                    new Review("Janet Doe", 5, "Great quiz!", historyQuiz),
-                    new Review("John Doe", 2, "Not good", historyQuiz),
-                    new Review("Jane Smith", 4, "Good quiz!", scienceQuiz),
-                    new Review("John Doe", 3, "Not bad", scienceQuiz)));
+                    new Review("Jane Doe", 4, "Good quiz!", geoQuiz, LocalDate.now()),
+                    new Review("John Smith", 3, "Not bad", geoQuiz, LocalDate.now()),
+                    new Review("Janet Doe", 5, "Great quiz!", historyQuiz, LocalDate.now()),
+                    new Review("John Doe", 2, "Not good", historyQuiz, LocalDate.now()),
+                    new Review("Jane Smith", 4, "Good quiz!", scienceQuiz, LocalDate.now()),
+                    new Review("John Doe", 3, "Not bad", scienceQuiz, LocalDate.now())));
         };
     }
 }

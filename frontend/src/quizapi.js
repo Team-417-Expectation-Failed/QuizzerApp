@@ -62,12 +62,28 @@ export function getQuizReviews(quizId) {
     })
 }
 
+export function createReview(reviewData) {
+  return fetch(`${apiUrl}/reviews`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(reviewData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to submit review: " + response.statusText);
+      }
+      return response.json();
+    });
+}
+
 export function deleteReview(reviewId) {
   return fetch(`${apiUrl}/reviews/${reviewId}`, {
     method: 'DELETE',
   })
     .then(response => {
       if (!response.ok)
-        throw new Error("Error in fetch" + response.statusText);
+        throw new Error("Error in fetch: " + response.statusText);
     })
 }

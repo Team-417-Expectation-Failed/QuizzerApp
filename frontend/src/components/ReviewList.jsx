@@ -1,13 +1,15 @@
 import { Box, Typography, Paper, Button } from "@mui/material";
 import { getQuizReviews, deleteReview as deleteReviewApi, getQuizById } from "../quizapi";
 import { useState, useEffect } from "react";
-import { useParams, Link as RouterLink } from "react-router-dom";
+import { useNavigate, useParams, Link as RouterLink } from "react-router-dom";
+
 
 function ReviewList() {
     const { id: quizId } = useParams();
     const [reviews, setReviews] = useState([]);
     const [quiz, setQuiz] = useState(null);
     const [averageRating, setAverageRating] = useState(0); // State for average rating
+    const navigate = useNavigate();
 
     useEffect(() => {
         // fetch quiz data
@@ -59,6 +61,10 @@ function ReviewList() {
             });
     };
 
+    const editReview = (reviewId) => {
+        navigate(`/reviews/${reviewId}/edit`);
+    };
+
     return (
         <Box sx={{ margin: 5 }}>
             <Typography variant="h4" sx={{ marginBottom: 2 }}>Reviews of "{quiz.name}"</Typography>
@@ -76,7 +82,7 @@ function ReviewList() {
                     <Typography>Written on: {new Intl.DateTimeFormat('fi-FI').format(new Date(review.reviewDate))}</Typography>
                     <Box sx={{ marginTop: 2 }}>
                         <Button onClick={() => deleteReview(review.id)}>Delete</Button>
-                        <Button>Edit</Button>
+                        <Button onClick={() => editReview(review.id)}>Edit</Button>
                     </Box>
                 </Paper>
             ))}

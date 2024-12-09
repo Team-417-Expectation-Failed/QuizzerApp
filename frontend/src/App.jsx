@@ -42,8 +42,7 @@ function App() {
         {
           path: "/quiz/:id/review",
           element: <ReviewForm />,
-        },
-
+        },      
       ]
     },
   ]);

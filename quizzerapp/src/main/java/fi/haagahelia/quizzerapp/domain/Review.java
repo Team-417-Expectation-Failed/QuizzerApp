@@ -2,8 +2,6 @@ package fi.haagahelia.quizzerapp.domain;
 
 import java.time.LocalDate;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -19,12 +17,8 @@ public class Review {
     @GeneratedValue
     private Long id;
     private String nickname;
-    
     private Integer rating;
-    
     private String reviewText;
-    
-    @CreationTimestamp
     public LocalDate reviewDate;
 
     // Specifies that each Review must be associated with a Quiz and the association is mandatory (not optional)
@@ -36,11 +30,20 @@ public class Review {
     public Review() {
     }
 
-    public Review(String nickname, Integer rating, String reviewText, Quiz quiz) {
+    public Review(String nickname, Integer rating, String reviewText, Quiz quiz, LocalDate reviewDate) {
         this.nickname = nickname;
         this.rating = rating;
         this.reviewText = reviewText;
         this.quiz = quiz;
+        this.reviewDate = reviewDate;
+    }
+
+    public LocalDate getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(LocalDate reviewDate) {
+        this.reviewDate = reviewDate;
     }
 
     public Quiz getQuiz() {
