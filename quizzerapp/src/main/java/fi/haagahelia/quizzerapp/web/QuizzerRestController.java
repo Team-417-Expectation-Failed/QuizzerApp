@@ -38,7 +38,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,10 +82,6 @@ public class QuizzerRestController {
                                                 quiz.getQuizCategory() != null ? quiz.getQuizCategory().getName()
                                                                 : "Uncategorized"))
                                 .collect(Collectors.toList());
-
-                if (quizDTOs.isEmpty()) {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 if no quizzes found
-                }
 
                 return ResponseEntity.ok(quizDTOs); // Return HTTP 200 with quizzes
         }
@@ -303,22 +298,20 @@ public class QuizzerRestController {
         // CREATES A NEW REVIEW
         @Operation(summary = "Create a new review", description = "Create a new review for a quiz")
         @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Review successfully created"),
-        @ApiResponse(responseCode = "400", description = "Invalid input data")
+                        @ApiResponse(responseCode = "201", description = "Review successfully created"),
+                        @ApiResponse(responseCode = "400", description = "Invalid input data")
         })
         @PostMapping("/reviews")
         @ResponseStatus(HttpStatus.CREATED)
         public Review createReview(@RequestBody ReviewDTO reviewDTO) {
-        Review review = new Review();
-        review.setNickname(reviewDTO.getNickname());
-        review.setRating(reviewDTO.getRating());
-        review.setReviewText(reviewDTO.getReviewText());
-        review.setQuiz(reviewService.findQuizById(reviewDTO.getQuizId()));
+                Review review = new Review();
+                review.setNickname(reviewDTO.getNickname());
+                review.setRating(reviewDTO.getRating());
+                review.setReviewText(reviewDTO.getReviewText());
+                review.setQuiz(reviewService.findQuizById(reviewDTO.getQuizId()));
 
-        return reviewService.saveReview(review);
+                return reviewService.saveReview(review);
         }
-
-
 
         // UPDATES REVIEW
         @Operation(summary = "Update an existing review", description = "Update the details of a review by its ID")
@@ -328,34 +321,34 @@ public class QuizzerRestController {
         })
         @PutMapping("/reviews/{reviewId}/edit")
         public ResponseEntity<Review> updateReview(@PathVariable Long reviewId,
-                                           @Valid @RequestBody Review updatedReview) {
-        // Retrieve the existing review by ID
-        Review existingReview = reviewService.findReviewById(reviewId);
+                        @Valid @RequestBody Review updatedReview) {
+                // Retrieve the existing review by ID
+                Review existingReview = reviewService.findReviewById(reviewId);
 
-        // Check if the review exists
-        if (existingReview == null) {
-        // Return 404 Not Found if the review doesn't exist
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                // Check if the review exists
+                if (existingReview == null) {
+                        // Return 404 Not Found if the review doesn't exist
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                }
+
+                // Update the fields of the existing review with the new data from the request
+                // body
+                existingReview.setNickname(updatedReview.getNickname());
+                existingReview.setRating(updatedReview.getRating());
+                existingReview.setReviewText(updatedReview.getReviewText());
+
+                try {
+                        // Save the updated review
+                        Review savedReview = reviewService.saveReview(existingReview);
+
+                        // Return the updated review with a 200 OK status
+                        return ResponseEntity.ok(savedReview);
+                } catch (Exception e) {
+                        // Return a 500 Internal Server Error if something goes wrong
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                        .body(null);
+                }
         }
-
-        // Update the fields of the existing review with the new data from the request body
-        existingReview.setNickname(updatedReview.getNickname());
-        existingReview.setRating(updatedReview.getRating());
-        existingReview.setReviewText(updatedReview.getReviewText());
-
-        try {
-        // Save the updated review
-        Review savedReview = reviewService.saveReview(existingReview);
-
-        // Return the updated review with a 200 OK status
-        return ResponseEntity.ok(savedReview);
-        } catch (Exception e) {
-        // Return a 500 Internal Server Error if something goes wrong
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                             .body(null);
-        }
-}
-
 
         // DELETES A REVIEW
         @Operation(summary = "Deletes a review", description = "Deletes a review by review id")

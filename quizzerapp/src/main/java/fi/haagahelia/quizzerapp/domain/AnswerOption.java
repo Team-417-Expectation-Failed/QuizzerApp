@@ -1,15 +1,21 @@
 package fi.haagahelia.quizzerapp.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 /**
  * Represents an answer option for a quiz question.
- * Each answer option is associated with a specific question and 
+ * Each answer option is associated with a specific question and
  * indicates whether it is the correct answer or not.
  */
 @Entity
@@ -26,6 +32,9 @@ public class AnswerOption {
     @JoinColumn(name = "question_id")
     @JsonIgnore // Prevent serializing the associated Question object
     private Question question; // Reference to the associated Question
+
+    @OneToMany(mappedBy = "answerOption", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Answer> answers = new ArrayList<>();
 
     // Default constructor
     public AnswerOption() {
@@ -70,7 +79,6 @@ public class AnswerOption {
     public void setQuestion(Question question) {
         this.question = question;
     }
-
 
     // Override toString() to provide meaningful information about AnswerOption
     @Override
