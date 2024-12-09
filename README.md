@@ -125,3 +125,7 @@ Contact one of the team members below to learn how you can take part in this pro
 ## Backlog
 
 https://github.com/orgs/Team-417-Expectation-Failed/projects/1/views/1
+
+## Licencing
+
+The repository is licenced by [MIT licence.](https://github.com/Team-417-Expectation-Failed/QuizzerApp/blob/main/LICENCE.txt)
