@@ -6,7 +6,7 @@ import { Link as RouterLink } from "react-router-dom";
 
 function QuestionsByCategory() {
     const { id: categoryId } = useParams();
-    const [quizzez, setQuizzes] = useState([]);
+    const [quizzes, setQuizzes] = useState([]);
     const [category, setCategory] = useState(null);
 
     useEffect(() => {
@@ -45,7 +45,7 @@ function QuestionsByCategory() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {quizzez.map((quiz) => (
+                        {quizzes.map((quiz) => (
                             <TableRow key={quiz.id}>
                                 <TableCell variant="body"><RouterLink to={`/quiz/${quiz.id}/questions`}>{quiz.name}</RouterLink></TableCell>
                                 <TableCell variant="body">{quiz.description}</TableCell>
