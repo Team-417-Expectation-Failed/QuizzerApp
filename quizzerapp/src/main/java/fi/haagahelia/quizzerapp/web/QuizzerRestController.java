@@ -326,28 +326,36 @@ public class QuizzerRestController {
                         @ApiResponse(responseCode = "200", description = "Review successfully updated"),
                         @ApiResponse(responseCode = "404", description = "Review not found")
         })
-        @PutMapping("/reviews/{reviewId}")
+        @PutMapping("/reviews/{reviewId}/edit")
         public ResponseEntity<Review> updateReview(@PathVariable Long reviewId,
-                        @Valid @RequestBody Review updatedReview) {
-                // Retrieve the existing review by ID
-                Review existingReview = reviewService.findReviewById(reviewId);
+                                           @Valid @RequestBody Review updatedReview) {
+        // Retrieve the existing review by ID
+        Review existingReview = reviewService.findReviewById(reviewId);
 
-                if (existingReview == null) {
-                        // Return 404 Not Found if the review doesn't exist
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-                }
-
-                // Update the fields of the existing review
-                existingReview.setNickname(updatedReview.getNickname());
-                existingReview.setRating(updatedReview.getRating());
-                existingReview.setReviewText(updatedReview.getReviewText());
-
-                // Save the updated review
-                Review savedReview = reviewService.saveReview(existingReview);
-
-                // Return the updated review with a 200 OK status
-                return ResponseEntity.ok(savedReview);
+        // Check if the review exists
+        if (existingReview == null) {
+        // Return 404 Not Found if the review doesn't exist
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+
+        // Update the fields of the existing review with the new data from the request body
+        existingReview.setNickname(updatedReview.getNickname());
+        existingReview.setRating(updatedReview.getRating());
+        existingReview.setReviewText(updatedReview.getReviewText());
+
+        try {
+        // Save the updated review
+        Review savedReview = reviewService.saveReview(existingReview);
+
+        // Return the updated review with a 200 OK status
+        return ResponseEntity.ok(savedReview);
+        } catch (Exception e) {
+        // Return a 500 Internal Server Error if something goes wrong
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body(null);
+        }
+}
+
 
         // DELETES A REVIEW
         @Operation(summary = "Deletes a review", description = "Deletes a review by review id")

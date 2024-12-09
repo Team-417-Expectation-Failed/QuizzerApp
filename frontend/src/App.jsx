@@ -8,6 +8,7 @@ import QuestionsByCategory from './components/QuestionsByCategory';
 import QuizResults from './components/QuizResults';
 import ReviewList from './components/ReviewList';
 import ReviewForm from './components/ReviewForm';
+import ReviewEdit from './components/ReviewEdit';
 
 function App() {
 
@@ -42,6 +43,10 @@ function App() {
         {
           path: "/quiz/:id/review",
           element: <ReviewForm />,
+        },
+        {
+          path: "/reviews/:reviewId/edit",
+          element: <ReviewEdit />,
         },      
       ]
     },

@@ -78,6 +78,48 @@ export function createReview(reviewData) {
     });
 }
 
+export function editReview(reviewData) {
+  return fetch(`${apiUrl}/reviews`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(reviewData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to edit review: " + response.statusText);
+      }
+      return response.json();
+    });
+}
+
+export function getReviewById(reviewId) {
+  return fetch(`reviews/${reviewId}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error fetching review");
+      }
+      return response.json();
+    });
+}
+
+export function updateReview(updatedReview) {
+  return fetch(`${apiUrl}/reviews/${updatedReview.id}/edit`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updatedReview),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error updating review");
+      }
+      return response.json();
+    });
+}
+
 export function deleteReview(reviewId) {
   return fetch(`${apiUrl}/reviews/${reviewId}`, {
     method: 'DELETE',
