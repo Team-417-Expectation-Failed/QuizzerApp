@@ -17,6 +17,7 @@ public class QuestionDTO {
 
     public QuestionDTO(Long id, String questionBody, DifficultyLevel difficultyLevel, List<AnswerOptionDTO> answerOptions) {
         this.id = id;
+        this.questionBody = questionBody;
         this.difficultyLevel = difficultyLevel;
         this.answerOptions = answerOptions;
     }
