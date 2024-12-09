@@ -8,6 +8,7 @@ function QuizResults() {
     const [quiz, setQuiz] = useState(null);
     const [results, setResults] = useState([]);
 
+
     useEffect(() => {
         // fetch quiz data
         getQuizById(quizId)
@@ -19,9 +20,17 @@ function QuizResults() {
             });
 
            getQuizResults(quizId)
-            .then((data) => setResults(data));
+            .then((data) => setResults(data))
+         
+                
     }, [quizId]);
 
+    let totalAnswers = 0;
+   
+        for (let i = 0; i < results.length; i++) {
+            totalAnswers += (results[i].correctAnswers + results[i].wrongAnswers);
+        }
+    
 
     if (!quiz) {
         return <Typography variant="h6">Loading...</Typography>;
@@ -30,7 +39,7 @@ function QuizResults() {
     return (
         <Box sx={{ margin: 5 }}>
             <Typography variant="h4">Results of "{quiz.name}"</Typography>
-            <Typography variant="h6" sx={{ marginTop: 2 }}>x answers to {quiz.questions.length} questions</Typography>
+            <Typography variant="h6" sx={{ marginTop: 2 }}>{totalAnswers} answers to {quiz.questions.length} questions</Typography>
             {/* Create logic to display the number of answers */}
             <TableContainer component={Paper} sx={{ marginTop: 2 }}>
                 <Table aria-label="simple table">

@@ -51,6 +51,32 @@ export function getCategories() {
     })
 }
 
+export function getCategoryById(categoryId) {
+  return fetch(`${apiUrl}/categories/${categoryId}`)
+    .then(response => {
+      if (!response.ok)
+        throw new Error("Error in fetch" + response.statusText);
+      return response.json();
+
+    })
+}
+
+export function addAnswer(answerOptionId) {
+  return fetch(`${apiUrl}/answers`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ answerOptionId }),
+  })
+  .then ((response) => {
+    if (!response.ok) {
+      throw new Error("Failed to submit answer: " + response.statusText);
+    }
+    return response.json();
+  });
+}
+
 export function getQuizReviews(quizId) {
   return fetch(`${apiUrl}/quizzes/${quizId}/reviews`)
     .then(response => {

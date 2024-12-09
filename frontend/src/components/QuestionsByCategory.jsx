@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-import { getQuizzesByCategory } from '../quizapi';
+import { getCategoryById, getQuizzesByCategory } from '../quizapi';
 import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 function QuestionsByCategory() {
     const { id: categoryId } = useParams();
-    const [quizzez, setQuizzes] = useState([]);
+    const [quizzes, setQuizzes] = useState([]);
     const [category, setCategory] = useState(null);
 
     useEffect(() => {
 
         // fetch category data
-        getQuizzesByCategory(categoryId)
-            .then((categoryData) => {
-                setCategory(categoryData);
+        getCategoryById(categoryId)
+            .then((data) => {
+                setCategory(data);
             })
             .catch((error) => {
                 console.error("Error fetching category data:", error);
@@ -45,12 +45,12 @@ function QuestionsByCategory() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {quizzez.map((quiz) => (
+                        {quizzes.map((quiz) => (
                             <TableRow key={quiz.id}>
-                                <TableCell variant="body"><RouterLink to={`#`}>{quiz.name}</RouterLink></TableCell>
+                                <TableCell variant="body"><RouterLink to={`/quiz/${quiz.id}/questions`}>{quiz.name}</RouterLink></TableCell>
                                 <TableCell variant="body">{quiz.description}</TableCell>
                                 <TableCell variant="body">{formatDate(quiz.createdDate)}</TableCell>
-                                <TableCell variant="body">See results</TableCell>
+                                <TableCell variant="body"><RouterLink to={`/quiz/${quiz.id}/results`}>See results</RouterLink></TableCell>
                             </TableRow>
                         ))}
 
