@@ -295,6 +295,20 @@ public class QuizzerRestController {
                 return ResponseEntity.ok(reviews); // Return HTTP 200 with reviews
         }
 
+        @Operation(summary = "Get a review by id", description = "Get a review by review id")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Successful operation"),
+                        @ApiResponse(responseCode = "404", description = "Review is not found")
+        })
+        @GetMapping("/reviews/{reviewId}")
+        public ResponseEntity<Review> getReviewById(@PathVariable Long reviewId) {
+                Review review = reviewService.findReviewById(reviewId);
+                if (review == null) {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 if no review found
+                }
+                return ResponseEntity.ok(review); // Return HTTP 200 with review
+        }
+
         // CREATES A NEW REVIEW
         @Operation(summary = "Create a new review", description = "Create a new review for a quiz")
         @ApiResponses(value = {
