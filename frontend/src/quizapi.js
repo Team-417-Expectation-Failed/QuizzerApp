@@ -87,3 +87,13 @@ export function deleteReview(reviewId) {
         throw new Error("Error in fetch: " + response.statusText);
     })
 }
+
+export function getQuizResults(quizId) {
+  return fetch(`${apiUrl}/quizzes/${quizId}/results`)
+    .then(response => {
+      if (!response.ok)
+        throw new Error("Error in fetch" + response.statusText);
+      return response.json();
+
+    })
+}
