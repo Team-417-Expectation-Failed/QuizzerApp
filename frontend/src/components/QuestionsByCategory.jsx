@@ -47,10 +47,10 @@ function QuestionsByCategory() {
                     <TableBody>
                         {quizzez.map((quiz) => (
                             <TableRow key={quiz.id}>
-                                <TableCell variant="body"><RouterLink to={`#`}>{quiz.name}</RouterLink></TableCell>
+                                <TableCell variant="body"><RouterLink to={`/quiz/${quiz.id}/questions`}>{quiz.name}</RouterLink></TableCell>
                                 <TableCell variant="body">{quiz.description}</TableCell>
                                 <TableCell variant="body">{formatDate(quiz.createdDate)}</TableCell>
-                                <TableCell variant="body">See results</TableCell>
+                                <TableCell variant="body"><RouterLink to={`/quiz/${quiz.id}/results`}>See results</RouterLink></TableCell>
                             </TableRow>
                         ))}
 
