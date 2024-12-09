@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FormControl, Radio, RadioGroup, FormControlLabel, Snackbar, Button } from '@mui/material';
+import { addAnswer } from '../quizapi';
 
 function QuizAnswerOptions({answerOptions}) {
     const [value, setValue] = useState('');
@@ -19,6 +20,7 @@ function QuizAnswerOptions({answerOptions}) {
             setMessage("That is not correct, try again!");
         }
         setOpen(true);
+        addAnswer(value);
     };
 
     const handleClose = () => {
