@@ -1,21 +1,22 @@
 package fi.haagahelia.quizzerapp.web;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDate;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import org.springframework.http.MediaType;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.hamcrest.Matchers.hasSize;
+import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -245,4 +246,98 @@ public class QuizzerRestControllerTest {
                                 // Assert
                                 .andExpect(status().isNotFound());
         }
+
+        @Test
+        public void createAnswerSavesAnswerForPublishedQuiz() throws Exception {
+        // Arrange: save a published quiz, question, and answer option to the database.
+                Quiz quiz = new Quiz("Published quiz", "Published quiz description", LocalDate.parse("2024-12-08"), true);
+                quizRepository.save(quiz);
+                Question question = new Question("What is the capital of Finland?", quiz);
+                questionRepository.save(question);
+                AnswerOption answerOption = new AnswerOption("Helsinki", true, question);
+                answerOptionRepository.save(answerOption);
+
+                // Request body for creating an answer with the answer option id
+                String requestBody = "{ \"answerOptionId\": " + answerOption.getId() + " }";
+
+                // Act: send a request to create an answer.
+                this.mockMvc.perform(post("/api/answers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                        // Assert: check that the response is created and contains the correct answer option id.
+                        .andExpect(status().isCreated())
+                        .andExpect(jsonPath("$.answerOptionId").value(answerOption.getId()));
+
+                // Verify that the answer is saved in the database
+                assertThat(answerRepository.count()).isEqualTo(1);
+        }
+
+        @Test
+        public void createAnswerDoesNotSaveAnswerWithoutAnswerOption() throws Exception {
+                // Arrange: save a quiz, question but without an answer option id in the request.
+                Quiz quiz = new Quiz("Published quiz", "Published quiz description", LocalDate.parse("2024-12-08"), true);
+                quizRepository.save(quiz);
+                Question question = new Question("What is the capital of Finland?", quiz);
+                questionRepository.save(question);
+
+                // Request body without the answer option id
+                String requestBody = "{ \"answerOptionId\": null }";
+
+                // Act: send a request to create an answer.
+                this.mockMvc.perform(post("/api/answers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                        // Assert: check that the response returns Bad Request status.
+                        .andExpect(status().isBadRequest());
+
+                // Verify that no answers are saved in the database
+                assertThat(answerRepository.count()).isEqualTo(0);
+        }
+
+        @Test
+                public void createAnswerDoesNotSaveAnswerForNonExistingAnswerOption() throws Exception {
+                // Arrange: save a quiz and question to the database but no such answer option exists.
+                Quiz quiz = new Quiz("Published quiz", "Published quiz description", LocalDate.parse("2024-12-08"), true);
+                quizRepository.save(quiz);
+                Question question = new Question("What is the capital of Finland?", quiz);
+                questionRepository.save(question);
+
+                // Request body with a non-existing answer option id (assuming 999 is non-existent).
+                String requestBody = "{ \"answerOptionId\": 999 }";
+
+                // Act: send a request to create an answer.
+                this.mockMvc.perform(post("/api/answers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                        // Assert: check that the response returns Not Found status.
+                        .andExpect(status().isNotFound());
+
+                // Verify that no answers are saved in the database
+                assertThat(answerRepository.count()).isEqualTo(0);
+        }
+
+        @Test
+                public void createAnswerDoesNotSaveAnswerForNonPublishedQuiz() throws Exception {
+                // Arrange: save a non-published quiz and question to the database.
+                Quiz quiz = new Quiz("Non-published quiz", "Non-published quiz description", LocalDate.parse("2024-12-08"), false);
+                quizRepository.save(quiz);
+                Question question = new Question("What is the capital of Finland?", quiz);
+                questionRepository.save(question);
+                AnswerOption answerOption = new AnswerOption("Helsinki", true, question);
+                answerOptionRepository.save(answerOption);
+
+                // Request body with a valid answer option id
+                String requestBody = "{ \"answerOptionId\": " + answerOption.getId() + " }";
+
+                // Act: send a request to create an answer.
+                this.mockMvc.perform(post("/api/answers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                        // Assert: check that the response returns Forbidden status.
+                        .andExpect(status().isForbidden());
+
+                // Verify that no answers are saved in the database
+                assertThat(answerRepository.count()).isEqualTo(0);
+        }
+
 }
