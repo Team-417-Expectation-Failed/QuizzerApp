@@ -54,7 +54,7 @@ const ReviewEdit = () => {
         nickname,
         rating: parseInt(rating),
         reviewText: reviewMessage,
-        quizId: review.quiz.id, // Retain the original quizId
+        quizId: review.quiz ? review.quiz.id : null, // Retain the original quizId if available
       };
 
       // Update the review in the backend
@@ -73,6 +73,10 @@ const ReviewEdit = () => {
 
   if (error) {
     return <Typography color="error">{error}</Typography>;
+  }
+
+  if (!review.quiz) {
+    return <Typography color="error">Quiz data is missing for this review.</Typography>;
   }
 
   return (

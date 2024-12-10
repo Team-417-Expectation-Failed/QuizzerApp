@@ -121,7 +121,7 @@ export function getReviewById(reviewId) {
 
 // Update review with reviewData by reviewId
 export function updateReview(updatedReview) {
-  return fetch(`${apiUrl}/reviews/${updatedReview.id}`, {
+  return fetch(`${apiUrl}/reviews/${updatedReview.id}/edit`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

@@ -78,7 +78,7 @@ function ReviewList() {
                     <Typography>Written on: {new Intl.DateTimeFormat('fi-FI').format(new Date(review.reviewDate))}</Typography>
                     <Box sx={{ marginTop: 2 }}>
                         <Button onClick={() => deleteReview(review.id)}>Delete</Button>
-                        <Button><RouterLink to={`/reviews/${review.id}/edit`}>Edit</RouterLink></Button>
+                        <Button component={RouterLink} to={`/reviews/${review.id}/edit`}>Edit</Button>
                     </Box>
                 </Paper>
             ))}
