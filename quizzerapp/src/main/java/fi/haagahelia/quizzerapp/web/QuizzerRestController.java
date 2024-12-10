@@ -262,8 +262,12 @@ public class QuizzerRestController {
         })
         @PostMapping("/answers")
         public ResponseEntity<String> submitAnswer(@Valid @RequestBody AnswerDTO answerDTO) {
-                answerService.submitAnswer(answerDTO);
-                return ResponseEntity.status(HttpStatus.CREATED).body("Answer created successfully");
+                try {
+                        answerService.submitAnswer(answerDTO);
+                        return ResponseEntity.status(HttpStatus.CREATED).body("Answer created successfully");
+                } catch (ResponseStatusException e) {
+                        return ResponseEntity.status(e.getStatusCode().value()).body(e.getReason());
+                }
         }
 
         @Operation(summary = "Get all answers for a specific quiz", description = "Returns a list of answers for a quiz ID")

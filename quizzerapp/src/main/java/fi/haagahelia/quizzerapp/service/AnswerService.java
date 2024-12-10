@@ -26,36 +26,25 @@ public class AnswerService {
     private AnswerRepository answerRepository;
 
     @Autowired
-    private QuestionRepository questionRepository;
-
-    @Autowired
-    private QuizRepository quizRepository;
-
-    @Autowired
     private AnswerOptionRepository answerOptionRepository;
 
     @Autowired
     private QuizService quizService;
 
-    public Question findQuestionById(Long questionId) {
-        return questionRepository.findById(questionId).orElseThrow(() -> new RuntimeException("Question not found"));
-    }
+    @Autowired
+    private QuestionRepository questionRepository;
 
-    public Quiz findQuizById(Long quizId) {
-        return quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Quiz not found"));
-    }
-
-    public Answer findAnswerById(Long answerId) {
-        return answerRepository.findById(answerId).orElseThrow(() -> new RuntimeException("Answer not found"));
-    }
-
-    public List<Answer> findAnswersByQuizId(Long quizId) {
-        return answerRepository.findByQuizId(quizId);
-    }
+    @Autowired
+    private QuizRepository quizRepository;
 
     public void submitAnswer(AnswerDTO answerDTO) {
-        // Validate that answerOptionId is not null (handled by @Valid and @NotNull)
+        // Validate that answerOptionId is not null (handled by @Valid and @NotNull in
+        // AnswerDTO)
         Long answerOptionId = answerDTO.getAnswerOptionId();
+
+        if (answerOptionId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "AnswerOption ID is required");
+        }
 
         // Fetch the AnswerOption and validate it exists
         AnswerOption answerOption = answerOptionRepository.findById(answerOptionId)
@@ -72,6 +61,22 @@ public class AnswerService {
         // Save the Answer
         Answer answer = new Answer(answerOption, answerOption.isCorrect());
         answerRepository.save(answer);
+    }
+
+    public Question findQuestionById(Long questionId) {
+        return questionRepository.findById(questionId).orElseThrow(() -> new RuntimeException("Question not found"));
+    }
+
+    public Quiz findQuizById(Long quizId) {
+        return quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Quiz not found"));
+    }
+
+    public Answer findAnswerById(Long answerId) {
+        return answerRepository.findById(answerId).orElseThrow(() -> new RuntimeException("Answer not found"));
+    }
+
+    public List<Answer> findAnswersByQuizId(Long quizId) {
+        return answerRepository.findByQuizId(quizId);
     }
 
     public List<QuestionStatsDTO> getQuizResults(Long quizId) {
