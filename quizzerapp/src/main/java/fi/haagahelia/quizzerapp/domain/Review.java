@@ -2,8 +2,6 @@ package fi.haagahelia.quizzerapp.domain;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -19,18 +17,19 @@ public class Review {
     private String nickname;
     private Integer rating;
     private String reviewText;
-    public LocalDate reviewDate;
+    private LocalDate reviewDate;
 
-    // Specifies that each Review must be associated with a Quiz and the association is mandatory (not optional)
+    // Specifies that each Review must be associated with a Quiz and the association
+    // is mandatory (not optional)
     @ManyToOne(optional = false)
     @JoinColumn(name = "quiz_id")
-    @JsonIgnore
     private Quiz quiz;
 
     public Review() {
     }
 
     public Review(String nickname, Integer rating, String reviewText, Quiz quiz, LocalDate reviewDate) {
+        this();
         this.nickname = nickname;
         this.rating = rating;
         this.reviewText = reviewText;
