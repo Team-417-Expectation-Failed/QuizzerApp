@@ -77,11 +77,13 @@ classDiagram
         String answerOptionBody
         boolean correct
         Question question
+        List~Answer~ answers
     }
 
     class QuizCategory {
         Long id
         String name
+        String description
         List~Quiz~ quizzes
     }
 
@@ -93,19 +95,26 @@ classDiagram
     }
 
     class Review {
-        Long id 
-        String nickname;
-        Integer rating;
-        String reviewText;
+        Long id
+        String nickname
+        Integer rating
+        String reviewText
+        LocalDate reviewDate
+        Quiz quiz
     }
 
-    Quiz "1" --> "0..*" Question : has
-    Quiz "1" --> "0..*" Review : contains
-    Question "1" --> "0..*" AnswerOption : contains
-    QuizCategory "1" --> "0..*" Quiz : categorizes
-    Question "1" --> "1" Quiz : belongs to
-    AnswerOption "1" --> "1" Question : belongs to
+    class Answer {
+        Long id
+        boolean isCorrect
+        AnswerOption answerOption
+    }
+
+    Quiz "1" <--> "0..*" Question : has
+    Quiz "1" <--> "0..*" Review : contains
+    Question "1" <--> "0..*" AnswerOption : contains
+    QuizCategory "0..1" <--> "0..*" Quiz : categorizes
     Question "1" --> "1" DifficultyLevel : has
+    AnswerOption "1" <--> "0..*" Answer : contains
 ```
 
 ## REST API
