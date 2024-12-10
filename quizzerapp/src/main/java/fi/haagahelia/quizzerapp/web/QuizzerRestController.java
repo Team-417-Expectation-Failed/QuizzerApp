@@ -318,15 +318,13 @@ public class QuizzerRestController {
                         @ApiResponse(responseCode = "400", description = "Invalid input data")
         })
         @PostMapping("/reviews")
-        @ResponseStatus(HttpStatus.CREATED)
-        public Review createReview(@RequestBody ReviewDTO reviewDTO) {
-                Review review = new Review();
-                review.setNickname(reviewDTO.getNickname());
-                review.setRating(reviewDTO.getRating());
-                review.setReviewText(reviewDTO.getReviewText());
-                review.setQuiz(reviewService.findQuizById(reviewDTO.getQuizId()));
-
-                return reviewService.saveReview(review);
+        public ResponseEntity<Review> createReview(@RequestBody ReviewDTO reviewDTO) {
+                try {
+                        Review review = reviewService.createReview(reviewDTO);
+                        return new ResponseEntity<>(review, HttpStatus.CREATED);
+                } catch (IllegalArgumentException e) {
+                        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
         }
 
         // UPDATES REVIEW
