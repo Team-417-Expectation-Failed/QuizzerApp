@@ -230,14 +230,15 @@ public class QuizzerRestControllerTest {
 
         @Test
         public void createReviewReturnsErrorWhenQuizDoesNotExist() throws Exception {
-                // Arrange
+                // Arrange: create a review with a non-existent quiz ID
                 ReviewDTO reviewDTO = new ReviewDTO();
                 reviewDTO.setNickname("Jane Doe");
                 reviewDTO.setRating(4);
                 reviewDTO.setReviewText("Good quiz!");
                 reviewDTO.setQuizId(1L); // Non-existent quiz ID
 
-                // Act
+                // Act: send a POST request to /api/reviews and try to create a review for a
+                // non-existent quiz
                 this.mockMvc.perform(post("/api/reviews")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(reviewDTO)))

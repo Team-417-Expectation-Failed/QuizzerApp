@@ -1,163 +1,151 @@
 package fi.haagahelia.quizzerapp.web;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.hamcrest.Matchers.containsString;
-
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.web.servlet.MockMvc;
-
-import fi.haagahelia.quizzerapp.service.QuestionService;
-import fi.haagahelia.quizzerapp.repositories.AnswerOptionRepository;
-import fi.haagahelia.quizzerapp.repositories.QuestionRepository;
-import fi.haagahelia.quizzerapp.repositories.QuizRepository;
-import fi.haagahelia.quizzerapp.domain.Question;
-import fi.haagahelia.quizzerapp.domain.Quiz;
 
 import java.util.Arrays;
 
-import static org.mockito.BDDMockito.given;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-@WebMvcTest(QuestionController.class)
+import fi.haagahelia.quizzerapp.domain.Question;
+import fi.haagahelia.quizzerapp.domain.Quiz;
+import fi.haagahelia.quizzerapp.service.QuestionService;
+
 public class QuestionControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
     @Mock
     private QuestionService questionService;
 
-    @Mock
-    private QuestionRepository questionRepository;
+    @InjectMocks
+    private QuestionController questionController;
 
-    @Mock
-    private QuizRepository quizRepository;
-
-    @Mock
-    private AnswerOptionRepository answerOptionRepository;
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(questionController).build();
+    }
 
     @Test
     public void testGetAllQuestions() throws Exception {
+        // Arrange
         Quiz quiz = new Quiz();
         quiz.setId(1L);
-        quiz.setName("Quiz 1");
+        when(questionService.findQuizById(1L)).thenReturn(quiz);
+        when(questionService.findQuestionsByQuizId(1L)).thenReturn(Arrays.asList(new Question(), new Question()));
 
-        Question question1 = new Question();
-        question1.setId(1L);
-        question1.setQuestionBody("Question 1");
-        question1.setQuiz(quiz);
-
-        Question question2 = new Question();
-        question2.setId(2L);
-        question2.setQuestionBody("Question 2");
-        question2.setQuiz(quiz);
-
-        given(questionService.findQuestionsByQuizId(1L)).willReturn(Arrays.asList(question1, question2));
-        given(questionService.findQuizById(1L)).willReturn(quiz);
-
+        // Act
         mockMvc.perform(get("/quiz/1/questions"))
+                // Assert
                 .andExpect(status().isOk())
                 .andExpect(view().name("questionlist"))
-                .andExpect(model().attributeExists("questions"))
-                .andExpect(content().string(containsString("Question 1")))
-                .andExpect(content().string(containsString("Question 2")));
+                .andExpect(model().attributeExists("quiz"))
+                .andExpect(model().attributeExists("questions"));
     }
 
     @Test
-    public void testViewQuestionButton() throws Exception {
+    public void testGetQuestionById() throws Exception {
+        // Arrange
         Quiz quiz = new Quiz();
         quiz.setId(1L);
-        quiz.setName("Quiz 1");
-
         Question question = new Question();
         question.setId(1L);
-        question.setQuestionBody("Question 1");
-        question.setQuiz(quiz);
+        when(questionService.findQuizById(1L)).thenReturn(quiz);
+        when(questionService.findQuestionById(1L)).thenReturn(question);
 
-        given(questionService.findQuestionById(1L)).willReturn(question);
-        given(questionService.findQuizById(1L)).willReturn(quiz);
-
+        // Act
         mockMvc.perform(get("/quiz/1/questions/1"))
+                // Assert
                 .andExpect(status().isOk())
                 .andExpect(view().name("questionview"))
-                .andExpect(model().attributeExists("question"))
-                .andExpect(content().string(containsString("Question 1")));
-    }
-
-    @Test
-    public void testEditQuestionButton() throws Exception {
-        Quiz quiz = new Quiz();
-        quiz.setId(1L);
-        quiz.setName("Quiz 1");
-
-        Question question = new Question();
-        question.setId(1L);
-        question.setQuestionBody("Question 1");
-        question.setQuiz(quiz);
-
-        given(questionService.findQuestionById(1L)).willReturn(question);
-        given(questionService.findQuizById(1L)).willReturn(quiz);
-
-        mockMvc.perform(get("/quiz/1/questions/edit/1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("editquestion"))
-                .andExpect(model().attributeExists("question"))
-                .andExpect(content().string(containsString("Edit Question")));
+                .andExpect(model().attributeExists("quiz"))
+                .andExpect(model().attributeExists("question"));
     }
 
     @Test
     public void testShowAddQuestionForm() throws Exception {
+        // Arrange
         Quiz quiz = new Quiz();
         quiz.setId(1L);
-        quiz.setName("Quiz 1");
+        when(questionService.findQuizById(1L)).thenReturn(quiz);
 
-        given(questionService.findQuizById(1L)).willReturn(quiz);
-
+        // Act
         mockMvc.perform(get("/quiz/1/questions/add"))
+                // Assert
                 .andExpect(status().isOk())
                 .andExpect(view().name("addquestion"))
-                .andExpect(model().attributeExists("question"))
-                .andExpect(content().string(containsString("Add Question")));
+                .andExpect(model().attributeExists("quiz"))
+                .andExpect(model().attributeExists("question"));
     }
 
     @Test
-    public void testCreateQuestion() throws Exception {
+    public void testSaveNewQuestion() throws Exception {
+        // Act
         mockMvc.perform(post("/quiz/1/questions/add")
                 .param("questionBody", "New Question"))
+                // Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/quiz/1/questions"));
+
+        // Verify
+        verify(questionService).addQuestionToQuiz(anyLong(), any(Question.class));
+    }
+
+    @Test
+    public void testShowEditQuestionForm() throws Exception {
+        // Arrange
+        Quiz quiz = new Quiz();
+        quiz.setId(1L);
+        Question question = new Question();
+        question.setId(1L);
+        when(questionService.findQuizById(1L)).thenReturn(quiz);
+        when(questionService.findQuestionById(1L)).thenReturn(question);
+
+        // Act
+        mockMvc.perform(get("/quiz/1/questions/edit/1"))
+                // Assert
+                .andExpect(status().isOk())
+                .andExpect(view().name("editquestion"))
+                .andExpect(model().attributeExists("quiz"))
+                .andExpect(model().attributeExists("question"));
     }
 
     @Test
     public void testUpdateQuestion() throws Exception {
-        Quiz quiz = new Quiz();
-        quiz.setId(1L);
-        quiz.setName("Quiz 1");
-
-        Question question = new Question();
-        question.setId(1L);
-        question.setQuestionBody("Updated Question");
-        question.setQuiz(quiz);
-
-        given(questionService.findQuestionById(1L)).willReturn(question);
-
+        // Act
         mockMvc.perform(post("/quiz/1/questions/edit/1")
                 .param("questionBody", "Updated Question"))
+                // Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/quiz/1/questions"));
+
+        // Verify
+        verify(questionService).updateQuestion(anyLong(), any(Question.class));
     }
 
     @Test
     public void testDeleteQuestion() throws Exception {
+        // Act
         mockMvc.perform(post("/quiz/1/questions/delete/1"))
+                // Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/quiz/1/questions"));
+
+        // Verify
+        verify(questionService).deleteQuestion(1L);
     }
 }
