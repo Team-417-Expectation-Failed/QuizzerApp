@@ -12,12 +12,14 @@ It aims to be used for creating educational quizzes, enabling teachers to create
 ### Prerequisites
 
 - Java 17 or above
-- Node.js (version 14+)
+- Node.js (version 14+) and npm
+- Maven 3.8.4+
 
 ### Clone the repository
 
 ```
 git clone https://github.com/Team-417-Expectation-Failed/QuizzerApp.git
+cd QuizzerApp
 ```
 
 ### Start the Backend (Spring Boot)
@@ -109,6 +111,26 @@ classDiagram
 ## REST API
 
 [Swagger documentation](http://localhost:8080/swagger-ui/index.html)
+
+## Testing
+
+Run all the tests in the same directory where the pom.xml is
+
+```
+mvn test
+```
+
+Run specific test classes with the name of the test class
+
+```
+mvn -Dtest=QuizzerRestControllerTest test
+```
+
+Run specific test method from a test class
+
+```
+mvn -Dtest=QuizzerRestControllerTest#createAnswerSavesAnswerForPublishedQuiz test
+```
 
 ## Contributing
 
