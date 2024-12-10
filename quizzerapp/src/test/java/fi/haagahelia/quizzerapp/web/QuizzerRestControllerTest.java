@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
@@ -249,8 +250,9 @@ public class QuizzerRestControllerTest {
 
         @Test
         public void createAnswerSavesAnswerForPublishedQuiz() throws Exception {
-        // Arrange: save a published quiz, question, and answer option to the database.
-                Quiz quiz = new Quiz("Published quiz", "Published quiz description", LocalDate.parse("2024-12-08"), true);
+                // Arrange: save a published quiz, question, and answer option to the database.
+                Quiz quiz = new Quiz("Published quiz", "Published quiz description", LocalDate.parse("2024-12-08"),
+                                true);
                 quizRepository.save(quiz);
                 Question question = new Question("What is the capital of Finland?", quiz);
                 questionRepository.save(question);
@@ -262,11 +264,11 @@ public class QuizzerRestControllerTest {
 
                 // Act: send a request to create an answer.
                 this.mockMvc.perform(post("/api/answers")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                        // Assert: check that the response is created and contains the correct answer option id.
-                        .andExpect(status().isCreated())
-                        .andExpect(jsonPath("$.answerOptionId").value(answerOption.getId()));
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody))
+                                // Assert: check that the response is created and contains the success message.
+                                .andExpect(status().isCreated())
+                                .andExpect(content().string("Answer created successfully"));
 
                 // Verify that the answer is saved in the database
                 assertThat(answerRepository.count()).isEqualTo(1);
@@ -274,8 +276,10 @@ public class QuizzerRestControllerTest {
 
         @Test
         public void createAnswerDoesNotSaveAnswerWithoutAnswerOption() throws Exception {
-                // Arrange: save a quiz, question but without an answer option id in the request.
-                Quiz quiz = new Quiz("Published quiz", "Published quiz description", LocalDate.parse("2024-12-08"), true);
+                // Arrange: save a quiz, question but without an answer option id in the
+                // request.
+                Quiz quiz = new Quiz("Published quiz", "Published quiz description", LocalDate.parse("2024-12-08"),
+                                true);
                 quizRepository.save(quiz);
                 Question question = new Question("What is the capital of Finland?", quiz);
                 questionRepository.save(question);
@@ -285,41 +289,45 @@ public class QuizzerRestControllerTest {
 
                 // Act: send a request to create an answer.
                 this.mockMvc.perform(post("/api/answers")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                        // Assert: check that the response returns Bad Request status.
-                        .andExpect(status().isBadRequest());
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody))
+                                // Assert: check that the response returns Bad Request status.
+                                .andExpect(status().isBadRequest());
 
                 // Verify that no answers are saved in the database
                 assertThat(answerRepository.count()).isEqualTo(0);
         }
 
         @Test
-                public void createAnswerDoesNotSaveAnswerForNonExistingAnswerOption() throws Exception {
-                // Arrange: save a quiz and question to the database but no such answer option exists.
-                Quiz quiz = new Quiz("Published quiz", "Published quiz description", LocalDate.parse("2024-12-08"), true);
+        public void createAnswerDoesNotSaveAnswerForNonExistingAnswerOption() throws Exception {
+                // Arrange: save a quiz and question to the database but no such answer option
+                // exists.
+                Quiz quiz = new Quiz("Published quiz", "Published quiz description", LocalDate.parse("2024-12-08"),
+                                true);
                 quizRepository.save(quiz);
                 Question question = new Question("What is the capital of Finland?", quiz);
                 questionRepository.save(question);
 
-                // Request body with a non-existing answer option id (assuming 999 is non-existent).
+                // Request body with a non-existing answer option id (assuming 999 is
+                // non-existent).
                 String requestBody = "{ \"answerOptionId\": 999 }";
 
                 // Act: send a request to create an answer.
                 this.mockMvc.perform(post("/api/answers")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                        // Assert: check that the response returns Not Found status.
-                        .andExpect(status().isNotFound());
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody))
+                                // Assert: check that the response returns Not Found status.
+                                .andExpect(status().isNotFound());
 
                 // Verify that no answers are saved in the database
                 assertThat(answerRepository.count()).isEqualTo(0);
         }
 
         @Test
-                public void createAnswerDoesNotSaveAnswerForNonPublishedQuiz() throws Exception {
+        public void createAnswerDoesNotSaveAnswerForNonPublishedQuiz() throws Exception {
                 // Arrange: save a non-published quiz and question to the database.
-                Quiz quiz = new Quiz("Non-published quiz", "Non-published quiz description", LocalDate.parse("2024-12-08"), false);
+                Quiz quiz = new Quiz("Non-published quiz", "Non-published quiz description",
+                                LocalDate.parse("2024-12-08"), false);
                 quizRepository.save(quiz);
                 Question question = new Question("What is the capital of Finland?", quiz);
                 questionRepository.save(question);
@@ -331,10 +339,10 @@ public class QuizzerRestControllerTest {
 
                 // Act: send a request to create an answer.
                 this.mockMvc.perform(post("/api/answers")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                        // Assert: check that the response returns Forbidden status.
-                        .andExpect(status().isForbidden());
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody))
+                                // Assert: check that the response returns Forbidden status.
+                                .andExpect(status().isForbidden());
 
                 // Verify that no answers are saved in the database
                 assertThat(answerRepository.count()).isEqualTo(0);
