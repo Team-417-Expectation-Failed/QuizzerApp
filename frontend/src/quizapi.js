@@ -61,6 +61,7 @@ export function getCategoryById(categoryId) {
     })
 }
 
+// Add answer to answerOption by answerOptionId
 export function addAnswer(answerOptionId) {
   return fetch(`${apiUrl}/answers`, {
     method: 'POST',
@@ -77,6 +78,7 @@ export function addAnswer(answerOptionId) {
     });
 }
 
+// Fetch and return all reviews for a specific quiz by quizId
 export function getQuizReviews(quizId) {
   return fetch(`${apiUrl}/quizzes/${quizId}/reviews`)
     .then(response => {
@@ -88,6 +90,7 @@ export function getQuizReviews(quizId) {
     })
 }
 
+// Post a new review with reviewData to backend
 export function createReview(reviewData) {
   return fetch(`${apiUrl}/reviews`, {
     method: 'POST',
@@ -104,24 +107,10 @@ export function createReview(reviewData) {
     });
 }
 
-export function editReview(reviewData) {
-  return fetch(`${apiUrl}/reviews/${reviewId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(reviewData),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to edit review: " + response.statusText);
-      }
-      return response.json();
-    });
-}
-
+// Fetch review data by reviewId
+// Get the details of a review for editing
 export function getReviewById(reviewId) {
-  return fetch(`reviews/${reviewId}/edit`)
+  return fetch(`${apiUrl}/reviews/${reviewId}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error("Error fetching review");
@@ -130,8 +119,9 @@ export function getReviewById(reviewId) {
     });
 }
 
+// Update review with reviewData by reviewId
 export function updateReview(updatedReview) {
-  return fetch(`${apiUrl}/reviews/${updatedReview.id}/edit`, {
+  return fetch(`${apiUrl}/reviews/${updatedReview.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -146,6 +136,7 @@ export function updateReview(updatedReview) {
     });
 }
 
+// Delete review by reviewId
 export function deleteReview(reviewId) {
   return fetch(`${apiUrl}/reviews/${reviewId}`, {
     method: 'DELETE',
