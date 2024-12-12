@@ -1,40 +1,51 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link as RouterLink } from "react-router-dom";
 import { getQuizById, getQuizResults } from '../quizapi';
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress } from "@mui/material";
 
 function QuizResults() {
     const { id: quizId } = useParams();
     const [quiz, setQuiz] = useState(null);
     const [results, setResults] = useState([]);
-
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
-        // fetch quiz data
-        getQuizById(quizId)
-            .then((quizData) => {
-                setQuiz(quizData); // set quiz data
-            })
-            .catch((error) => {
-                console.error("Error fetching quiz data:", error);
-            });
+        const fetchQuizData = async () => {
+            try {
+                const quizData = await getQuizById(quizId);
+                setQuiz(quizData);
 
-           getQuizResults(quizId)
-            .then((data) => setResults(data))
-         
-                
+                const resultsData = await getQuizResults(quizId);
+                setResults(resultsData);
+
+                setLoading(false);
+            } catch (error) {
+                setError("Failed to load quiz result data.");
+                setLoading(false);
+            }
+        };
+
+        fetchQuizData();
     }, [quizId]);
 
-    let totalAnswers = 0;
-   
-        for (let i = 0; i < results.length; i++) {
-            totalAnswers += (results[i].correctAnswers + results[i].wrongAnswers);
-        }
-    
+    const calculateTotalAnswers = () => {
+        return results.reduce((total, result) => total + result.correctAnswers + result.wrongAnswers, 0);
+    };
 
-    if (!quiz) {
-        return <Typography variant="h6">Loading...</Typography>;
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        );
     }
+
+    if (error) {
+        return <Typography color="error">{error}</Typography>;
+    }
+
+    const totalAnswers = calculateTotalAnswers();
 
     return (
         <Box sx={{ margin: 5 }}>
@@ -64,7 +75,6 @@ function QuizResults() {
                                 <TableCell variant="body"><RouterLink to={`#`}></RouterLink>{result.wrongAnswers}</TableCell>
                             </TableRow>
                         ))}
-
                     </TableBody> }
                 </Table>
             </TableContainer>
