@@ -1,23 +1,41 @@
 import { useState, useEffect } from "react";
 import { getPublishedQuizzes } from "../quizapi";
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 function QuizList() {
   const [quizzes, setQuizzes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     getPublishedQuizzes()
       .then((data) => {
-        console.log(data); // Checking the data on the console
         setQuizzes(data);
+        setLoading(false);
       })
+      .catch((error) => {
+        setError("Error fetching published quizzes.");
+        setLoading(false);
+      });
   }, []);
 
   const formatDate = (dateString) => {
     const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
     return new Intl.DateTimeFormat('fi-FI', options).format(new Date(dateString));
   };
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return <Typography color="error">{error}</Typography>;
+  }
 
   return (
     <Box sx={{ margin: 5 }}>
@@ -44,7 +62,6 @@ function QuizList() {
                 <TableCell variant="body"><RouterLink to={`quiz/${quiz.id}/reviews`}>See reviews</RouterLink></TableCell>
               </TableRow>
             ))}
-
           </TableBody>
         </Table>
       </TableContainer>

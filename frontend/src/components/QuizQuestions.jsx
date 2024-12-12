@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { getQuizQuestions } from '../quizapi';
 import { getQuizById } from '../quizapi';
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper, CircularProgress } from "@mui/material";
 import QuizAnswerOptions from './QuizAnswerOptions';
 
 function FetchQuizQuestions() {
@@ -32,8 +32,16 @@ function FetchQuizQuestions() {
         fetchQuizData();
     }, [quizId]);
 
-    if (!quiz) { // This has to be here if the fetch is slower than the rendering
-        return <Typography variant="h6">Loading...</Typography>;
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return <Typography color="error">{error}</Typography>;
     }
 
     const formatDifficulty = (str) => {
