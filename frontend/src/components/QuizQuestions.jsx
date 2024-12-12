@@ -2,32 +2,46 @@ import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { getQuizQuestions } from '../quizapi';
 import { getQuizById } from '../quizapi';
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper, CircularProgress } from "@mui/material";
 import QuizAnswerOptions from './QuizAnswerOptions';
 
 function FetchQuizQuestions() {
     const { id: quizId } = useParams();
     const [questions, setQuestions] = useState([]);
     const [quiz, setQuiz] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
 
     useEffect(() => {
+        const fetchQuizData = async () => {
+            try {
+                const quizData = await getQuizById(quizId);
+                setQuiz(quizData);
 
-        // fetch quiz data
-        getQuizById(quizId)
-            .then((quizData) => {
-                setQuiz(quizData); // set quiz data
-            })
-            .catch((error) => {
-                console.error("Error fetching quiz data:", error); 
-            });
+                const questionsData = await getQuizQuestions(quizId);
+                setQuestions(questionsData);
 
-        getQuizQuestions(quizId)
-            .then((data) => setQuestions(data));
+                setLoading(false);
+            } catch (error) {
+                setError("Failed to load quiz data.");
+                setLoading(false);
+            }
+        };
+
+        fetchQuizData();
     }, [quizId]);
 
-    if (!quiz) { // This has to be here if the fetch is slower than the rendering
-        return <Typography variant="h6">Loading...</Typography>;
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return <Typography color="error">{error}</Typography>;
     }
 
     const formatDifficulty = (str) => {
