@@ -1,68 +1,97 @@
-import { Box, Typography, Paper, Button } from "@mui/material";
+import { Box, Typography, Paper, Button, CircularProgress } from "@mui/material";
 import { getQuizReviews, deleteReview as deleteReviewApi, getQuizById } from "../quizapi";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link as RouterLink } from "react-router-dom";
 
 
+/**
+ * ReviewList component fetches and displays the reviews for a specific quiz.
+ * It also allows users to navigate to the edit review page and delete their reviews.
+ *
+ * @component
+ * @example
+ * return (
+ *   <ReviewList />
+ * )
+ *
+ * @returns {JSX.Element} The rendered component.
+ *
+ * @description
+ * This component uses the `useParams` hook to get the quiz ID from the URL,
+ * and the `useState` and `useEffect` hooks to manage state and side effects.
+ * It fetches the quiz and its reviews from the server, calculates the average rating,
+ * and displays the reviews in a list. Users can delete or edit their reviews.
+ *
+ * @function
+ * @name ReviewList
+ */
+
 function ReviewList() {
     const { id: quizId } = useParams();
     const [reviews, setReviews] = useState([]);
     const [quiz, setQuiz] = useState(null);
-    const [averageRating, setAverageRating] = useState(0); // State for average rating
+    const [averageRating, setAverageRating] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
-        // fetch quiz data
-        getQuizById(quizId)
-            .then((quizData) => {
-                setQuiz(quizData); // set quiz data
-            })
-            .catch((error) => {
-                console.error("Error fetching quiz data:", error);
-            });
+        const fetchData = async () => {
+            try {
+                const quizData = await getQuizById(quizId);
+                setQuiz(quizData);
 
-        // fetch reviews and calculate average rating
-        getQuizReviews(quizId)
-            .then((data) => {
-                setReviews(data);
-                // Calculate average rating
-                if (data.length > 0) {
-                    const totalRating = data.reduce((sum, review) => sum + review.rating, 0);
-                    setAverageRating((totalRating / data.length).toFixed(1)); // Round to 1 decimal
+                const reviewsData = await getQuizReviews(quizId);
+                setReviews(reviewsData);
+
+                if (reviewsData.length > 0) {
+                    const totalRating = reviewsData.reduce((sum, review) => sum + review.rating, 0);
+                    setAverageRating((totalRating / reviewsData.length).toFixed(1));
                 } else {
                     setAverageRating(0);
                 }
-            })
-            .catch((error) => {
-                console.error("Error fetching reviews:", error);
-            });
+
+                setLoading(false);
+            } catch (error) {
+                setError("Failed to load quiz and reviews data.");
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, [quizId]);
 
-    if (!quiz) { // This has to be here if the fetch is slower than the rendering
-        return <Typography variant="h6">Loading...</Typography>;
-    }
+    const deleteReview = async (id) => {
+        try {
+            await deleteReviewApi(id);
+            const updatedReviews = reviews.filter(review => review.id !== id);
+            setReviews(updatedReviews);
 
-    const deleteReview = (id) => {
-        deleteReviewApi(id)
-            .then(() => {
-                const updatedReviews = reviews.filter(review => review.id !== id);
-                setReviews(updatedReviews);
-
-                // Recalculate average rating
-                if (updatedReviews.length > 0) {
-                    const totalRating = updatedReviews.reduce((sum, review) => sum + review.rating, 0);
-                    setAverageRating((totalRating / updatedReviews.length).toFixed(1)); // Round to 1 decimal
-                } else {
-                    setAverageRating(0);
-                }
-            })
-            .catch((error) => {
-                console.error("Error deleting review:", error);
-            });
+            if (updatedReviews.length > 0) {
+                const totalRating = updatedReviews.reduce((sum, review) => sum + review.rating, 0);
+                setAverageRating((totalRating / updatedReviews.length).toFixed(1));
+            } else {
+                setAverageRating(0);
+            }
+        } catch (error) {
+            console.error("Error deleting review:", error);
+        }
     };
 
     const editReview = (reviewId) => {
         navigate(`/reviews/${reviewId}/edit`);
+    };
+
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return <Typography color="error">{error}</Typography>;
     }
 
     return (
