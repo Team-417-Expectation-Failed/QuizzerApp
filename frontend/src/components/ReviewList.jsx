@@ -61,6 +61,10 @@ function ReviewList() {
             });
     };
 
+    const editReview = (reviewId) => {
+        navigate(`/reviews/${reviewId}/edit`);
+    }
+
     return (
         <Box sx={{ margin: 5 }}>
             <Typography variant="h4" sx={{ marginBottom: 2 }}>Reviews of "{quiz.name}"</Typography>
@@ -78,7 +82,7 @@ function ReviewList() {
                     <Typography>Written on: {new Intl.DateTimeFormat('fi-FI').format(new Date(review.reviewDate))}</Typography>
                     <Box sx={{ marginTop: 2 }}>
                         <Button onClick={() => deleteReview(review.id)}>Delete</Button>
-                        <Button component={RouterLink} to={`/reviews/${review.id}/edit`}>Edit</Button>
+                        <Button onClick={() => editReview(review.id)}>Edit</Button>
                     </Box>
                 </Paper>
             ))}
